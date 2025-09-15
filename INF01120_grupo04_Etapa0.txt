@@ -1,0 +1,53 @@
+﻿Studify/UniPlanner/Semesterly/Outro
+
+
+
+
+
+
+
+
+
+
+Grupo: 04
+Integrantes: Cristopher dos Santos Filho; 
+Filipe Moura;
+Milena Silva;
+Nickolas Xisto Machado;
+Pedro Schuck de Azevedo.
+Facilitador: X 
+Disciplina: INF01120
+Professora: Karina Kohl
+
+
+
+
+
+
+
+
+O aplicativo Studify/UniPlanner/Semesterly/Outro é uma agenda pessoal que visa auxiliar a organização de alunos com os horários de estudos e priorização de atividades.
+
+
+Esta aplicação foi escolhida por sua utilidade e diversos colegas estudantes relatam dificuldades de terem uma rotina de estudos, principalmente quando muitas cadeiras estão sendo cursadas e há vários exercícios, trabalhos e provas para estudar e desenvolver. O objetivo do programa é ser um jeito de tirar a organização apenas da ideia e "passar para o papel" de maneira organizada.
+
+
+O programa consistirá em:
+        1 - O aluno informará seus horários que serão reservados para estudos.
+        2 - O Aluno informará quais cadeiras ele está cursando e a sua respectiva posição em uma ordem de prioridade.
+        3 - O aluno irá listar todas as datas de atividades, exercícios, trabalhos e provas. 
+        4 - Por fim será exibida a agenda de estudos.
+
+
+
+
+Outras ações como [...] não serão abordadas, pois …
+
+
+Levemente similar ao [...], este projeto distingue-se por …
+
+
+Espera-se encontrar maior dificuldade nas tarefas de …
+
+
+Além disso, pode-se perceber a relação entre os conteúdos vistos em aula por meio de …
