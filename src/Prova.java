@@ -1,13 +1,12 @@
-package classes;
+package src;
 
-public class Trabalho extends Atividade {
+public class Prova extends Atividade {
     public static final double _PESO_TIPO = 0;
-    static int _totalTrabalhos;
+    static int _totalProvas;
     double pesoCalculado;
 
-    public Trabalho(String nome, int prioridade, java.time.LocalDate dataLimite, int totalPaginas) {
+    public Prova(String nome, int prioridade, java.time.LocalDate dataLimite) {
         super(nome, prioridade, dataLimite);
-        
     }
 
     
