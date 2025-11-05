@@ -3,7 +3,7 @@ package src;
 import java.time.LocalDate;
 
 public  abstract class Atividade {
-    // Disciplina disciplina;
+    Disciplina disciplina;
     String nome;
     int prioridade;
     LocalDate dataLimite;
@@ -32,5 +32,6 @@ public  abstract class Atividade {
     public abstract int getTotal();
     public abstract  double getPesoTipo();
     public abstract  double calculaPeso();
-
+    public abstract double getPesoCalculado();
+    public abstract Disciplina getDisciplina();
 }

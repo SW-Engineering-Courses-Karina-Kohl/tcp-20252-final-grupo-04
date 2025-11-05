@@ -1,3 +1,4 @@
+package src;
 public class AlocacaoAtividade {
     private Atividade atividade;
     private double porcentagemTimeSlotEstudos;

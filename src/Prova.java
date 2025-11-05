@@ -25,6 +25,10 @@ public class Prova extends Atividade {
         return 0;
     }
 
+    @Override 
+    public double getPesoCalculado() {
+        return pesoCalculado;
+    }
     
     
 }

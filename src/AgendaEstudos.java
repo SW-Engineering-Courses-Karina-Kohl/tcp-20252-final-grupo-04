@@ -1,5 +1,6 @@
+package src;
 import java.util.List;
-public class AgendaEstudos 
+public class AgendaEstudos
 {
     private List<TimeSlotEstudo> estudos;
     private boolean cronogramaCriado;
