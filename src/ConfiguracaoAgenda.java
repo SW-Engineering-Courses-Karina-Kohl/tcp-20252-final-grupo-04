@@ -1,23 +1,28 @@
-package src;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 public class ConfiguracaoAgenda {
-    private DiaSemana[] dias = new DiaSemana[7];
+    private List<DiaSemana> diasSemana;
     private LocalDate dataInicioVigencia;
     private LocalDate dataFimVigencia;
     private List<Impedimento> impedimentos;
-    private List<Disciplina> disciplinas;
 
-    // Construtor
+    // Construtores
     public ConfiguracaoAgenda(LocalDate dataInicioVigencia, LocalDate dataFimVigencia) {
         this.dataInicioVigencia = dataInicioVigencia;
         this.dataFimVigencia = dataFimVigencia;
         this.impedimentos = new ArrayList<>();
-        this.disciplinas = new ArrayList<>();
+        this.diasSemana = new ArrayList<>();
     }
+
+    public ConfiguracaoAgenda() { 
+        this.dataInicioVigencia = null;
+        this.dataFimVigencia = null;
+        this.impedimentos = new ArrayList<>();
+        this.diasSemana = new ArrayList<>();
+    };
 
     // Getters e Setters
     public LocalDate getDataInicioVigencia() {
@@ -33,27 +38,31 @@ public class ConfiguracaoAgenda {
         this.dataFimVigencia = dataFimVigencia;
     }
 
-    public void setDia(DayOfWeek dia, DiaSemana diaSemana)
-    {
-        dias[dia.getValue() - 1] = diaSemana;
+    public List<Impedimento> getImpedimentos() {
+        return impedimentos;
     }
 
-    //Outros métodos
     public void adicionarImpedimento(Impedimento impedimento) {
         this.impedimentos.add(impedimento);
     }
-    public void adicionarDisciplina(Disciplina disciplina) {
-        this.disciplinas.add(disciplina);
+
+    public void setDia(DayOfWeek dia, DiaSemana diaSemana) { 
+        this.diasSemana.add(dia.getValue() - 1, diaSemana);
     }
 
-    public AgendaEstudos gerarAgenda() {
-        return null;
-        
+    public DiaSemana getDiaSemana(DayOfWeek dia) {       
+        return diasSemana.get(dia.getValue() - 1);     
+    }
+ 
+    //Outros métodos
+
+    public boolean checaDatasVigenciaValidas() {
+        return dataInicioVigencia.isBefore(dataFimVigencia);
     }
 
-    public boolean validarConfiguracao() {
-        return true;
-        
+    public boolean isDataEntreVigencia(LocalDate data) {
+        return data.isAfter(dataInicioVigencia) &&
+               (data.isEqual(dataFimVigencia) || data.isBefore(dataFimVigencia));
     }
 
 }
