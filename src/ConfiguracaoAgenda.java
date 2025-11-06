@@ -61,7 +61,7 @@ public class ConfiguracaoAgenda {
     }
 
     public boolean isDataEntreVigencia(LocalDate data) {
-        return (data.isEqual(dataInicioVigencia) || data.isAfter(dataInicioVigencia)) &&
+        return data.isAfter(dataInicioVigencia) &&
                (data.isEqual(dataFimVigencia) || data.isBefore(dataFimVigencia));
     }
 
