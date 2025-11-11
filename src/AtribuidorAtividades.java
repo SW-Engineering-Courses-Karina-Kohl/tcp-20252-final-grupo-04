@@ -2,6 +2,7 @@ package src;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import AlocacaoAtividade;
 
 public class AtribuidorAtividades 
 {
@@ -22,7 +23,7 @@ public class AtribuidorAtividades
         List<Atividade> atividades = this.juntarAtividadesDeDisciplinas(disciplinas);
         atividades.sort((a1, a2) -> a1.getDataEntrega().compareTo(a2.getDataEntrega()));
 
-        List<TimeSlotEstudo> timeSlotsDisponiveis = agenda.getEstudos();
+        List<TimeSlotEstudo> timeSlotsDisponiveis = new List<TimeSlotEstudo>(agenda.getEstudos());
         CalculadoraPesoAtividades calculadoraPeso = new CalculadoraPesoAtividades();
         calculadoraPeso.calcularPeso(atividades, timeSlotsDisponiveis);
 
@@ -38,9 +39,10 @@ public class AtribuidorAtividades
         {
             // Haverá atividades.size() - i atividades a serem atribuídas: i até atividades.size() - 1
             // Calcular a porcentagem de timeSlot's que cada atividade a ser atribuído deve receber
-            //Somar pesoCalculado das atividades de i até atividades.size() - 1: para evitar repetição desnecessária somaPesosCalculados pode ser decrementada a cada iteração
+            // Somar pesoCalculado das atividades de i até atividades.size() - 1: para evitar repetição desnecessária somaPesosCalculados pode ser decrementada a cada iteração
             somaPesosCalculados -= atividades.get(i).getPesoCalculado();    
             //Para cada atividade de i até atividades.size() - 1
+            int quantidadeTimeSlotsJanela = 0;
             for(int j = i; j < atividades.size(); j++)
             {
                 AlocacaoAtividade alocacao = alocacoes.get(j);
@@ -48,13 +50,21 @@ public class AtribuidorAtividades
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
 
                 //Calcular número de timeSlots a serem atribuídos para a atividade = porcentagem * quantidade de TimeSlotEstudo's da janela
-                int quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataEntrega(), timeSlotsDisponiveis);
+                quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataEntrega(), timeSlotsDisponiveis);
                 alocacao.setQuantidadeTimeSlotEstudos(alocacao.getPorcentagemTimeSlotEstudos() * quantidadeTimeSlotsJanela);
             }
             //Arredondar quantidade de timeSlots para cada atividade
+            arredondarQuantidadeTimeSlots(alocacoes, quantidadeTimeSlotsJanela);
+
             //Os timeSlotEstudo disponíveis na agenda são aqueles que ainda não possuem atividade atribuída e cuja data é anterior à data de entrega da atividade
             //Usar um distribuidor para distribuir as atividades conforme a quantidade arredondada
+            DistribuidorAtividades distribuidor = new DistribuidorAtividades();
+            //Usar quantidadeTimeSlotsJanela para saber até qual índice da lista de timeSlotsDisponiveis deve ser considerado
+            distribuidor.distribuir(alocacoes, timeSlotsDisponiveis.subList(0, quantidadeTimeSlotsJanela));
             //Remover da lista de Alocacoes a primeira alocacao, que é referente a atividade i, que já foi atribuída
+            alocacoes.remove(0);
+            //Remover da lista de timeSlotsDisponiveis os timeSlots que já foram atribuídos
+            timeSlotsDisponiveis = new List<timeSlotEstudo> (timeSlotsDisponiveis.subList(quantidadeTimeSlotsJanela, timeSlotsDisponiveis.size()));
 
         }
         // 
@@ -81,13 +91,13 @@ public class AtribuidorAtividades
         return this.alocacoes.get(index);
     }
 
-    public int quantidadeTimeSlotEstudosAntesDe(LocalDate data, List<TimeSlotEstudo> timeSlotEstudo)
+    public int quantidadeTimeSlotEstudosAntesDe(LocalDate data, List<TimeSlotEstudo> timeSlotEstudos)
     {
         //usar busca binária para encontrar o índice do último timeSlotEstudo cuja data é menor ou igual à data fornecida
         //Ajustar data para incluir todos os timeSlots do dia fornecido, binarySearch encontra o primeiro maior ou igual
         LocalDateTime dataLimiteAjustada = data.plusDays(-1).atTime(23, 59, 59);
-        int indice = Collections.binarySearch(timeSlotEstudo, dataLimiteAjustada, (timeSlotEstudo, dataLimiteAjustada) -> 
-        timeSlotEstudo.getDataTime().compareTo(dataLimiteAjustada));
+        int indice = Collections.binarySearch(timeSlotEstudos, dataLimiteAjustada, (timeSlotEstudo, dataAjustada) -> 
+        timeSlotEstudo.getDataTime().compareTo(dataAjustada));
 
         return indice >= 0 ? indice + 1 : -(indice + 1);
     }
@@ -99,7 +109,8 @@ public class AtribuidorAtividades
         //Calcular a soma das quantidades arredondadas
         //Calcular o número de timeSlots restantes = totalTimeSlotsJanela - somaArredondada
         //Calcular as diferenças entre as quantidades originais e as arredondadas
-        //Ordenar as atividades pela diferença em ordem decrescente
+        //Ordenar decrescentemente as atividades pela diferença em ordem decrescente
+        //Distribuir os timeSlots restantes para as atividades com maiores diferenças, uma unidade por atividade, até que não haja mais timeSlots restantes
         int somaArredondada = 0;
         for(AlocacaoAtividade alocacao : alocacoes)
         {
@@ -108,12 +119,14 @@ public class AtribuidorAtividades
             somaArredondada += quantidadeArredondada;
         }
         int timeSlotsRestantes = totalTimeSlotsJanela - somaArredondada;
-        List<AlocacaoAtividade> alocacoesOrdenadasPorDiferenca = new ArrayList<>(alocacoes);
-        alocacoesOrdenadasPorDiferenca.sort((a1, a2) -> 
+        List<AlocacaoAtividade> alocacoesReversamenteOrdenadasPorDiferenca = new ArrayList<>(alocacoes);
+        alocacoesReversamenteOrdenadasPorDiferenca.sort(
+        Comparator.comparingDouble((AlocacaoAtividade a) -> a.getQuantidadeTimeSlotEstudos() - a.getQuantidadeTimeSlotEstudosArredondada()).reversed());
+        
+        for(int i = 0; i < timeSlotsRestantes; i++)
         {
-            double diferenca1 = a1.getQuantidadeTimeSlotEstudos() - a1.getQuantidadeTimeSlotEstudosArredondada();
-            double diferenca2 = a2.getQuantidadeTimeSlotEstudos() - a2.getQuantidadeTimeSlotEstudosArredondada();
-            return Double.compare(diferenca2, diferenca1);
-        });
+            AlocacaoAtividade alocacao = alocacoesReversamenteOrdenadasPorDiferenca.get(i);
+            alocacao.setQuantidadeTimeSlotEstudosArredondada(alocacao.getQuantidadeTimeSlotEstudosArredondada() + 1);
+        }
     }
 }
