@@ -50,7 +50,7 @@ public class AtribuidorAtividades
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
 
                 //Calcular número de timeSlots a serem atribuídos para a atividade = porcentagem * quantidade de TimeSlotEstudo's da janela
-                quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataEntrega(), timeSlotsDisponiveis);
+                quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataLimite(), timeSlotsDisponiveis);
                 alocacao.setQuantidadeTimeSlotEstudos(alocacao.getPorcentagemTimeSlotEstudos() * quantidadeTimeSlotsJanela);
             }
             //Arredondar quantidade de timeSlots para cada atividade
@@ -64,7 +64,7 @@ public class AtribuidorAtividades
             //Remover da lista de Alocacoes a primeira alocacao, que é referente a atividade i, que já foi atribuída
             alocacoes.remove(0);
             //Remover da lista de timeSlotsDisponiveis os timeSlots que já foram atribuídos
-            timeSlotsDisponiveis = new List<timeSlotEstudo> (timeSlotsDisponiveis.subList(quantidadeTimeSlotsJanela, timeSlotsDisponiveis.size()));
+            timeSlotsDisponiveis = new ArrayList<TimeSlotEstudo>(timeSlotsDisponiveis.subList(quantidadeTimeSlotsJanela, timeSlotsDisponiveis.size()));
 
         }
         // 
@@ -96,8 +96,10 @@ public class AtribuidorAtividades
         //usar busca binária para encontrar o índice do último timeSlotEstudo cuja data é menor ou igual à data fornecida
         //Ajustar data para incluir todos os timeSlots do dia fornecido, binarySearch encontra o primeiro maior ou igual
         LocalDateTime dataLimiteAjustada = data.plusDays(-1).atTime(23, 59, 59);
-        int indice = Collections.binarySearch(timeSlotEstudos, dataLimiteAjustada, (timeSlotEstudo, dataAjustada) -> 
-        timeSlotEstudo.getDataTime().compareTo(dataAjustada));
+        int indice = Collections.binarySearch(timeSlotEstudos, dataLimiteAjustada, (TimeSlotEstudo timeSlotEstudo, dataAjustada) -> 
+        {
+        timeSlotEstudo.getInicioEstudo().compareTo(dataAjustada));
+        });
 
         return indice >= 0 ? indice + 1 : -(indice + 1);
     }
