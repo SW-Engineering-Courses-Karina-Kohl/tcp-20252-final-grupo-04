@@ -17,10 +17,15 @@ public  abstract class Atividade {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    public  Disciplina getDisciplina(){
 
-    //public void setDisciplina(Disciplina disciplina) {
-        // this.disciplina = disciplina;
-    //}
+        return disciplina;
+    }
+
+
+    public void setDisciplina(Disciplina disciplina) {
+         this.disciplina = disciplina;
+    }
     public void setDataLimite(LocalDate dataLimite) {
         this.dataLimite = dataLimite;
     }
@@ -33,5 +38,4 @@ public  abstract class Atividade {
     public abstract  double getPesoTipo();
     public abstract  double calculaPeso();
     public abstract double getPesoCalculado();
-    public abstract Disciplina getDisciplina();
 }
