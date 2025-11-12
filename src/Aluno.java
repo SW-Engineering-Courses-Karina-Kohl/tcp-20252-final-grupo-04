@@ -22,11 +22,11 @@ public class Aluno {
     // Getters e Setters
 
     public List<Disciplina> getDisciplinas() {
-        return disciplinas;
+        return this.disciplinas;
     }
 
     public ConfiguracaoAgenda getConfiguracaoAgenda() {
-        return configuracaoAgenda;
+        return this.configuracaoAgenda;
     }
 
     public void setConfiguracaoAgenda(ConfiguracaoAgenda configuracaoAgenda) {
@@ -38,7 +38,7 @@ public class Aluno {
     }
 
     public AgendaEstudos getAgenda() {
-        return agenda;
+        return this.agenda;
     }
 
     public void setAgendaEstudos(AgendaEstudos agenda) {
