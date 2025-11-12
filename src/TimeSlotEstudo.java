@@ -43,7 +43,7 @@ public class TimeSlotEstudo {
         return inicioEstudo.toLocalDate();
     }
 
-    public LocalTime getHoraInicio() {
+    public LocalTime getHora() {
         return inicioEstudo.toLocalTime();
     }
 
@@ -69,7 +69,7 @@ public class TimeSlotEstudo {
 
     // Outros métodos
 
-    public boolean isAtividadeValida(Atividade atividade) {
+    public boolean atividadeValida(Atividade atividade) {
         return atividade != null;
     }
 
