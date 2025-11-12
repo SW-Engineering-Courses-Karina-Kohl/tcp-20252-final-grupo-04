@@ -6,7 +6,7 @@ public class ConfiguracaoAgendaTest {
         ConfiguracaoAgenda config = new ConfiguracaoAgenda();
         config.setDataInicioVigencia(java.time.LocalDate.of(2023, 1, 1));
         config.setDataFimVigencia(java.time.LocalDate.of(2023, 12, 31));
-        assert(config.checaDatasVigenciaValidas());
+        assert(config.checaDatasVigencia());
     }
 
     @Test
@@ -14,7 +14,7 @@ public class ConfiguracaoAgendaTest {
         ConfiguracaoAgenda config = new ConfiguracaoAgenda();
         config.setDataInicioVigencia(java.time.LocalDate.of(2023, 12, 31));
         config.setDataFimVigencia(java.time.LocalDate.of(2023, 1, 1));
-        assert(!config.checaDatasVigenciaValidas());
+        assert(!config.checaDatasVigencia());
     }
 
     @Test
