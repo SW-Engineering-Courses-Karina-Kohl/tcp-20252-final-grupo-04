@@ -26,20 +26,20 @@ public class ConfiguracaoAgenda {
 
     // Getters e Setters
     public LocalDate getDataInicioVigencia() {
-        return dataInicioVigencia;
+        return this.dataInicioVigencia;
     }
     public void setDataInicioVigencia(LocalDate dataInicioVigencia) {
         this.dataInicioVigencia = dataInicioVigencia;
     }
     public LocalDate getDataFimVigencia() {
-        return dataFimVigencia;
+        return this.dataFimVigencia;
     }
     public void setDataFimVigencia(LocalDate dataFimVigencia) {
         this.dataFimVigencia = dataFimVigencia;
     }
 
     public List<Impedimento> getImpedimentos() {
-        return impedimentos;
+        return this.impedimentos;
     }
 
     public void adicionarImpedimento(Impedimento impedimento) {
@@ -56,16 +56,13 @@ public class ConfiguracaoAgenda {
  
     //Outros métodos
 
-    public boolean checaDatasVigenciaValidas() {
+    public boolean checaDatasVigencia() {
         return dataInicioVigencia.isBefore(dataFimVigencia);
     }
 
     public boolean isDataEntreVigencia(LocalDate data) {
         return data.isAfter(dataInicioVigencia) &&
                (data.isEqual(dataFimVigencia) || data.isBefore(dataFimVigencia));
-    }
-    public  List<Impedimento> getImpedimentos(){
-        return impedimentos;
     }
 
 }
