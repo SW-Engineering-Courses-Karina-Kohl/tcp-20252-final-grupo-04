@@ -1,5 +1,6 @@
 package src;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Iterator;
 
 public class GeradorAgenda {
@@ -37,18 +38,18 @@ public class GeradorAgenda {
         }
 
         // Criar TimeSlotEstudo's a partir da dataInicioVigencia até dataFimVigencia
-        while (configuracao.dataEntreVigencia(dataIteracao)) 
+        while (configuracao.isDataEntreVigencia(dataIteracao)) 
         {
             // Verificar o dia da semana e criar os TimeSlotEstudo's conforme os horários configurados
-            Iterator<TimeSlot> iteradorHorariosDia = configuracao.getDiaSemana(dataIteracao.getDayOfWeek()).getHorarios().iterator();
+            Iterator<LocalTime> iteradorHorariosDia = configuracao.getDiaSemana(dataIteracao.getDayOfWeek()).getHorarios().iterator();
 
             //Iterar pelos horários do dia
             while(iteradorHorariosDia.hasNext())
             {
-                TimeSlot horarioAtual = iteradorHorariosDia.next();
+                LocalTime horarioAtual = iteradorHorariosDia.next();
 
                 // Verificar se existe algum impedimento marcado para o dia e hora atual
-                if(impedimentoAtual != null && impedimentoAtual.conflitaCom(dataIteracao, horarioAtual.getHorarioInicio()))
+                if(impedimentoAtual != null && impedimentoAtual.conflitaCom(dataIteracao, horarioAtual))
                 {
                     impedimentoAtual = iteradorImpedimentos.hasNext() ? iteradorImpedimentos.next() : null;
                 }else

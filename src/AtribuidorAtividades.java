@@ -21,7 +21,7 @@ public class AtribuidorAtividades
 
         // Lógica para atribuir atividades às TimeSlotEstudo na agenda
         List<Atividade> atividades = this.juntarAtividadesDeDisciplinas(disciplinas);
-        atividades.sort((a1, a2) -> a1.getDataEntrega().compareTo(a2.getDataEntrega()));
+        atividades.sort((a1, a2) -> a1.getDataLimite().compareTo(a2.getDataLimite()));
 
         List<TimeSlotEstudo> timeSlotsDisponiveis = new List<TimeSlotEstudo>(agenda.getEstudos());
         CalculadoraPesoAtividades calculadoraPeso = new CalculadoraPesoAtividades();
@@ -92,17 +92,22 @@ public class AtribuidorAtividades
     }
 
     public int quantidadeTimeSlotEstudosAntesDe(LocalDate data, List<TimeSlotEstudo> timeSlotEstudos)
-    {
-        //usar busca binária para encontrar o índice do último timeSlotEstudo cuja data é menor ou igual à data fornecida
-        //Ajustar data para incluir todos os timeSlots do dia fornecido, binarySearch encontra o primeiro maior ou igual
-        LocalDateTime dataLimiteAjustada = data.plusDays(-1).atTime(23, 59, 59);
-        int indice = Collections.binarySearch(timeSlotEstudos, dataLimiteAjustada, (TimeSlotEstudo timeSlotEstudo, dataAjustada) -> 
-        {
-        timeSlotEstudo.getInicioEstudo().compareTo(dataAjustada));
-        });
+{
+    // Pegar todos os timeslots até o final do dia anterior
+    LocalDateTime dataLimiteAjustada = data.minusDays(1).atTime(23, 59, 59);
 
-        return indice >= 0 ? indice + 1 : -(indice + 1);
-    }
+    // Cria um TimeSlotEstudo fictício só para servir como chave
+    TimeSlotEstudo chave = new TimeSlotEstudo(dataLimiteAjustada);
+
+    int indice = Collections.binarySearch(
+        timeSlotEstudos,
+        chave,
+        Comparator.comparing(TimeSlotEstudo::getInicioEstudo)
+    );
+
+    return indice >= 0 ? indice + 1 : -(indice + 1);
+}
+
 
     public void arredondarQuantidadeTimeSlots(List<AlocacaoAtividade> alocacoes, int totalTimeSlotsJanela)
     {

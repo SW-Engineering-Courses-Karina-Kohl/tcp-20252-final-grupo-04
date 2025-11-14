@@ -32,6 +32,10 @@ public class AgendaEstudos
         // Retorna a lista de TimeSlotEstudo para a semana especificada
         return null;
     }
+    public List<TimeSlotEstudo> getEstudos()
+    {
+        return this.estudos;
+    }
 
     public void addTimeSlotEstudo(TimeSlotEstudo timeSlotEstudo)
     {
