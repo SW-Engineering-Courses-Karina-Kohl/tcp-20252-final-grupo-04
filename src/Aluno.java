@@ -11,12 +11,12 @@ public class Aluno {
     public Aluno(ConfiguracaoAgenda configuracaoAgenda) {
         this.configuracaoAgenda = configuracaoAgenda;
         this.disciplinas = new ArrayList<>();
-        this.agenda = new AgendaEstudos(configuracaoAgenda);
+        this.agenda = new AgendaEstudos();
     }
     public Aluno() { 
         this.configuracaoAgenda = new ConfiguracaoAgenda();
         this.disciplinas = new ArrayList<>();
-        this.agenda = new AgendaEstudos(configuracaoAgenda);
+        this.agenda = new AgendaEstudos();
     };
 
     // Getters e Setters
