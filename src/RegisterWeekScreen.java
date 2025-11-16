@@ -4,6 +4,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.CardLayout;
+import java.util.ArrayList;
+import org.tinylog.Logger;
+import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
+import java.time.format.DateTimeParseException;
 
 public class RegisterWeekScreen {
     private JPanel registerWeekPanel;
@@ -15,9 +22,10 @@ public class RegisterWeekScreen {
     private JTextArea impedimentosInput;
     private JButton[] botoesDiaSemana;
     private JButton nextScreen;
+    private JButton addImpedimentos;
     private String dataInicio;
     private String dataFim;
-    private String impedimentos;
+    private List<String> impedimentos;
    
     public JButton getNextScreenButton() {
         return nextScreen;
@@ -27,6 +35,15 @@ public class RegisterWeekScreen {
         this.nextScreen.setSize(200, 50);
         this.nextScreen.setLocation(670, 390);
         this.nextScreen.setFont(new Font("Arial", Font.PLAIN, 20));
+    }
+    public JButton getAddImpedimentosButton() {
+        return addImpedimentos;
+    }
+    public void setAddImpedimentosButton() {
+        this.addImpedimentos = new JButton("Adicionar Impedimento");
+        this.addImpedimentos.setSize(200, 50);
+        this.addImpedimentos.setLocation(600, 140);
+        this.addImpedimentos.setFont(new Font("Arial", Font.PLAIN, 16));
     }
     public JPanel getRegisterWeekPanel() {
         return registerWeekPanel;
@@ -40,7 +57,7 @@ public class RegisterWeekScreen {
         return infoDataInicio;
     }
     public void setInfoDataInicioLabel() {
-        this.infoDataInicio = new JLabel("Data Início Vigência (AAAA-MM-DD):");
+        this.infoDataInicio = new JLabel("Data Início Vigência (DD/MM/AAAA):");
         this.infoDataInicio.setSize(300, 30);
         this.infoDataInicio.setLocation(50, 50);
     }
@@ -56,7 +73,7 @@ public class RegisterWeekScreen {
         return infoDataFim;
     }
     public void setInfoDataFimLabel() {
-        this.infoDataFim = new JLabel("Data Fim Vigência (AAAA-MM-DD):");
+        this.infoDataFim = new JLabel("Data Fim Vigência (DD/MM/AAAA):");
         this.infoDataFim.setSize(300, 30);
         this.infoDataFim.setLocation(50, 100);
     }
@@ -72,7 +89,7 @@ public class RegisterWeekScreen {
         return infoImpedimentos;
     }
     public void setInfoImpedimentosLabel() {
-        this.infoImpedimentos = new JLabel("Impedimentos (AAAA-MM-DD HH:MM):");
+        this.infoImpedimentos = new JLabel("Impedimentos (DD/MM/AAAA HH:MM):");
         this.infoImpedimentos.setSize(300, 30);
         this.infoImpedimentos.setLocation(50, 150);
     }
@@ -102,12 +119,33 @@ public class RegisterWeekScreen {
         nextScreen.addActionListener(e -> {
             dataInicio = dataInicioInput.getText();
             dataFim = dataFimInput.getText();
-            impedimentos = impedimentosInput.getText();
-            // Temporário, apenas para verificação no console
-            System.out.println("Data Início: " + dataInicio);
-            System.out.println("Data Fim: " + dataFim);
-            System.out.println("Impedimentos: " + impedimentos);
-            cardLayout.show(panel, "CalendarPanel");
+            if(validateDateInput(dataInicio, "dd/MM/uuuu") && validateDateInput(dataFim, "dd/MM/uuuu")) {
+                Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
+                cardLayout.show(panel, "CalendarPanel");
+            } else {
+                Logger.error("Formato de data inválido para vigência.");
+            }
+        });
+    }
+    public boolean validateDateInput(String data, String formato) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formato).withResolverStyle(ResolverStyle.STRICT);
+        try {
+            LocalDate.parse(data, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+    public void coletaImpedimentos() {
+        this.impedimentos = new ArrayList<>();
+        addImpedimentos.addActionListener(e -> {
+            if(validateDateInput(impedimentosInput.getText(), "dd/MM/uuuu HH:mm")) {
+                Logger.info("Impedimento válido registrado: " + impedimentosInput.getText());
+                impedimentos.add(impedimentosInput.getText());
+                impedimentosInput.setText("");
+            } else {
+                Logger.error("Formato de impedimento inválido: " + impedimentosInput.getText());
+            } 
         });
     }
     public String getDataInicio() {
@@ -116,7 +154,7 @@ public class RegisterWeekScreen {
     public String getDataFim() {
         return dataFim;
     }
-    public String getImpedimentos() {
+    public List<String> getImpedimentos() {
         return impedimentos;
     }
     public void initializeRegisterWeekScreen(RegisterWeekScreen rws, JPanel panel, CardLayout cardLayout) {
@@ -137,5 +175,8 @@ public class RegisterWeekScreen {
         rws.getRegisterWeekPanel().add(rws.getImpedimentosInput());
         rws.setWeekDaysButtons(panel, cardLayout);
         rws.transitionToCalendarScreen(panel, cardLayout);
+        rws.setAddImpedimentosButton();
+        rws.coletaImpedimentos();
+        rws.getRegisterWeekPanel().add(rws.getAddImpedimentosButton());
     }
 }
