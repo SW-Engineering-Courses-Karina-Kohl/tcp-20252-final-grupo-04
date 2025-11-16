@@ -3,6 +3,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.CardLayout;
+import org.tinylog.Logger;
 
 public class TitleScreen {
     private JPanel titlePanel;
@@ -37,6 +38,7 @@ public class TitleScreen {
     }
     public void transitionToRegisterWeekScreen(JPanel panel, CardLayout cardLayout) {
         startButton.addActionListener(e -> {
+            Logger.info("Programa iniciado!");
             cardLayout.show(panel, "RegisterWeekPanel");
         });
     }
