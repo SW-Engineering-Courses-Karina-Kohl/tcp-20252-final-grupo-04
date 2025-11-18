@@ -1,3 +1,7 @@
+package src;
+import src.AgendaEstudos;
+import src.ConfiguracaoAgenda;
+import src.Disciplina;
 import java.util.ArrayList;
 import java.util.List;
 

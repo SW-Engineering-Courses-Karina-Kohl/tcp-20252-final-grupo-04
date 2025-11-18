@@ -29,6 +29,10 @@ public class Trabalho extends Atividade {
     public double getPesoCalculado() {
         return pesoCalculado;
     }
+    @Override
+    public Disciplina getDisciplina() { 
+        return this.disciplina;
+    }
 
     
     

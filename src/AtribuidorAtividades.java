@@ -20,7 +20,7 @@ public class AtribuidorAtividades
 
         // Lógica para atribuir atividades às TimeSlotEstudo na agenda
         List<Atividade> atividades = this.juntarAtividadesDeDisciplinas(disciplinas);
-        atividades.sort((a1, a2) -> a1.getDataEntrega().compareTo(a2.getDataEntrega()));
+        atividades.sort((a1, a2) -> a1.getDataLimite().compareTo(a2.getDataLimite()));
 
         List<TimeSlotEstudo> timeSlotsDisponiveis = agenda.getEstudos();
         CalculadoraPesoAtividades calculadoraPeso = new CalculadoraPesoAtividades();
