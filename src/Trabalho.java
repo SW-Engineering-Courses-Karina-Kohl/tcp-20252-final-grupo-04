@@ -25,6 +25,10 @@ public class Trabalho extends Atividade {
     public double calculaPeso() {
         return 0;
     }
+    @Override 
+    public double getPesoCalculado() {
+        return pesoCalculado;
+    }
 
     
     
