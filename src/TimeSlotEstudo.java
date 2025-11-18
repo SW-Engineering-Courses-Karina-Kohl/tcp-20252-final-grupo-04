@@ -1,77 +1,33 @@
-import java.time.Duration;
+import org.junit.Test;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDate;
 
-public class TimeSlotEstudo {
-    public static final Duration DURACAO_PADRAO = Duration.ofMinutes(30);
-    private final LocalDateTime inicioEstudo;
-    private Atividade atividade;
-    private boolean disponivel;
+public class TimeSlotEstudoTest {
+    @Test
+    public void testConflitaComImpedimento() {
+        LocalDate dataInicioEstudo = LocalDate.of(2023, 10, 1);
+        LocalTime horaInicioEstudo = LocalTime.of(10, 0);
+        TimeSlotEstudo timeSlotEstudo = new TimeSlotEstudo(dataInicioEstudo, horaInicioEstudo);
 
-    // Construtores
+        Impedimento impedimento = new Impedimento();
+        LocalDateTime inicioImpedimento = LocalDateTime.of(2023, 10, 1, 10, 0);
+        impedimento.setDataHora(inicioImpedimento);
 
-    public TimeSlotEstudo(LocalDateTime inicioEstudo, Atividade atividade) {
-        this.inicioEstudo = inicioEstudo;
-        this.atividade = atividade;
-        this.disponivel = false;
+        assert(timeSlotEstudo.conflitaComImpedimento(impedimento));
+
+        impedimento.setDataHora(LocalDateTime.of(2023, 10, 1, 12, 0));
+        assert(!timeSlotEstudo.conflitaComImpedimento(impedimento));
     }
 
-    public TimeSlotEstudo(LocalDateTime inicioEstudo) {
-        this.inicioEstudo = inicioEstudo;
-        this.atividade = null;
-        this.disponivel = true;
+    @Test
+    public void testAtividadeInvalida() {
+        LocalDate dataInicioEstudo = LocalDate.of(2023, 10, 1);
+        LocalTime horaInicioEstudo = LocalTime.of(10, 0);
+        TimeSlotEstudo timeSlotEstudo = new TimeSlotEstudo(dataInicioEstudo, horaInicioEstudo);
+
+        Prova prova = new Prova("Prova de Matemática", 1, LocalDateTime.of(2023, 10, 5, 9, 0));
+
+        assert(!timeSlotEstudo.atividadeValida(prova));
     }
-
-    public TimeSlotEstudo(LocalDate data, LocalTime hora) {
-        this.inicioEstudo = LocalDateTime.of(data, hora);
-        this.atividade = null;
-        this.disponivel = true;
-    }
-
-    // Getters e Setters
-
-    public LocalDateTime getInicioEstudo() {
-        return inicioEstudo;
-    }
-
-    public Atividade getAtividade() {
-        return atividade;
-    }
-
-    public LocalDate getData() {
-        return inicioEstudo.toLocalDate();
-    }
-
-    public LocalTime getHora() {
-        return inicioEstudo.toLocalTime();
-    }
-
-    public boolean isDisponivel() {
-        return disponivel;
-    }
-
-    public Duration getDuracao() {
-        return DURACAO_PADRAO;
-    }
-
-    public void setDisponivel(boolean disponivel) {
-        this.disponivel = disponivel;
-    }
-
-    public void setAtividade(Atividade atividade) {
-         this.atividade = atividade; 
-    }
-
-    // Outros métodos
-
-    public boolean atividadeValida(Atividade atividade) {
-        return atividade != null;
-    }
-
-    // tem uma função parecida em impedimento, rever depois
-    public boolean conflitaComImpedimento(Impedimento impedimento) {
-        return inicioEstudo.isEqual(impedimento.getDataHora());
-    }
-
 }
