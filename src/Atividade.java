@@ -56,4 +56,5 @@ public  abstract class Atividade {
     public abstract  double getPesoTipo();
     public abstract  double calculaPeso();
     public abstract double getPesoCalculado();
+    public abstract Disciplina getDisciplina();
 }
