@@ -1,4 +1,4 @@
-package src.model;
+package src.model.entities;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.*;

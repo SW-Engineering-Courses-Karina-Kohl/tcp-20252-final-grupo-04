@@ -7,7 +7,7 @@ if exist build rmdir /s /q build
 mkdir build
 
 REM Compilar todos os arquivos Java
-"C:\Program Files\Java\jdk-25\bin\javac.exe" -cp ".;lib/*" -d build src/model/*.java src/model/atividades/*.java src/controller/*.java src/view/*.java src/test/*.java src/Studify.java
+"C:\Program Files\Java\jdk-25\bin\javac.exe" -cp ".;lib/*" -d build src/model/entities/*.java src/model/atividades/*.java src/model/config/*.java src/model/allocation/*.java src/controller/agenda/*.java src/controller/atividades/*.java src/view/*.java src/test/*.java src/Studify.java
 
 if %errorlevel% equ 0 (
     echo ✅ Compilação concluída com sucesso!

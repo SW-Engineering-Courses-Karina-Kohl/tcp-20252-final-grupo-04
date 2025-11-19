@@ -1,5 +1,5 @@
 package src.test;
-import src.model.*;
+import src.model.config.*;
 
 import org.junit.Test;
 

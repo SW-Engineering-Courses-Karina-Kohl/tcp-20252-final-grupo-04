@@ -1,4 +1,4 @@
-package src.model;
+package src.model.entities;
 import src.model.atividades.Atividade;
 import java.util.List;
 

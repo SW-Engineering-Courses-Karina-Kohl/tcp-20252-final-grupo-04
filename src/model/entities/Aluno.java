@@ -1,5 +1,5 @@
-package src.model;
-
+package src.model.entities;
+import src.model.config.ConfiguracaoAgenda;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package src.view;
-import src.model.*;
-import src.controller.*;
+import src.model.entities.*;
+import src.model.atividades.*;
+import src.model.config.*;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;

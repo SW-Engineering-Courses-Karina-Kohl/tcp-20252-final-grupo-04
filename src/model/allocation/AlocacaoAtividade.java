@@ -1,4 +1,4 @@
-package src.model;
+package src.model.allocation;
 import src.model.atividades.Atividade;
 public class AlocacaoAtividade {
     private Atividade atividade;

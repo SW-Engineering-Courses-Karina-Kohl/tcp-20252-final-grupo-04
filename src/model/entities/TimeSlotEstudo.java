@@ -1,5 +1,6 @@
-package src.model;
+package src.model.entities;
 import src.model.atividades.Atividade;
+import src.model.config.Impedimento;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;

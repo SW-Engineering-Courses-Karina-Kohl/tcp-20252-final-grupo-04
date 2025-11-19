@@ -45,10 +45,13 @@ src/
 ### 🎮 **Controller** (`src/controller/`)
 **Responsabilidade**: Lógica de negócio e coordenação entre Model e View
 
+#### 📅 **Agenda** (`src/controller/agenda/`)
+- `GeradorAgenda.java` - Gera agenda baseada nas configurações
+
+#### 📚 **Atividades** (`src/controller/atividades/`)
 - `AtribuidorAtividades.java` - Controla atribuição de atividades
 - `CalculadoraPesoAtividades.java` - Calcula pesos das atividades
 - `DistribuidorAtividades.java` - Distribui atividades na agenda
-- `GeradorAgenda.java` - Gera agenda baseada nas configurações
 
 ### 🧪 **Test** (`src/test/`)
 **Responsabilidade**: Testes unitários

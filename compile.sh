@@ -7,7 +7,7 @@ rm -rf build
 mkdir -p build
 
 # Compilar todos os arquivos Java
-javac -cp ".:lib/*" -d build src/model/*.java src/model/atividades/*.java src/controller/*.java src/view/*.java src/test/*.java src/Studify.java
+javac -cp ".:lib/*" -d build src/model/entities/*.java src/model/atividades/*.java src/model/config/*.java src/model/allocation/*.java src/controller/agenda/*.java src/controller/atividades/*.java src/view/*.java src/test/*.java src/Studify.java
 
 if [ $? -eq 0 ]; then
     echo "✅ Compilação concluída com sucesso!"

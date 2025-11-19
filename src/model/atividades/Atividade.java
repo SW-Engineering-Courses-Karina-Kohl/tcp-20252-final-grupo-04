@@ -1,5 +1,5 @@
 package src.model.atividades;
-import src.model.Disciplina;
+import src.model.entities.Disciplina;
 import java.time.LocalDateTime;
 
 public  abstract class Atividade {
