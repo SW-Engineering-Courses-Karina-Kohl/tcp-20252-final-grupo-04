@@ -1,5 +1,6 @@
 package src.controller;
 import src.model.*;
+import src.model.atividades.*;
 import java.sql.Time;
 import java.util.Iterator;
 import java.util.List;

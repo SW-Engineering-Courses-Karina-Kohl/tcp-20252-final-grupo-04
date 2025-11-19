@@ -1,15 +1,16 @@
-package src.model;
+package src.model.atividades;
 
 import java.time.LocalDateTime;
 
-public class Prova extends Atividade {
+public class Exercicio  extends Atividade {
     public static final double _PESO_TIPO = 0;
-    static int _totalProvas;
+    static int _totalExercicios;
     double pesoCalculado;
 
-    public Prova(String nome, int prioridade, LocalDateTime dataLimite) {
+    public Exercicio(String nome, int prioridade, LocalDateTime dataLimite) {
         super(nome, prioridade, dataLimite);
     }
+
     
     @Override
     public int getTotal() {
@@ -30,6 +31,5 @@ public class Prova extends Atividade {
     public double getPesoCalculado() {
         return pesoCalculado;
     }
-    
-    
+
 }

@@ -7,6 +7,7 @@ O projeto foi reestruturado seguindo o padrão arquitetural **MVC (Model-View-Co
 ```
 src/
 ├── model/           # Camada de Modelo (Entidades e Dados)
+│   └── atividades/  # Tipos de Atividades
 ├── view/            # Camada de Visão (Interface de Usuário)
 ├── controller/      # Camada de Controle (Lógica de Negócio)
 ├── test/            # Testes Unitários
@@ -19,17 +20,20 @@ src/
 ### 📊 **Model** (`src/model/`)
 **Responsabilidade**: Representar dados e regras de negócio básicas
 
+#### Entidades Principais:
 - `AgendaEstudos.java` - Agenda principal de estudos
 - `AlocacaoAtividade.java` - Alocação de atividades em slots
 - `Aluno.java` - Entidade representando um aluno
-- `Atividade.java` - Classe abstrata para atividades
 - `ConfiguracaoAgenda.java` - Configurações da agenda
 - `DiaSemana.java` - Representação de dias da semana
 - `Disciplina.java` - Entidade disciplina
-- `Exercicio.java` - Tipo específico de atividade
 - `Impedimento.java` - Restrições de horário
-- `Prova.java` - Tipo específico de atividade
 - `TimeSlotEstudo.java` - Slots de tempo para estudo
+
+#### Atividades (`src/model/atividades/`):
+- `Atividade.java` - Classe abstrata base para atividades
+- `Exercicio.java` - Tipo específico de atividade
+- `Prova.java` - Tipo específico de atividade
 - `Trabalho.java` - Tipo específico de atividade
 
 ### 👀 **View** (`src/view/`)
@@ -67,7 +71,8 @@ View → Controller → Model
 
 ## 📦 Packages
 
-- `src.model` - Classes do modelo
+- `src.model` - Classes do modelo principal
+- `src.model.atividades` - Hierarquia de atividades (Atividade, Prova, Exercicio, Trabalho)
 - `src.view` - Classes de interface
 - `src.controller` - Classes de controle
 - `src.test` - Classes de teste
@@ -81,17 +86,50 @@ View → Controller → Model
 ✅ **Escalabilidade**: Fácil adição de novas funcionalidades
 ✅ **Organização**: Código bem estruturado e legível
 
-## 🔧 Compilação
+## 🔧 Compilação e Execução
 
-Para compilar o projeto com a nova estrutura:
+### Método Recomendado (com build/ separado):
 
+**Windows:**
 ```bash
-# Compilar todos os arquivos
-javac -cp ".;lib/*" src/**/*.java
+# Compilar projeto
+.\compile.bat
 
 # Executar aplicação principal
-java -cp ".;lib/*" src.Studify
+java -cp "build;lib/*" src.Studify
 
 # Executar testes
-java -cp ".;lib/*" src.test.TimeSlotEstudoTest
+java -cp "build;lib/*" src.test.TimeSlotEstudoTest
 ```
+
+**Linux/macOS:**
+```bash
+# Compilar projeto
+chmod +x compile.sh
+./compile.sh
+
+# Executar aplicação principal
+java -cp "build:lib/*" src.Studify
+
+# Executar testes
+java -cp "build:lib/*" src.test.TimeSlotEstudoTest
+```
+
+### Método Manual:
+```bash
+# Compilar todos os arquivos
+javac -cp ".;lib/*" -d build src/**/*.java src/**/**/*.java
+
+# Executar aplicação principal
+java -cp "build;lib/*" src.Studify
+
+# Executar testes
+java -cp "build;lib/*" src.test.TimeSlotEstudoTest
+```
+
+## 📁 Organização de Arquivos
+
+- **Código fonte**: `src/` (apenas arquivos .java)
+- **Arquivos compilados**: `build/` (arquivos .class organizados)
+- **Bibliotecas**: `lib/` (se houver dependências externas)
+- **Configuração VS Code**: `.vscode/settings.json` (oculta .class no explorer)

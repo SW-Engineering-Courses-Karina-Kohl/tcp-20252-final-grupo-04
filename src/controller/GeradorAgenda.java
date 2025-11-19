@@ -1,5 +1,6 @@
 package src.controller;
 import src.model.*;
+import src.model.atividades.*;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

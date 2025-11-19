@@ -1,4 +1,5 @@
 package src.model;
+import src.model.atividades.Atividade;
 import java.util.List;
 
 public class Disciplina {

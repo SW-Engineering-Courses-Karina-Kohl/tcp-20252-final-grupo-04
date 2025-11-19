@@ -1,7 +1,6 @@
-package src.model;
-
+package src.model.atividades;
+import src.model.Disciplina;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
 
 public  abstract class Atividade {
     Disciplina disciplina;

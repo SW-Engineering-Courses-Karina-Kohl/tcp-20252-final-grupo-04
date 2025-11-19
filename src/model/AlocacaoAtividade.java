@@ -1,4 +1,5 @@
 package src.model;
+import src.model.atividades.Atividade;
 public class AlocacaoAtividade {
     private Atividade atividade;
     private double porcentagemTimeSlotEstudos;
