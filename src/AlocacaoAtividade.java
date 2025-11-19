@@ -55,4 +55,12 @@ public class AlocacaoAtividade {
     {
         this.quantidadeTimeSlotEstudosArredondada = quantidadeTimeSlotEstudosArredondada;
     }
+
+    public void decrementarQuantidadeTimeSlotEstudos() 
+    {
+        if(this.quantidadeTimeSlotEstudosArredondada > 0)
+        {
+            this.quantidadeTimeSlotEstudosArredondada--;
+        }
+    }
 }

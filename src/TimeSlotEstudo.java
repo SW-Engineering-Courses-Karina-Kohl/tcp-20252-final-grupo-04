@@ -6,7 +6,7 @@ import java.time.LocalTime;
 public class TimeSlotEstudo {
     public static final Duration DURACAO_PADRAO = Duration.ofMinutes(30);
     private final LocalDateTime inicioEstudo;
-    private final Atividade atividade;
+    private Atividade atividade;
     private boolean disponivel;
 
     // Construtores
@@ -43,7 +43,7 @@ public class TimeSlotEstudo {
         return inicioEstudo.toLocalDate();
     }
 
-    public LocalTime getHoraInicio() {
+    public LocalTime getHora() {
         return inicioEstudo.toLocalTime();
     }
 
@@ -63,13 +63,9 @@ public class TimeSlotEstudo {
          this.atividade = atividade; 
     }
 
-    public void setInicioEstudo(LocalDateTime inicioEstudo) {
-        this.inicioEstudo = inicioEstudo;
-    }
-
     // Outros métodos
 
-    public boolean isAtividadeValida(Atividade atividade) {
+    public boolean atividadeValida(Atividade atividade) {
         return atividade != null;
     }
 

@@ -25,7 +25,7 @@ public class CalculadoraPesoAtividades {
         TimeSlotEstudo timeSlotEstudoAnalisado = iterator.next();
         for(Atividade atividade : atividades)
         {
-            while(timeSlotEstudoAnalisado.getData().isBefore(atividade.dataLimite))
+            while(timeSlotEstudoAnalisado.getData().isBefore(atividade.getDataLimite()))
             {
                 contadorTimeSlots++;
                 timeSlotEstudoAnalisado = iterator.next();

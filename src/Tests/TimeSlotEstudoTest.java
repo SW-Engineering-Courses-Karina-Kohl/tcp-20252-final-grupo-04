@@ -20,13 +20,13 @@ public class TimeSlotEstudoTest {
     }
 
     @Test
-    public void testIsAtividadeValida() {
+    public void testAtividadeValida() {
         LocalDate dataInicioEstudo = LocalDate.of(2023, 10, 1);
         LocalTime horaInicioEstudo = LocalTime.of(10, 0);
         TimeSlotEstudo timeSlotEstudo = new TimeSlotEstudo(dataInicioEstudo, horaInicioEstudo);
 
         Atividade atividade = new Atividade();
 
-        assert(!timeSlotEstudo.isAtividadeValida(atividade));
+        assert(!timeSlotEstudo.atividadeValida(atividade));
     }
 }

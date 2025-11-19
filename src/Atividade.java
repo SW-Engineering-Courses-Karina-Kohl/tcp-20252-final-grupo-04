@@ -32,6 +32,11 @@ public  abstract class Atividade {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    public  Disciplina getDisciplina(){
+
+        return disciplina;
+    }
+
 
     public void setDisciplina(Disciplina disciplina) {
          this.disciplina = disciplina;
@@ -50,4 +55,5 @@ public  abstract class Atividade {
     public abstract int getTotal();
     public abstract  double getPesoTipo();
     public abstract  double calculaPeso();
+    public abstract double getPesoCalculado();
 }

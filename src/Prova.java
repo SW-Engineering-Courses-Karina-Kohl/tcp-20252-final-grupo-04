@@ -30,13 +30,7 @@ public class Prova extends Atividade {
     public double getPesoCalculado() {
         return pesoCalculado;
     }
-
-    @Override
-    public Disciplina getDisciplina() { 
-        return this.disciplina;
-    }
-    @Override
-    public void setPesoCalculado(double pesoCalculado) {
-     this.pesoCalculado = pesoCalculado;   
-    }
+    
+    
+    
 }
