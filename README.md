@@ -2,9 +2,54 @@
 # Studify
 Studify é uma aplicação voltada para ajudar a rotina de estudos semestral de um estudante universitário. Para utilizá-lo e gerar sua própria agenda de estudos personalizada, basta inserir dados como disciplinas, ordem de prioridade destas, tarefas e suas datas de entrega e períodos tipicamente livres em uma semana.
 
-## Diagrama UML
-O diagrama de classes completo do projeto pode ser visualizado através do seguinte link:
-[Diagrama UML - Lucidchart](https://lucid.app/lucidchart/fd8c572a-eaba-4c25-a790-32c134a90f13/edit?view_items=x6O18qJcPzNJ&page=IYhW1RiEHMkl&invitationId=inv_ce44c2cb-6f27-4a37-bded-bc4249e2a028) 
+## 📚 Documentação
+
+- **[Especificação do Projeto](docs/INF01120_grupo04_Etapa0.md)** - Descrição completa, objetivos e funcionamento
+- **[Arquitetura MVC](docs/README_MVC.md)** - Documentação da estrutura de código e organização
+- **[Diagrama UML](https://lucid.app/lucidchart/fd8c572a-eaba-4c25-a790-32c134a90f13/edit?view_items=x6O18qJcPzNJ&page=IYhW1RiEHMkl&invitationId=inv_ce44c2cb-6f27-4a37-bded-bc4249e2a028)** - Diagrama de classes completo
+
+## 🚀 Como Executar
+
+### Compilação Rápida:
+```bash
+# Windows
+.\compile.bat
+
+# Linux/macOS  
+./compile.sh
+```
+
+### Execução:
+```bash
+# Aplicação principal
+java -cp "build;lib/*" src.Studify
+
+# Testes
+java -cp "build;lib/*" src.test.TimeSlotEstudoTest
+```
+
+## 🏗️ Estrutura do Projeto
+
+```
+├── src/                    # Código fonte
+│   ├── model/             # Entidades e dados
+│   │   └── atividades/    # Tipos de atividades (Prova, Exercício, Trabalho)
+│   ├── controller/        # Lógica de negócio
+│   ├── view/             # Interface de usuário  
+│   └── test/             # Testes unitários
+├── docs/                  # Documentação
+├── build/                 # Arquivos compilados (.class)
+└── lib/                   # Bibliotecas externas
+```
+
+## 👥 Equipe
+
+**Grupo 04 - INF01120**
+- Cristopher dos Santos Filho
+- Luís Filipe Moura (Facilitador)
+- Milena Silva  
+- Nickolas Xisto Machado
+- Pedro Schuck de Azevedo 
 
 # Logging do sistema
 Para produzir logging conforme a aplicação é executada, foi empregada a biblioeca _ cuja versão é _.
