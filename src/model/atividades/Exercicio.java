@@ -1,13 +1,13 @@
-package src;
+package src.model.atividades;
 
-public class Trabalho extends Atividade {
-    public static final double _PESO_TIPO = 0;
-    static int _totalTrabalhos;
+import java.time.LocalDateTime;
+
+public class Exercicio  extends Atividade {
+    static int _totalExercicios;
     double pesoCalculado;
 
-    public Trabalho(String nome, int prioridade, java.time.LocalDate dataLimite, int totalPaginas) {
+    public Exercicio(String nome, int prioridade, LocalDateTime dataLimite) {
         super(nome, prioridade, dataLimite);
-        
     }
 
     
@@ -25,15 +25,19 @@ public class Trabalho extends Atividade {
     public double calculaPeso() {
         return 0;
     }
+
     @Override 
     public double getPesoCalculado() {
         return pesoCalculado;
     }
     @Override
-    public Disciplina getDisciplina() { 
+    public Disciplina getDisciplina() {
         return this.disciplina;
     }
 
-    
-    
+    @Override
+    public void setPesoCalculado(double pesoCalculado) {
+     this.pesoCalculado = pesoCalculado;    
+
+    }
 }
