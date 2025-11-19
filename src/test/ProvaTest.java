@@ -1,4 +1,4 @@
-package src.Tests;
+package src.test;
 import srt.Prova;
 
 import static org.junit.Assert.assertThrows;
