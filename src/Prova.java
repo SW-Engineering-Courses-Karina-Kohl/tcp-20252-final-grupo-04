@@ -1,12 +1,13 @@
 package src;
+import java.time.LocalDate;
 
 public class Prova extends Atividade {
     public static final double _PESO_TIPO = 0;
     static int _totalProvas;
     double pesoCalculado;
 
-    public Prova(String nome, int prioridade, java.time.LocalDate dataLimite) {
-        super(nome, prioridade, dataLimite);
+    public Prova(String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
+        super(nome, prioridade, dataLimite, disciplina);
     }
 
     
@@ -36,6 +37,6 @@ public class Prova extends Atividade {
     }
     @Override
     public void setPesoCalculado(double pesoCalculado) {
-        this.pesoCalculado = pesoCalculado;
+     this.pesoCalculado = pesoCalculado;   
     }
 }

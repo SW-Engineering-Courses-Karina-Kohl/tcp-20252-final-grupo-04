@@ -1,5 +1,6 @@
+package src.Tests;
 import org.junit.Test;
-
+import src.ConfiguracaoAgenda;
 public class ConfiguracaoAgendaTest {
     @Test
     public void testChecaDatasVigenciaValidas() {

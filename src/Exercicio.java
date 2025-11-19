@@ -1,12 +1,12 @@
 package src;
-
+import java.time.LocalDate;
 public class Exercicio  extends Atividade {
-    public static final double _PESO_TIPO = 0;
     static int _totalExercicios;
     double pesoCalculado;
 
-    public Exercicio(String nome, int prioridade, java.time.LocalDate dataLimite) {
-        super(nome, prioridade, dataLimite);
+    public Exercicio(String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
+        super(nome, prioridade, dataLimite, disciplina,);
+        this._PESO_TIPO = 0;
     }
 
     
@@ -34,4 +34,9 @@ public class Exercicio  extends Atividade {
         return this.disciplina;
     }
 
+    @Override
+    public void setPesoCalculado(double pesoCalculado) {
+     this.pesoCalculado = pesoCalculado;    
+
+    }
 }

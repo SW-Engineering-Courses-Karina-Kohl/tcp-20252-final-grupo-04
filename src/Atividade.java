@@ -1,19 +1,18 @@
 package src;
-
-import java.sql.Date;
 import java.time.LocalDate;
 
 public  abstract class Atividade {
     Disciplina disciplina;
     String nome;
-    int prioridade;
     LocalDate dataLimite;
+    double pesoCalculado;
+    final double _PESO_TIPO;
 
     public Atividade( String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
         this.nome = nome;
-        this.prioridade = prioridade;
         this.dataLimite = dataLimite;
         this.disciplina = disciplina;
+        this.pesoCalculado = 0;
     }
     
     public LocalDate getDataLimite() {
@@ -24,6 +23,10 @@ public  abstract class Atividade {
     }
     public String getNome() {
         return nome;
+    }
+    
+    public double getPesoCalculado() {
+        return pesoCalculado;
     }
 
     public void setNome(String nome) {
@@ -36,6 +39,9 @@ public  abstract class Atividade {
     public void setDataLimite(LocalDate dataLimite) {
         this.dataLimite = dataLimite;
     }
+    public  void setPesoCalculado(double pesoCalculado){
+        this.pesoCalculado = pesoCalculado;
+    }
 
     public boolean checaDataLimiteEntreVigencia(ConfiguracaoAgenda confAgenda, LocalDate dataLimite){
         return true;
@@ -44,6 +50,4 @@ public  abstract class Atividade {
     public abstract int getTotal();
     public abstract  double getPesoTipo();
     public abstract  double calculaPeso();
-    public abstract double getPesoCalculado();
-    public abstract void setPesoCalculado();
 }

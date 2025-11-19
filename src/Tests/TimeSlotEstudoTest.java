@@ -1,8 +1,10 @@
+package src.Tests;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
-
+import src.TimeSlotEstudo;
+import src.Impedimento;
 public class TimeSlotEstudoTest {
     @Test
     public void testConflitaComImpedimento() {
