@@ -30,4 +30,3 @@ public class ConfiguracaoAgendaTest {
         assert(!config.isDataEntreVigencia(java.time.LocalDate.of(2024, 1, 1)));
     }
 }
->>>>>>>> origin/mile-branch:src/test/ConfiguracaoAgendaTest.java

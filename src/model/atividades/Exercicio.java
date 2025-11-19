@@ -1,43 +1,25 @@
 package src.model.atividades;
-
-import java.time.LocalDateTime;
-
+import java.time.LocalDate;
+import src.model.entities.Disciplina;
 public class Exercicio  extends Atividade {
     static int _totalExercicios;
     double pesoCalculado;
+    static final double _PESO_TIPO = 0;
 
-    public Exercicio(String nome, int prioridade, LocalDateTime dataLimite) {
-        super(nome, prioridade, dataLimite);
+    public Exercicio(String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
+        super(nome, prioridade, dataLimite, disciplina);
+        _totalExercicios++;
     }
 
     
     @Override
     public int getTotal() {
-        return 0;
+        return _totalExercicios;
     }
 
     @Override
     public double getPesoTipo() {
-    return 0;
-    }
-    
-    @Override
-    public double calculaPeso() {
-        return 0;
+        return _PESO_TIPO;
     }
 
-    @Override 
-    public double getPesoCalculado() {
-        return pesoCalculado;
-    }
-    @Override
-    public Disciplina getDisciplina() {
-        return this.disciplina;
-    }
-
-    @Override
-    public void setPesoCalculado(double pesoCalculado) {
-     this.pesoCalculado = pesoCalculado;    
-
-    }
 }
