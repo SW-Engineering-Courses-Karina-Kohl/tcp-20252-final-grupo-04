@@ -1,4 +1,4 @@
-package src;
+package src.model;
 import java.util.List;
 
 public class Disciplina {

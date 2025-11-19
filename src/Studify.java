@@ -1,3 +1,8 @@
+package src;
+import src.model.*;
+import src.view.*;
+import src.controller.*;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
