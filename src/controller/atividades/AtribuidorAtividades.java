@@ -95,21 +95,21 @@ public class AtribuidorAtividades
     }
 
     public int quantidadeTimeSlotEstudosAntesDe(LocalDate data, List<TimeSlotEstudo> timeSlotEstudos)
-{
-    // Pegar todos os timeslots até o final do dia anterior
-    LocalDateTime dataLimiteAjustada = data.minusDays(1).atTime(23, 59, 59);
+    {
+        // Pegar todos os timeslots até o final do dia anterior
+        LocalDateTime dataLimiteAjustada = data.minusDays(1).atTime(23, 59, 59);
 
-    // Cria um TimeSlotEstudo fictício só para servir como chave
-    TimeSlotEstudo chave = new TimeSlotEstudo(dataLimiteAjustada, null);
+        // Cria um TimeSlotEstudo fictício só para servir como chave
+        TimeSlotEstudo chave = new TimeSlotEstudo(dataLimiteAjustada, null);
 
-    int indice = Collections.binarySearch(
-        timeSlotEstudos,
-        chave,
-        Comparator.comparing(TimeSlotEstudo::getInicioEstudo)
-    );
+        int indice = Collections.binarySearch(
+            timeSlotEstudos,
+            chave,
+            Comparator.comparing(TimeSlotEstudo::getInicioEstudo)
+        );
 
-    return indice >= 0 ? indice + 1 : -(indice + 1);
-}
+        return indice >= 0 ? indice + 1 : -(indice + 1);
+    }
 
 
     public void arredondarQuantidadeTimeSlots(List<AlocacaoAtividade> alocacoes, int totalTimeSlotsJanela)
