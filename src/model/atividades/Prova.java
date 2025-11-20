@@ -9,8 +9,8 @@ public class Prova extends Atividade {
     static int _totalProvas;
     double pesoCalculado;
 
-    public Prova(String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
-        super(nome, prioridade, dataLimite, disciplina);
+    public Prova(String nome,  LocalDate dataLimite, Disciplina disciplina) {
+        super(nome,  dataLimite, disciplina);
         _totalProvas++;
     }
     
