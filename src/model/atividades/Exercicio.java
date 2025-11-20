@@ -1,11 +1,13 @@
-package src;
+package src.model.atividades;
 
-public class Prova extends Atividade {
+import java.time.LocalDateTime;
+
+public class Exercicio  extends Atividade {
     public static final double _PESO_TIPO = 0;
-    static int _totalProvas;
+    static int _totalExercicios;
     double pesoCalculado;
 
-    public Prova(String nome, int prioridade, java.time.LocalDate dataLimite) {
+    public Exercicio(String nome, int prioridade, LocalDateTime dataLimite) {
         super(nome, prioridade, dataLimite);
     }
 
@@ -29,7 +31,5 @@ public class Prova extends Atividade {
     public double getPesoCalculado() {
         return pesoCalculado;
     }
-    
-    
-    
+
 }

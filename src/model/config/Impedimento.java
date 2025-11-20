@@ -1,4 +1,4 @@
-package classes;
+package src.model.config;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

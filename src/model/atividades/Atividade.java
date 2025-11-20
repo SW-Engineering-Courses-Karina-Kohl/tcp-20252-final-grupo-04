@@ -1,14 +1,14 @@
-package src;
-
-import java.time.LocalDate;
+package src.model.atividades;
+import src.model.entities.Disciplina;
+import java.time.LocalDateTime;
 
 public  abstract class Atividade {
     Disciplina disciplina;
     String nome;
     int prioridade;
-    LocalDate dataLimite;
+    LocalDateTime dataLimite;
 
-    public Atividade( String nome, int prioridade, LocalDate dataLimite) {
+    public Atividade(String nome, int prioridade, LocalDateTime dataLimite) {
         this.nome = nome;
         this.prioridade = prioridade;
         this.dataLimite = dataLimite;
@@ -26,10 +26,16 @@ public  abstract class Atividade {
     public void setDisciplina(Disciplina disciplina) {
          this.disciplina = disciplina;
     }
-    public void setDataLimite(LocalDate dataLimite) {
+    public void setDataLimite(LocalDateTime dataLimite) {
         this.dataLimite = dataLimite;
     }
 
+    public LocalDateTime getDataLimite() {
+        return this.dataLimite;
+    }
+
+    public void setPesoCalculado(double pesoCalculado) {
+    }
     //public boolean checaDataLimiteEntreVigencia(ConfiguracaoAgenda confAgenda, LocalDate dataLimite){
     //    return true;
     //}

@@ -1,3 +1,9 @@
+package src;
+import src.model.entities.*;
+import src.model.atividades.*;
+import src.model.config.*;
+import src.view.*;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
