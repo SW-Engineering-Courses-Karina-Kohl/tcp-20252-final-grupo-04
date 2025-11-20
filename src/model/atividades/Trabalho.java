@@ -8,8 +8,8 @@ public class Trabalho extends Atividade {
     static int _totalTrabalhos;
     double pesoCalculado;
 
-    public Trabalho(String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
-        super(nome, prioridade, dataLimite, disciplina);
+    public Trabalho(String nome, LocalDate dataLimite, Disciplina disciplina) {
+        super(nome, dataLimite, disciplina);
         _totalTrabalhos++;
     }
 

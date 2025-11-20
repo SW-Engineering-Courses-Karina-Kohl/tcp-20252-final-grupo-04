@@ -43,7 +43,7 @@ public class TimeSlotEstudoTest {
         assert !timeSlotEstudo.atividadeValida(null) : "Atividade null deveria ser inválida";
 
         // Teste com atividade válida (usando uma implementação concreta)
-        Prova prova = new Prova("Prova de Matemática", 1, LocalDate.of(2023, 10, 5), null);
+        Prova prova = new Prova("Prova de Matemática",  LocalDate.of(2023, 10, 5), null);
         assert timeSlotEstudo.atividadeValida(prova) : "Prova válida deveria ser aceita";
         
         System.out.println("testAtividadeValida - PASSOU");

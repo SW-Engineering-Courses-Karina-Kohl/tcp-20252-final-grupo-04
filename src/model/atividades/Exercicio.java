@@ -6,8 +6,8 @@ public class Exercicio  extends Atividade {
     double pesoCalculado;
     static final double _PESO_TIPO = 0;
 
-    public Exercicio(String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
-        super(nome, prioridade, dataLimite, disciplina);
+    public Exercicio(String nome,  LocalDate dataLimite, Disciplina disciplina) {
+        super(nome,  dataLimite, disciplina);
         _totalExercicios++;
     }
 
