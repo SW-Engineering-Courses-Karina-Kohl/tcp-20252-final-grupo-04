@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
@@ -15,16 +15,19 @@ public class TimeSlotEstudoTest {
         impedimento.setDataHora(inicioImpedimento);
 
         assert(timeSlotEstudo.conflitaComImpedimento(impedimento));
+
+        impedimento.setDataHora(LocalDateTime.of(2023, 10, 1, 12, 0));
+        assert(!timeSlotEstudo.conflitaComImpedimento(impedimento));
     }
 
     @Test
-    public void testAtividadeValida() {
+    public void testAtividadeInvalida() {
         LocalDate dataInicioEstudo = LocalDate.of(2023, 10, 1);
         LocalTime horaInicioEstudo = LocalTime.of(10, 0);
         TimeSlotEstudo timeSlotEstudo = new TimeSlotEstudo(dataInicioEstudo, horaInicioEstudo);
 
-        Atividade atividade = new Atividade();
+        Prova prova = new Prova("Prova de Matemática", 1, LocalDate.of(2023, 10, 5));
 
-        assert(!timeSlotEstudo.atividadeValida(atividade));
+        assert(!timeSlotEstudo.atividadeValida(prova));
     }
 }
