@@ -6,10 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.ArrayList;
+import src.utils.BinarySearchUtils;
 
 public class AtribuidorAtividades 
 {
-    private List<AlocacaoAtividade> alocacoes;
+    private List<AlocacaoAtividade> alocacoes = new ArrayList<>();
     
     public void atribuir(AgendaEstudos agenda, List<Disciplina> disciplinas)
     {
@@ -102,7 +103,7 @@ public class AtribuidorAtividades
         // Cria um TimeSlotEstudo fictício só para servir como chave
         TimeSlotEstudo chave = new TimeSlotEstudo(dataLimiteAjustada, null);
 
-        int indice = Collections.binarySearch(
+        int indice = BinarySearchUtils.lastIndexLE(
             timeSlotEstudos,
             chave,
             Comparator.comparing(TimeSlotEstudo::getInicioEstudo)
