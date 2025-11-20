@@ -15,13 +15,10 @@ public class Studify {
         JPanel painel = new JPanel();
         CardLayout cardLayout = new CardLayout();
         painel.setLayout(cardLayout);
-        TelaInicial telaInicial = new TelaInicial();
-        telaInicial.inicializaTelaInicial();
-        telaInicial.transicaoParaTelaRegistrarSemana(painel, cardLayout);
+        TelaInicial telaInicial = new TelaInicial(painel, cardLayout);
         painel.add(telaInicial.getPainelInicial(), "PainelInicial");
         //segunda tela
-        TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana();
-        telaRegistrarSemana.inicializaTelaRegistrarSemana(painel, cardLayout);
+        TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana(painel, cardLayout);
         painel.add(telaRegistrarSemana.getPainelRegistrarSemana(), "PainelRegistrarSemana");
         //temporário enquanto não faz a tela de calendário e dos time slots
         JPanel painelAgenda = new JPanel();

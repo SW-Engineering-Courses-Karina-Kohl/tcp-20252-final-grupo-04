@@ -1,20 +1,19 @@
 package src.model.config;
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
 public class ConfiguracaoAgenda {
     private List<DiaSemana> diasSemana;
-    private LocalDateTime dataInicioVigencia;
-    private LocalDateTime dataFimVigencia;
+    private LocalDate dataInicioVigencia;
+    private LocalDate dataFimVigencia;
     private List<Impedimento> impedimentos;
 
     // Construtores
     public ConfiguracaoAgenda(LocalDate dataInicioVigencia, LocalDate dataFimVigencia) {
-        this.dataInicioVigencia = dataInicioVigencia.atStartOfDay();
-        this.dataFimVigencia = dataFimVigencia.atTime(23, 59);
+        this.dataInicioVigencia = dataInicioVigencia;
+        this.dataFimVigencia = dataFimVigencia;
         this.impedimentos = new ArrayList<>();
         this.diasSemana = new ArrayList<>();
     }
@@ -27,17 +26,17 @@ public class ConfiguracaoAgenda {
     };
 
     // Getters e Setters
-    public LocalDateTime getDataInicioVigencia() {
+    public LocalDate getDataInicioVigencia() {
         return this.dataInicioVigencia;
     }
     public void setDataInicioVigencia(LocalDate dataInicioVigencia) {
-        this.dataInicioVigencia = dataInicioVigencia.atStartOfDay();
+        this.dataInicioVigencia = dataInicioVigencia;
     }
-    public LocalDateTime getDataFimVigencia() {
+    public LocalDate getDataFimVigencia() {
         return this.dataFimVigencia;
     }
     public void setDataFimVigencia(LocalDate dataFimVigencia) {
-        this.dataFimVigencia = dataFimVigencia.atTime(23, 59);
+        this.dataFimVigencia = dataFimVigencia;
     }
 
     public List<Impedimento> getImpedimentos() {
@@ -63,9 +62,7 @@ public class ConfiguracaoAgenda {
     }
 
     public boolean isDataEntreVigencia(LocalDate data) {
-        LocalDateTime dataInicio = data.atStartOfDay();
-        return dataInicio.isAfter(dataInicioVigencia) &&
-               (dataInicio.isEqual(dataFimVigencia) || dataInicio.isBefore(dataFimVigencia));
+        return data.isAfter(dataInicioVigencia) &&
+               (data.isEqual(dataFimVigencia) || data.isBefore(dataFimVigencia));
     }
-
 }
