@@ -7,6 +7,7 @@ import src.model.atividades.Trabalho;
 import src.model.entities.Disciplina;
 
 public class TrabalhoTest {
+    // OBS: como os outros métodos já foram testados nos testes de Prova, foi testado apenas a GetTOtal.
     @Test
     public void getTotalTest(){
         Disciplina  disciplina = new Disciplina("tes", 1);      
