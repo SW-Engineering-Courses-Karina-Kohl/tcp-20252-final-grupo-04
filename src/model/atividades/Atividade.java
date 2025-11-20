@@ -8,13 +8,13 @@ public  abstract class Atividade {
     int prioridade;
     LocalDate dataLimite;
     double pesoCalculado;
-    final int maxPrioridade = 5;
+    static final int MAXPRIORIDADE = 5;
 
     public Atividade( String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
         if (nome == "" || nome == null){ 
             throw new IllegalArgumentException("O nome de uma atividade não deve ser vazio!");    
         }
-        if (prioridade < 1 || prioridade > maxPrioridade){
+        if (prioridade < 1 || prioridade > MAXPRIORIDADE){
             throw new IllegalArgumentException("A atividade deve possuir um grau de prioridade entre 1 e 5.");
         }
         if (dataLimite == null){
