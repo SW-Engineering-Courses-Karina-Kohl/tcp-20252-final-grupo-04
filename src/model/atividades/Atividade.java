@@ -12,7 +12,7 @@ public  abstract class Atividade {
 
     public Atividade( String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
         if (nome == "" || nome == null){ 
-            throw new IllegalArgumentException("Insira um nome válido para a atividade.");    
+            throw new IllegalArgumentException("O nome de uma atividade não deve ser vazio!");    
         }
         if (prioridade < 1 || prioridade > maxPrioridade){
             throw new IllegalArgumentException("A atividade deve possuir um grau de prioridade entre 1 e 5.");
@@ -21,7 +21,7 @@ public  abstract class Atividade {
             throw new IllegalArgumentException("Insira uma data.");
         }
         else if (dataLimite.isBefore(LocalDate.now())){
-            throw new IllegalArgumentException("A data inserida deve ser uma data futura");
+            throw new IllegalArgumentException("A data inserida deve ser posterior à data atual.");
         }
         if (disciplina == null){
             throw new IllegalArgumentException("A atividade deve estar associada a uma disciplina.");
