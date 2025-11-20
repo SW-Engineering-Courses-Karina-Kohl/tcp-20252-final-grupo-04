@@ -3,6 +3,8 @@ import src.model.entities.*;
 import src.model.config.*;
 import src.model.atividades.*;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Iterator;
@@ -31,7 +33,7 @@ public class GeradorAgenda {
         AgendaEstudos agenda = new AgendaEstudos();
 
         // Usar um "contador" do tipo LocalDate para iterar pelos dias e para cada dia iterar pelos TimeSlots configurados
-        LocalDateTime dataIteracao = configuracao.getDataInicioVigencia();
+        LocalDate dataIteracao = configuracao.getDataInicioVigencia();
 
         // Manter um "ponteiro" para o array de impedimentos uma vez que ele está ordenado por data e hora
         Iterator<Impedimento> iteradorImpedimentos = configuracao.getImpedimentos().iterator();
@@ -43,7 +45,7 @@ public class GeradorAgenda {
         }
 
         // Criar TimeSlotEstudo's a partir da dataInicioVigencia até dataFimVigencia
-        while (configuracao.isDataEntreVigencia(dataIteracao.toLocalDate())) 
+        while (configuracao.isDataEntreVigencia(dataIteracao)) 
         {
             // Verificar o dia da semana e criar os TimeSlotEstudo's conforme os horários configurados
             Iterator<LocalTime> iteradorHorariosDia = configuracao.getDiaSemana(dataIteracao.getDayOfWeek()).getHorarios().iterator();
@@ -54,13 +56,13 @@ public class GeradorAgenda {
                 LocalTime horarioAtual = iteradorHorariosDia.next();
 
                 // Verificar se existe algum impedimento marcado para o dia e hora atual
-                if(impedimentoAtual != null && impedimentoAtual.conflitaCom(dataIteracao))
+                if(impedimentoAtual != null && impedimentoAtual.conflitaCom(LocalDateTime.of(dataIteracao, horarioAtual)))
                 {
                     impedimentoAtual = iteradorImpedimentos.hasNext() ? iteradorImpedimentos.next() : null;
                 }else
                 {
                     // Criar o TimeSlotEstudo e adicionar na agenda
-                    agenda.addTimeSlotEstudo(new TimeSlotEstudo(dataIteracao, null));
+                    agenda.addTimeSlotEstudo(new TimeSlotEstudo(LocalDateTime.of(dataIteracao, horarioAtual), null));
                 }
             }
             // Avançar para o próximo dia
