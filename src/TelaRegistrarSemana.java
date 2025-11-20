@@ -179,4 +179,7 @@ public class TelaRegistrarSemana {
         coletaImpedimentos();
         this.painelRegistrarSemana.add(this.adicionaImpedimentos);
     }
+    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
+        inicializaTelaRegistrarSemana(painel, cardLayout);
+    }
 }
