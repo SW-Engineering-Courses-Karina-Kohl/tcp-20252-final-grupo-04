@@ -1,6 +1,5 @@
 package src.controller.atividades;
 import src.model.entities.*;
-import src.model.atividades.*;
 import src.model.allocation.*;
 
 import java.util.*;
