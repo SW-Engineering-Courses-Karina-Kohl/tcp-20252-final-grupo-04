@@ -52,7 +52,11 @@ java -cp "build;lib/*" src.test.TimeSlotEstudoTest
 - Pedro Schuck de Azevedo 
 
 # Logging do sistema
-Para produzir logging conforme a aplicação é executada, foi empregada a biblioeca _ cuja versão é _.
-Para acessar a documentação oficial, basta clicar no seguinte link:
-Exemplos de uso: Na classe X, linha Y é usado logging através do comando _ para _
+Para produzir logging conforme a aplicação é executada, foi empregada a biblioeca tinylog cuja versão é 2.7.
+
+Para acessar a documentação oficial, basta clicar no seguinte link: https://tinylog.org/logging/
+
+Exemplos de uso: Na classe TelaInicial, linha Y é usado logging através do comando Logger.info para avisar ao usuário no terminal que a aplicação foi iniciada.
+Na classe TelaRegistrarSemana, linha Z é usado logging por meio de Logger.error para avisar ao usuário no terminal que o impedimento escrito está em um formato inválido.
+
 Propósito: Foi feito uso de logging com a finalidade de identificar bugs, gerar alertas em casos de erro e _.
