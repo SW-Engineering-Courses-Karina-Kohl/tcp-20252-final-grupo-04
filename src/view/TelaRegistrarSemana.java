@@ -2,7 +2,6 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -113,20 +112,20 @@ public class TelaRegistrarSemana {
             botoesDiaSemana[i] = new JButton(diasSemana[i]);
             int botoesIndex = i;
             botoesDiaSemana[i].addActionListener(e -> {
-                cardLayout.show(painel, "Registrar" + botoesIndex + "PainelTimeSlot");
+                cardLayout.show(painel, "TelaRegistrarTimeSlot" + botoesIndex);
             });
             botoesDiaSemana[i].setSize(150, 50);
             botoesDiaSemana[i].setLocation(50 + (i % 4) * 200, 250 + (i / 4) * 70);
             this.painelRegistrarSemana.add(botoesDiaSemana[i]);
         }
     }
-    public void transicaoTelaAgenda(JPanel painel, CardLayout cardLayout) {
+    public void transicaoTelaRegistrarAtividade(JPanel painel, CardLayout cardLayout) {
         proximaTela.addActionListener(e -> {
             dataInicio = dataInicioInput.getText();
             dataFim = dataFimInput.getText();
             if(validaDataInput(dataInicio, "dd/MM/uuuu") && validaDataInput(dataFim, "dd/MM/uuuu")) {
                 Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
-                cardLayout.show(painel, "PainelAgenda");
+                cardLayout.show(painel, "PainelRegistrarAtividade");
             } else {
                 Logger.error("Formato de data inválido para vigência.");
             }
@@ -179,12 +178,14 @@ public class TelaRegistrarSemana {
         setImpedimentosInput();
         this.painelRegistrarSemana.add(this.impedimentosInput);
         setBotoesDiaSemana(painel, cardLayout);
-        transicaoTelaAgenda(painel, cardLayout);
+        transicaoTelaRegistrarAtividade(painel, cardLayout);
         setBotaoAdicionaImpedimentos();
         coletaImpedimentos();
         this.painelRegistrarSemana.add(this.adicionaImpedimentos);
     }
     public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
         inicializaTelaRegistrarSemana(painel, cardLayout);
+    }
+    public TelaRegistrarSemana() {
     }
 }

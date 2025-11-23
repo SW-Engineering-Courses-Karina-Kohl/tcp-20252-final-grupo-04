@@ -56,7 +56,16 @@ Para produzir logging conforme a aplicação é executada, foi empregada a bibli
 
 Para acessar a documentação oficial, basta clicar no seguinte link: https://tinylog.org/logging/
 
-Exemplos de uso: Na classe TelaInicial, linha Y é usado logging através do comando Logger.info para avisar ao usuário no terminal que a aplicação foi iniciada.
-Na classe TelaRegistrarSemana, linha Z é usado logging por meio de Logger.error para avisar ao usuário no terminal que o impedimento escrito está em um formato inválido.
+Exemplos de uso: Na classe TelaInicial, é usado logging através do comando Logger.info para avisar ao usuário no terminal que a aplicação foi iniciada.
 
-Propósito: Foi feito uso de logging com a finalidade de identificar bugs, gerar alertas em casos de erro e _.
+```bash
+Logger.info("Programa iniciado!");
+```
+
+Na classe TelaRegistrarSemana, é usado logging por meio de Logger.error para avisar ao usuário no terminal que o impedimento escrito está em um formato inválido.
+
+```bash
+Logger.error("Formato de impedimento inválido: " + impedimentosInput.getText());
+```
+
+Propósito: Foi feito uso de logging com a finalidade de identificar bugs, gerar alertas em casos de erro e avisar ao usuário sobre a validade dos dados inseridos na interface.
