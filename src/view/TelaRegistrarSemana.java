@@ -112,7 +112,7 @@ public class TelaRegistrarSemana {
             botoesDiaSemana[i] = new JButton(diasSemana[i]);
             int botoesIndex = i;
             botoesDiaSemana[i].addActionListener(e -> {
-                cardLayout.show(painel, "Registrar" + botoesIndex + "PainelTimeSlot");
+                cardLayout.show(painel, "TelaRegistrarTimeSlot" + botoesIndex);
             });
             botoesDiaSemana[i].setSize(150, 50);
             botoesDiaSemana[i].setLocation(50 + (i % 4) * 200, 250 + (i / 4) * 70);

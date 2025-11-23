@@ -34,6 +34,18 @@ public class TelaRegistrarAtividade {
     private JTextArea disciplinaInput;
     private JButton adicionarDisciplina;
 
+    public List<String> getAtividadesNomes() {
+        return atividadesNomes;
+    }
+    public List<String> getAtividadesDatas() {
+        return atividadesDatas;
+    }
+    public List<String> getTipoAtividade() {
+        return tipoAtividade;
+    }
+    public List<String> getDisciplinasAtividade() {
+        return disciplinasAtividade;
+    }
     public JPanel getPainelRegistrarAtividade() {
         return painelRegistrarAtividade;
     }

@@ -20,15 +20,12 @@ public class Studify {
         //segunda tela
         TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana(painel, cardLayout);
         painel.add(telaRegistrarSemana.getPainelRegistrarSemana(), "PainelRegistrarSemana");
-        //terceira tela
+        //temporário enquanto não faz a tela de calendário e dos time slots
         TelaRegistrarAtividade telaRegistrarAtividade = new TelaRegistrarAtividade(painel, cardLayout);
-        //temporário enquanto não faz a tela dos time slots
+        TelaRegistrarTimeSlot[] telaRegistrarTimeSlot = new TelaRegistrarTimeSlot[7];
         for (int i = 0; i < 7; i++) {
-            JPanel[] paineisDiasSemana = new JPanel[7];
-            paineisDiasSemana[i] = new JPanel();
-            paineisDiasSemana[i].setSize(900, 500);
-            paineisDiasSemana[i].setLayout(null);
-            painel.add(paineisDiasSemana[i], "Registrar" + i + "PainelTimeSlot");
+            telaRegistrarTimeSlot[i] = new TelaRegistrarTimeSlot(painel, cardLayout);
+            painel.add(telaRegistrarTimeSlot[i].getPainelRegistrarTimeSlot(), "TelaRegistrarTimeSlot" + i);
         }
         painel.add(telaRegistrarAtividade.getPainelRegistrarAtividade(), "PainelRegistrarAtividade");
         //temporário enquanto não faz a classe da tela de agenda
