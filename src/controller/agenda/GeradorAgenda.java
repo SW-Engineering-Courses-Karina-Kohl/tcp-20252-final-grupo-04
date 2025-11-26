@@ -8,7 +8,23 @@ import java.time.LocalTime;
 import java.util.Iterator;
 
 public class GeradorAgenda {
-    public ConfiguracaoAgenda configuracao;
+    private ConfiguracaoAgenda configuracao;
+
+    public GeradorAgenda(ConfiguracaoAgenda configuracao)
+    {
+        this.setConfiguracaoAgenda(configuracao);
+    }
+    public GeradorAgenda()
+    {
+        this.configuracao = null;
+    }
+    public void setConfiguracaoAgenda(ConfiguracaoAgenda configuracao) {
+        if(configuracao == null)
+        {
+            throw new IllegalArgumentException("Configuração não pode ser nula");            
+        }
+        this.configuracao = configuracao;
+    }
 
     public AgendaEstudos gerar()
     {
