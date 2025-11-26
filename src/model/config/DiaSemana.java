@@ -24,4 +24,9 @@ public class DiaSemana
     {
         return this.horarios;
     }
+
+    public DayOfWeek getDiaSemana()
+    {
+        return this.diaSemana;
+    }
 }

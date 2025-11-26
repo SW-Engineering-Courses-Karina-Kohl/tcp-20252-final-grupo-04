@@ -1,9 +1,7 @@
 package src.controller.agenda;
 import src.model.entities.*;
 import src.model.config.*;
-import src.model.atividades.*;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

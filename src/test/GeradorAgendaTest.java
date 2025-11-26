@@ -7,7 +7,7 @@ import src.model.config.DiaSemana;
 
 import org.junit.Test;
 
-public class GeradorAgendaTeste {
+public class GeradorAgendaTest {
     
     @Test
     //Testar gerar() com configuração nula

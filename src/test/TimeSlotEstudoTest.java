@@ -5,8 +5,6 @@ import src.model.config.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
-import org.junit.Test;
-import static org.junit.Assert.*;
 public class TimeSlotEstudoTest {
     
     public static void main(String[] args) {
