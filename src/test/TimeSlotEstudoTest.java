@@ -5,7 +5,8 @@ import src.model.config.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
-
+import org.junit.Test;
+import static org.junit.Assert.*;
 public class TimeSlotEstudoTest {
     
     public static void main(String[] args) {
@@ -42,7 +43,7 @@ public class TimeSlotEstudoTest {
         assert !timeSlotEstudo.atividadeValida(null) : "Atividade null deveria ser inválida";
 
         // Teste com atividade válida (usando uma implementação concreta)
-        Prova prova = new Prova("Prova de Matemática", 1, LocalDateTime.of(2023, 10, 5, 9, 0));
+        Prova prova = new Prova("Prova de Matemática", 1, LocalDate.of(2023, 10, 5), null);
         assert timeSlotEstudo.atividadeValida(prova) : "Prova válida deveria ser aceita";
         
         System.out.println("testAtividadeValida - PASSOU");

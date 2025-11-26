@@ -54,7 +54,7 @@ public class AtribuidorAtividades
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
 
                 //Calcular número de timeSlots a serem atribuídos para a atividade = porcentagem * quantidade de TimeSlotEstudo's da janela
-                quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataLimite().toLocalDate(), timeSlotsDisponiveis);
+                quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataLimite(), timeSlotsDisponiveis);
                 alocacao.setQuantidadeTimeSlotEstudos(alocacao.getPorcentagemTimeSlotEstudos() * quantidadeTimeSlotsJanela);
             }
             //Arredondar quantidade de timeSlots para cada atividade
