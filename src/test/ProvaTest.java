@@ -6,7 +6,6 @@ import java.util.*;
 import static org.junit.Assert.*;
 import java.time.LocalDate;
 import org.junit.Test;
-import src.model.entities.Disciplina;
 
 // OBS: Como a maioria dos métodos em Prova são herdados de Atividade e não foram modificados,
 // estes testes englobam os testes dos métodos herdados também, e nos seguintes apenas serão testados
