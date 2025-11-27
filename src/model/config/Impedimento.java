@@ -27,14 +27,7 @@ public class Impedimento
 
     public boolean conflitaCom(LocalDateTime dataHora)
     {
-        if(dataHora == this.dataHora)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return this.dataHora.equals(dataHora);
     }
 
     public LocalDate getData()

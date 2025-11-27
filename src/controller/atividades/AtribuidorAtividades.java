@@ -49,7 +49,7 @@ public class AtribuidorAtividades
             int quantidadeTimeSlotsJanela = 0;
             for(int j = i; j < atividades.size(); j++)
             {
-                AlocacaoAtividade alocacao = alocacoes.get(j);
+                AlocacaoAtividade alocacao = alocacoes.get(j - i);
                 //Calcular porcentagem = pesoCalculado / somaPesoCalculado
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
 

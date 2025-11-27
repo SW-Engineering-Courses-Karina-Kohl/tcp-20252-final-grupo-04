@@ -61,7 +61,13 @@ public class GeradorAgenda {
         // Criar TimeSlotEstudo's a partir da dataInicioVigencia até dataFimVigencia
         while (configuracao.isDataEntreVigencia(dataIteracao)) 
         {
-            // Verificar o dia da semana e criar os TimeSlotEstudo's conforme os horários configurados
+            // Verificar se há estudos para o dia da semana e criar os TimeSlotEstudo's conforme os horários configurados
+            if(configuracao.getDiaSemana(dataIteracao.getDayOfWeek()) == null || configuracao.getDiaSemana(dataIteracao.getDayOfWeek()).getHorarios().isEmpty())
+            {
+                // Avançar para o próximo dia
+                dataIteracao = dataIteracao.plusDays(1);
+                continue;
+            }
             Iterator<LocalTime> iteradorHorariosDia = configuracao.getDiaSemana(dataIteracao.getDayOfWeek()).getHorarios().iterator();
 
             //Iterar pelos horários do dia

@@ -56,17 +56,17 @@ public class GeradorAgendaTest {
         configuracao.setDia(DayOfWeek.THURSDAY, quinta);
 
         GeradorAgenda gerador = new GeradorAgenda();
-        gerador.configuracao = configuracao; // usando o atributo público
+        gerador.setConfiguracaoAgenda(configuracao); // usando o atributo público
 
         AgendaEstudos agenda = gerador.gerar();
 
         List<TimeSlotEstudo> estudos = agenda.getEstudos();
         assertEquals(1, estudos.size());
 
-        TimeSlotEstudo ts = estudos.get(0);
-        assertEquals(LocalDateTime.of(data, horario), ts.getInicioEstudo());
-        assertNull(ts.getAtividade());
-        assertTrue(ts.isDisponivel());
+        TimeSlotEstudo estudo = estudos.get(0);
+        assertEquals(LocalDateTime.of(data, horario), estudo.getInicioEstudo());
+        assertNull(estudo.getAtividade());
+        assertTrue(estudo.isDisponivel());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class GeradorAgendaTest {
         configuracao.setDia(DayOfWeek.WEDNESDAY, quarta);
 
         GeradorAgenda gerador = new GeradorAgenda();
-        gerador.configuracao = configuracao;
+        gerador.setConfiguracaoAgenda(configuracao);
 
         AgendaEstudos agenda = gerador.gerar();
         List<TimeSlotEstudo> estudos = agenda.getEstudos();
@@ -134,7 +134,7 @@ public class GeradorAgendaTest {
         configuracao.adicionarImpedimento(impedimento);
 
         GeradorAgenda gerador = new GeradorAgenda();
-        gerador.configuracao = configuracao;
+        gerador.setConfiguracaoAgenda(configuracao);
 
         AgendaEstudos agenda = gerador.gerar();
         List<TimeSlotEstudo> estudos = agenda.getEstudos();
