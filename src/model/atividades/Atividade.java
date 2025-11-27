@@ -16,14 +16,8 @@ public  abstract class Atividade {
         if (dataLimite == null){
             throw new IllegalArgumentException("Insira uma data.");
         }
-        else if (dataLimite.isBefore(LocalDate.now())){
-            throw new IllegalArgumentException("A data inserida deve ser posterior à data atual.");
-        }
         if (disciplina == null){
             throw new IllegalArgumentException("A atividade deve estar associada a uma disciplina.");
-        }
-        if(pesoCalculado < 0){
-            throw new IllegalArgumentException("O peso calculado deve ser maior ou igual a zero.");
         }
         this.nome = nome;
         this.dataLimite = dataLimite;
