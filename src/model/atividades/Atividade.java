@@ -5,17 +5,13 @@ import java.time.LocalDate;
 public  abstract class Atividade {
     Disciplina disciplina;
     String nome;
-    int prioridade;
     LocalDate dataLimite;
     double pesoCalculado;
-    static final int MAXPRIORIDADE = 5;
+    static final int MAXPESO = 5;
 
-    public Atividade( String nome, int prioridade, LocalDate dataLimite, Disciplina disciplina) {
+    public Atividade( String nome, LocalDate dataLimite, Disciplina disciplina) {
         if (nome == "" || nome == null){ 
             throw new IllegalArgumentException("O nome de uma atividade não deve ser vazio!");    
-        }
-        if (prioridade < 1 || prioridade > MAXPRIORIDADE){
-            throw new IllegalArgumentException("A atividade deve possuir um grau de prioridade entre 1 e 5.");
         }
         if (dataLimite == null){
             throw new IllegalArgumentException("Insira uma data.");
@@ -30,7 +26,6 @@ public  abstract class Atividade {
             throw new IllegalArgumentException("O peso calculado deve ser maior ou igual a zero.");
         }
         this.nome = nome;
-        this.prioridade = prioridade;
         this.dataLimite = dataLimite;
         this.disciplina = disciplina;
         this.pesoCalculado = 0;
@@ -64,6 +59,9 @@ public  abstract class Atividade {
         this.dataLimite = dataLimite;
     }
     public  void setPesoCalculado(double pesoCalculado){
+        if(pesoCalculado < 0 || pesoCalculado > MAXPESO){
+            throw new IllegalArgumentException("O peso calculado deve estar entre 0 e " + MAXPESO +".");
+        }
         this.pesoCalculado = pesoCalculado;
     }
     public abstract int getTotal();
