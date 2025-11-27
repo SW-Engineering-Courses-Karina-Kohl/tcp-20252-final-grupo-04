@@ -1,4 +1,5 @@
 package src.model.entities;
+import src.model.atividades.Atividade;
 import src.model.config.ConfiguracaoAgenda;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,11 @@ public class Aluno {
     public void adicionarDisciplina(Disciplina disciplina) {
         this.disciplinas.add(disciplina);
     }
+
+    public void removerDisciplina(Disciplina disciplina) {
+        this.disciplinas.remove(disciplina);
+    }
+
 
     public AgendaEstudos getAgenda() {
         return this.agenda;
