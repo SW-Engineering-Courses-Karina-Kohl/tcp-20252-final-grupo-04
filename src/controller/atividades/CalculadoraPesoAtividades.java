@@ -11,9 +11,11 @@ public class CalculadoraPesoAtividades {
     public void calcularPeso(List<Atividade> atividades, List<TimeSlotEstudo> timeSlotEstudos) 
     {
         if(atividades == null || atividades.isEmpty()) {
+            Logger.error("Erro ao calcular peso das atividades: Atividades esta vazio");
             throw new IllegalArgumentException("Lista de atividades não pode ser nula ou vazia");
         }
         if(timeSlotEstudos == null || timeSlotEstudos.isEmpty()) {
+            Logger.error("Erro ao calcular peso das atividades: Time slots de estudo esta vazio");
             throw new IllegalArgumentException("Lista de time slots de estudo não pode ser nula ou vazia");
         }
         //contadorTimeSlots = 0
