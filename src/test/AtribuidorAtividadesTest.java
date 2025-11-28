@@ -23,9 +23,6 @@ import java.util.*;
  */
 public class AtribuidorAtividadesTest {
 
-    // ------------------------------------------------------------
-    // Testes de validação de parâmetros do método atribuir(...)
-    // ------------------------------------------------------------
 
     @Test(expected = IllegalArgumentException.class)
     public void testAtribuir_ComAgendaNula() {
@@ -71,10 +68,6 @@ public class AtribuidorAtividadesTest {
             throw e;
         }
     }
-
-    // ------------------------------------------------------------
-    // Testes de quantidadeTimeSlotEstudosAntesDe(...)
-    // ------------------------------------------------------------
 
     @Test
     public void testQuantidadeTimeSlotEstudosAntesDe_DataIgualPrimeiroDiaAgenda() {
@@ -128,10 +121,6 @@ public class AtribuidorAtividadesTest {
         int qtd = atribuidor.quantidadeTimeSlotEstudosAntesDe(base.minusDays(2), timeSlots);
         assertEquals(0, qtd);
     }
-
-    // ------------------------------------------------------------
-    // Cenário feliz: atividades atribuídas à agenda
-    // ------------------------------------------------------------
 
     @Test
     public void testAtribuir_UmaAtividadePreenchePeloMenosUmTimeSlot() {

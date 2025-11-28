@@ -1,6 +1,7 @@
 package src.model.entities;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.time.*;
 import src.utils.BinarySearchUtils;
@@ -39,7 +40,7 @@ public class AgendaEstudos
         int indiceFim = BinarySearchUtils.lastIndexLE(estudos, chaveFim, Comparator.comparing(TimeSlotEstudo::getInicioEstudo));
         
 
-        return estudos.subList(indiceInicio, indiceFim + 1);
+        return Collections.unmodifiableList(estudos.subList(indiceInicio, indiceFim + 1));
     }
 
     public List<TimeSlotEstudo> getEstudosSemana(LocalDate primeiroDia)
@@ -53,11 +54,11 @@ public class AgendaEstudos
         }
         TimeSlotEstudo chaveFim = new TimeSlotEstudo(primeiroDia.plusDays(6).atTime(23,59,59), null);
         int indiceFim = BinarySearchUtils.lastIndexLE(estudos, chaveFim, Comparator.comparing(TimeSlotEstudo::getInicioEstudo));
-        return estudos.subList(indiceInicio, indiceFim + 1);
+        return Collections.unmodifiableList(estudos.subList(indiceInicio, indiceFim + 1));
     }
     public List<TimeSlotEstudo> getEstudos()
     {
-        return this.estudos;
+        return Collections.unmodifiableList(this.estudos);
     }
 
     public void addTimeSlotEstudo(TimeSlotEstudo timeSlotEstudo)
