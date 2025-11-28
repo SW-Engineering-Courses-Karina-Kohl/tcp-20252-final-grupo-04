@@ -96,23 +96,6 @@ public class CalculadoraPesoAtividadesTest {
         // Disciplina com prioridade conhecida
         Disciplina disciplina = new Disciplina("TCP", 2.0);
 
-        /*
-         * Prova com prazo em 2026-01-03.
-         * Time slots:
-         *   - 2026-01-01 08:00
-         *   - 2026-01-02 08:00
-         *   - 2026-01-03 08:00
-         *
-         * No algoritmo:
-         *  - iterator começa em 2026-01-01
-         *  - while(ts.date < dataLimite):
-         *      2026-01-01 < 2026-01-03 -> contador = 1, ts = 2026-01-02
-         *      2026-01-02 < 2026-01-03 -> contador = 2, ts = 2026-01-03
-         *      2026-01-03 < 2026-01-03 -> false, sai
-         *
-         * pesoCalculado = getPesoTipo() * prioridadeDisciplina / contador
-         *               = prova.getPesoTipo() * 2.0 / 2
-         */
         LocalDate dataLimite = LocalDate.of(2026, 1, 3);
         Prova prova = new Prova("Prova 1", dataLimite, disciplina);
 
@@ -122,13 +105,12 @@ public class CalculadoraPesoAtividadesTest {
         LocalDate date2 = LocalDate.of(2026, 1, 2);
         LocalDate date3 = LocalDate.of(2026, 1, 3);
 
-        TimeSlotEstudo ts1 = new TimeSlotEstudo(LocalDateTime.of(date1, LocalTime.of(8, 0)), null);
-        TimeSlotEstudo ts2 = new TimeSlotEstudo(LocalDateTime.of(date2, LocalTime.of(8, 0)), null);
-        TimeSlotEstudo ts3 = new TimeSlotEstudo(LocalDateTime.of(date3, LocalTime.of(8, 0)), null);
+        TimeSlotEstudo estudo1 = new TimeSlotEstudo(LocalDateTime.of(date1, LocalTime.of(8, 0)), null);
+        TimeSlotEstudo estudo2 = new TimeSlotEstudo(LocalDateTime.of(date2, LocalTime.of(8, 0)), null);
+        TimeSlotEstudo estudo3 = new TimeSlotEstudo(LocalDateTime.of(date3, LocalTime.of(8, 0)), null);
 
-        List<TimeSlotEstudo> slots = Arrays.asList(ts1, ts2, ts3);
+        List<TimeSlotEstudo> slots = Arrays.asList(estudo1, estudo2, estudo3);
 
-        // Ação
         calculadora.calcularPeso(atividades, slots);
 
         // Esperado: usar a própria constante de tipo da classe + prioridade da disciplina
@@ -154,11 +136,11 @@ public class CalculadoraPesoAtividadesTest {
         LocalDate date2 = LocalDate.of(2026, 1, 2);
         LocalDate date3 = LocalDate.of(2026, 1, 3);
 
-        TimeSlotEstudo ts1 = new TimeSlotEstudo(LocalDateTime.of(date1, LocalTime.of(8, 0)), null);
-        TimeSlotEstudo ts2 = new TimeSlotEstudo(LocalDateTime.of(date2, LocalTime.of(8, 0)), null);
-        TimeSlotEstudo ts3 = new TimeSlotEstudo(LocalDateTime.of(date3, LocalTime.of(8, 0)), null);
+        TimeSlotEstudo estudo1 = new TimeSlotEstudo(LocalDateTime.of(date1, LocalTime.of(8, 0)), null);
+        TimeSlotEstudo estudo2 = new TimeSlotEstudo(LocalDateTime.of(date2, LocalTime.of(8, 0)), null);
+        TimeSlotEstudo estudo3 = new TimeSlotEstudo(LocalDateTime.of(date3, LocalTime.of(8, 0)), null);
 
-        List<TimeSlotEstudo> slots = Arrays.asList(ts1, ts2, ts3);
+        List<TimeSlotEstudo> slots = Arrays.asList(estudo1, estudo2, estudo3);
 
         calculadora.calcularPeso(atividades, slots);
 

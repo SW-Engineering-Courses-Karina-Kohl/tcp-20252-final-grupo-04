@@ -56,7 +56,7 @@ public class GeradorAgendaTest {
         configuracao.setDia(DayOfWeek.THURSDAY, quinta);
 
         GeradorAgenda gerador = new GeradorAgenda();
-        gerador.setConfiguracaoAgenda(configuracao); // usando o atributo público
+        gerador.setConfiguracaoAgenda(configuracao); 
 
         AgendaEstudos agenda = gerador.gerar();
 
@@ -79,19 +79,16 @@ public class GeradorAgendaTest {
         configuracao.setDataInicioVigencia(inicio);
         configuracao.setDataFimVigencia(fim);
 
-        // Segunda
         DiaSemana segunda = new DiaSemana(DayOfWeek.MONDAY);
         segunda.adicionarTimeSlot(LocalTime.of(8, 0));
         segunda.adicionarTimeSlot(LocalTime.of(14, 0));
         configuracao.setDia(DayOfWeek.MONDAY, segunda);
 
-        // Terça
         DiaSemana terca = new DiaSemana(DayOfWeek.TUESDAY);
         terca.adicionarTimeSlot(LocalTime.of(8, 0));
         terca.adicionarTimeSlot(LocalTime.of(14, 0));
         configuracao.setDia(DayOfWeek.TUESDAY, terca);
 
-        // Quarta
         DiaSemana quarta = new DiaSemana(DayOfWeek.WEDNESDAY);
         quarta.adicionarTimeSlot(LocalTime.of(8, 0));
         quarta.adicionarTimeSlot(LocalTime.of(14, 0));
