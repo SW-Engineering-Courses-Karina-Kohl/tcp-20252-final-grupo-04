@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.time.DayOfWeek;
 
 public class TelaRegistrarTimeSlot {
     private JPanel painelRegistrarTimeSlot;
@@ -16,6 +17,7 @@ public class TelaRegistrarTimeSlot {
     private JButton botaoSalvarTimeSlots;
     private JLabel infoTimeSlots;
     private List<String> timeSlotsSelecionados;
+    private DayOfWeek diaSemana;
 
     public void setTelaRegistrarTimeSlot() {
         painelRegistrarTimeSlot = new JPanel();
@@ -63,6 +65,8 @@ public class TelaRegistrarTimeSlot {
                 if (timeSlot.isSelected()) {
                     if (!timeSlotsSelecionados.contains(timeSlot.getText())) {
                         timeSlotsSelecionados.add(timeSlot.getText());
+                        //ControladorRegistrarTimeSlot controlador = new ControladorRegistrarTimeSlot(timeSlotsSelecionados);
+                        //controlador.converteTimeSlots(this.diaSemana);
                     }
                 } else {
                     timeSlotsSelecionados.remove(timeSlot.getText());
@@ -83,7 +87,7 @@ public class TelaRegistrarTimeSlot {
     public List<String> getTimeSlotsSelecionados() {
         return timeSlotsSelecionados;
     }
-    public TelaRegistrarTimeSlot(JPanel painelPrincipal, CardLayout cardLayout) {
+    public TelaRegistrarTimeSlot(JPanel painelPrincipal, CardLayout cardLayout, DayOfWeek diaSemana) {
         setTelaRegistrarTimeSlot();
         setTimeSlotsHoras();
         setBotaoSalvarTimeSlots();
@@ -91,6 +95,7 @@ public class TelaRegistrarTimeSlot {
         this.painelRegistrarTimeSlot.add(botaoSalvarTimeSlots);
         setInfoTimeSlots();
         this.painelRegistrarTimeSlot.add(this.infoTimeSlots);
+        this.diaSemana = diaSemana;
     }
     public TelaRegistrarTimeSlot() {
 

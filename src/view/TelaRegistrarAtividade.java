@@ -31,8 +31,11 @@ public class TelaRegistrarAtividade {
     private JComboBox<String> disciplinaAtividadeInput;
     private List<String> disciplinasAtividade;
     private JLabel infoDisciplina;
-    private JTextArea disciplinaInput;
+    private JTextArea disciplinaNomeInput;
     private JButton adicionarDisciplina;
+    private List<String> prioridadesDisciplinas;
+    private JTextArea disciplinaPrioridadeInput;
+    private List<String> todasDisciplinas;
 
     public List<String> getAtividadesNomes() {
         return atividadesNomes;
@@ -95,6 +98,7 @@ public class TelaRegistrarAtividade {
         this.atividadesDatas = new ArrayList<>();
         this.atividadesNomes = new ArrayList<>();
         this.tipoAtividade = new ArrayList<>();
+        this.disciplinasAtividade = new ArrayList<>();
         TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana();
         this.adicionarAtividade.addActionListener(e -> {
             String dataAtividade = dataAtividadeInput.getText();
@@ -107,6 +111,7 @@ public class TelaRegistrarAtividade {
                 String tipoAtividadeAtual = (String) tipoAtividadeInput.getSelectedItem();
                 this.tipoAtividade.add(tipoAtividadeAtual);
                 String disciplinaAtividade = (String) disciplinaAtividadeInput.getSelectedItem();
+                this.disciplinasAtividade.add(disciplinaAtividade);
                 Logger.info(tipoAtividadeAtual + " da disciplina " + disciplinaAtividade + " adicionada: " + nomeAtividade + " na data " + dataAtividade);
             } else {
                 Logger.error("Formato de data e hora inválido para atividade: " + dataAtividade);
@@ -182,17 +187,25 @@ public class TelaRegistrarAtividade {
         return infoDisciplina;
     }
     public void setInfoDisciplina() {
-        this.infoDisciplina = new JLabel("Disciplina:");
+        this.infoDisciplina = new JLabel("Disciplina (nome e prioridade):");
         this.infoDisciplina.setSize(200, 30);
         this.infoDisciplina.setLocation(50, 50);
     }
-    public JTextArea getDisciplinaInput() {
-        return disciplinaInput;
+    public JTextArea getDisciplinaNomeInput() {
+        return disciplinaNomeInput;
     }
-    public void setDisciplinaInput() {
-        this.disciplinaInput = new JTextArea();
-        this.disciplinaInput.setSize(200, 30);
-        this.disciplinaInput.setLocation(50, 80);
+    public void setDisciplinaNomeInput() {
+        this.disciplinaNomeInput = new JTextArea();
+        this.disciplinaNomeInput.setSize(200, 30);
+        this.disciplinaNomeInput.setLocation(50, 80);
+    }
+    public JTextArea getDisciplinaPrioridadeInput() {
+        return disciplinaPrioridadeInput;
+    }
+    public void setDisciplinaPrioridadeInput() {
+        this.disciplinaPrioridadeInput = new JTextArea();
+        this.disciplinaPrioridadeInput.setSize(200, 30);
+        this.disciplinaPrioridadeInput.setLocation(50, 130);
     }
     public JButton getAdicionarDisciplina() {
         return adicionarDisciplina;
@@ -200,22 +213,38 @@ public class TelaRegistrarAtividade {
     public void setAdicionarDisciplina() {
         this.adicionarDisciplina = new JButton("Adicionar Disciplina");
         this.adicionarDisciplina.setSize(200, 50);
-        this.adicionarDisciplina.setLocation(30, 130);
+        this.adicionarDisciplina.setLocation(30, 190);
         this.adicionarDisciplina.setFont(new Font("Arial", Font.PLAIN, 16));
     }
+    public boolean validaDisciplina(String disciplinaNome, String disciplinaPrioridade) {
+        boolean validacao = false;
+        if (disciplinaNome.isEmpty()) {
+            Logger.warn("Nenhuma disciplina foi inserida.");
+        } else if (disciplinasAtividade.contains(disciplinaNome)) {
+            Logger.warn("Disciplina já existe: " + disciplinaNome);
+        }
+        try {
+            Double.parseDouble(disciplinaPrioridade);
+            validacao = true;
+        } catch (NumberFormatException e) {
+            Logger.warn("Prioridade inválida para a disciplina: " + disciplinaNome);
+            return validacao;
+        }
+        return validacao;
+    }
     public void coletaDisciplina() {
-        this.disciplinasAtividade = new ArrayList<>();
+        this.todasDisciplinas = new ArrayList<>();
+        this.prioridadesDisciplinas = new ArrayList<>();
         this.adicionarDisciplina.addActionListener(e -> {
-            String disciplina = disciplinaInput.getText();
-            if (disciplina.isEmpty()) {
-                Logger.warn("Nenhuma disciplina foi inserida.");
-            } else if (disciplinasAtividade.contains(disciplina)) {
-                Logger.warn("Disciplina já existe: " + disciplina);
-            } else {
-            disciplinasAtividade.add(disciplina);
-            disciplinaInput.setText("");
-            this.disciplinaAtividadeInput.addItem(disciplina);
-            Logger.info("Disciplina adicionada: " + disciplina);
+            String disciplinaNome = disciplinaNomeInput.getText();
+            String disciplinaPrioridade = disciplinaPrioridadeInput.getText();
+            if (validaDisciplina(disciplinaNome, disciplinaPrioridade)) {
+            todasDisciplinas.add(disciplinaNome);
+            disciplinaNomeInput.setText("");
+            this.prioridadesDisciplinas.add(disciplinaPrioridade);
+            disciplinaPrioridadeInput.setText("");
+            this.disciplinaAtividadeInput.addItem(disciplinaNome);
+            Logger.info("Disciplina adicionada: " + disciplinaNome + " com prioridade " + disciplinaPrioridade);
             }
         });
     }
@@ -248,8 +277,10 @@ public class TelaRegistrarAtividade {
         this.painelRegistrarAtividade.add(disciplinaAtividadeInput);
         setInfoDisciplina();
         this.painelRegistrarAtividade.add(infoDisciplina);
-        setDisciplinaInput();
-        this.painelRegistrarAtividade.add(disciplinaInput);
+        setDisciplinaNomeInput();
+        this.painelRegistrarAtividade.add(disciplinaNomeInput);
+        setDisciplinaPrioridadeInput();
+        this.painelRegistrarAtividade.add(disciplinaPrioridadeInput);
         setAdicionarDisciplina();
         this.painelRegistrarAtividade.add(adicionarDisciplina);
         coletaDisciplina();

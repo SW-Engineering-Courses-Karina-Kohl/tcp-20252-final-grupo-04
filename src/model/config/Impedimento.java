@@ -3,7 +3,6 @@ package src.model.config;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
 
 public class Impedimento 
 {
@@ -28,14 +27,7 @@ public class Impedimento
 
     public boolean conflitaCom(LocalDateTime dataHora)
     {
-        if(dataHora == this.dataHora)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return this.dataHora.equals(dataHora);
     }
 
     public LocalDate getData()

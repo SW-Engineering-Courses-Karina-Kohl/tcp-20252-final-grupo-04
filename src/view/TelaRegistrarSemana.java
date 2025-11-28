@@ -123,13 +123,28 @@ public class TelaRegistrarSemana {
         proximaTela.addActionListener(e -> {
             dataInicio = dataInicioInput.getText();
             dataFim = dataFimInput.getText();
-            if(validaDataInput(dataInicio, "dd/MM/uuuu") && validaDataInput(dataFim, "dd/MM/uuuu")) {
-                Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
+            if(validaVigencia(dataInicio, dataFim)) {
                 cardLayout.show(painel, "PainelRegistrarAtividade");
+                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
+                controlador.processaRegistroSemana();
+            }
+        });
+    }
+    public boolean validaVigencia(String dataInicio, String dataFim) {
+        boolean vigenciaValida = false;
+            if(validaDataInput(dataInicio, "dd/MM/uuuu") && validaDataInput(dataFim, "dd/MM/uuuu")) {
+                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
+                controlador.processaRegistroSemana();
+                if(controlador.validaConfiguracaoAgenda()) {
+                    vigenciaValida = true;
+                    Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
+                } else {
+                    Logger.error("Data de início deve ser anterior à data de fim.");
+                }
             } else {
                 Logger.error("Formato de data inválido para vigência.");
             }
-        });
+            return vigenciaValida;
     }
     public boolean validaDataInput(String data, String formato) {
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern(formato).withResolverStyle(ResolverStyle.STRICT);
@@ -140,16 +155,29 @@ public class TelaRegistrarSemana {
             return false;
         }
     }
+    public boolean validaImpedimentoInput(String impedimento) {
+        boolean impedimentoValido = false;
+        if(validaDataInput(impedimento, "dd/MM/uuuu HH:mm")) {
+            if (impedimentos.contains(impedimento)) {
+                Logger.warn("Impedimento já existe: " + impedimento);
+            } else if(!impedimento.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:(00|30)")) {
+                Logger.warn("Apenas 30 ou 00 como minutos.");
+            } else {
+            Logger.info("Impedimento válido registrado: " + impedimento);
+            impedimentoValido = true;
+            }
+        } else {
+            Logger.error("Formato de impedimento inválido: " + impedimento);
+        }
+        return impedimentoValido;
+    }
     public void coletaImpedimentos() {
         this.impedimentos = new ArrayList<>();
         adicionaImpedimentos.addActionListener(e -> {
-            if(validaDataInput(impedimentosInput.getText(), "dd/MM/uuuu HH:mm")) {
-                Logger.info("Impedimento válido registrado: " + impedimentosInput.getText());
+            if(validaImpedimentoInput(impedimentosInput.getText().trim())) {
                 impedimentos.add(impedimentosInput.getText());
                 impedimentosInput.setText("");
-            } else {
-                Logger.error("Formato de impedimento inválido: " + impedimentosInput.getText());
-            } 
+            }
         });
     }
     public String getDataInicio() {

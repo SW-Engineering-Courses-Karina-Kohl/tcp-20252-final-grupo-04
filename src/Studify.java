@@ -7,6 +7,7 @@ import src.view.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
+import java.time.DayOfWeek;
 
 public class Studify {
     public static void main(String[] args) {
@@ -24,7 +25,7 @@ public class Studify {
         TelaRegistrarAtividade telaRegistrarAtividade = new TelaRegistrarAtividade(painel, cardLayout);
         TelaRegistrarTimeSlot[] telaRegistrarTimeSlot = new TelaRegistrarTimeSlot[7];
         for (int i = 0; i < 7; i++) {
-            telaRegistrarTimeSlot[i] = new TelaRegistrarTimeSlot(painel, cardLayout);
+            telaRegistrarTimeSlot[i] = new TelaRegistrarTimeSlot(painel, cardLayout, DayOfWeek.of(i + 1));
             painel.add(telaRegistrarTimeSlot[i].getPainelRegistrarTimeSlot(), "TelaRegistrarTimeSlot" + i);
         }
         painel.add(telaRegistrarAtividade.getPainelRegistrarAtividade(), "PainelRegistrarAtividade");

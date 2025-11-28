@@ -5,12 +5,41 @@ import src.model.allocation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.ArrayList;
+
+import src.utils.BinarySearchUtils;
 
 public class AtribuidorAtividades 
 {
-    private List<AlocacaoAtividade> alocacoes;
-    
+    private List<AlocacaoAtividade> alocacoes = new ArrayList<>();
+    private CalculadoraPesoAtividades calculadoraPesoAtividades;
+
+    public AtribuidorAtividades()
+    {
+        
+    }
+
+    public AtribuidorAtividades(CalculadoraPesoAtividades calculadora)
+    {
+        this.setCalculadoraPesoAtividades(calculadora);
+    }
+
+    /**
+     * As datas de todas as atividades devem estar dentro das datas da agenda, senão o comportamento é inesperado.
+     * @param agenda
+     * @param disciplinas
+     * @param calculadora
+     */
+    public void atribuir(AgendaEstudos agenda, List<Disciplina> disciplinas, CalculadoraPesoAtividades calculadora)
+    {
+        this.setCalculadoraPesoAtividades(calculadora);
+        this.atribuir(agenda, disciplinas);
+    }
+
+    /**
+     * As datas de todas as atividades devem estar dentro das datas da agenda, senão o comportamento é inesperado.
+     * @param agenda
+     * @param disciplinas
+    */
     public void atribuir(AgendaEstudos agenda, List<Disciplina> disciplinas)
     {
         if(agenda == null)
@@ -21,14 +50,17 @@ public class AtribuidorAtividades
         {
             throw new IllegalArgumentException("Lista de disciplinas não pode ser nula ou vazia");
         }
+        if(this.calculadoraPesoAtividades == null)
+        {
+            throw new IllegalStateException("Calculadora de peso não foi definida");
+        }
 
         // Lógica para atribuir atividades às TimeSlotEstudo na agenda
         List<Atividade> atividades = this.juntarAtividadesDeDisciplinas(disciplinas);
         atividades.sort((a1, a2) -> a1.getDataLimite().compareTo(a2.getDataLimite()));
 
         List<TimeSlotEstudo> timeSlotsDisponiveis = new ArrayList<>(agenda.getEstudos());
-        CalculadoraPesoAtividades calculadoraPeso = new CalculadoraPesoAtividades();
-        calculadoraPeso.calcularPeso(atividades, timeSlotsDisponiveis);
+        calculadoraPesoAtividades.calcularPeso(atividades, timeSlotsDisponiveis);
 
         
         double somaPesosCalculados = 0.0;
@@ -48,7 +80,7 @@ public class AtribuidorAtividades
             int quantidadeTimeSlotsJanela = 0;
             for(int j = i; j < atividades.size(); j++)
             {
-                AlocacaoAtividade alocacao = alocacoes.get(j);
+                AlocacaoAtividade alocacao = alocacoes.get(j - i);
                 //Calcular porcentagem = pesoCalculado / somaPesoCalculado
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
 
@@ -94,22 +126,31 @@ public class AtribuidorAtividades
         return this.alocacoes.get(index);
     }
 
+    public void setCalculadoraPesoAtividades(CalculadoraPesoAtividades calculadora) 
+    {
+        if(calculadora == null)
+        {
+            throw new IllegalArgumentException("Calculadora de peso não pode ser nula");
+        }
+        this.calculadoraPesoAtividades = calculadora;
+    }
+
     public int quantidadeTimeSlotEstudosAntesDe(LocalDate data, List<TimeSlotEstudo> timeSlotEstudos)
-{
-    // Pegar todos os timeslots até o final do dia anterior
-    LocalDateTime dataLimiteAjustada = data.minusDays(1).atTime(23, 59, 59);
+    {
+        // Pegar todos os timeslots até o final do dia anterior
+        LocalDateTime dataLimiteAjustada = data.minusDays(1).atTime(23, 59, 59);
 
-    // Cria um TimeSlotEstudo fictício só para servir como chave
-    TimeSlotEstudo chave = new TimeSlotEstudo(dataLimiteAjustada, null);
+        // Cria um TimeSlotEstudo fictício só para servir como chave
+        TimeSlotEstudo chave = new TimeSlotEstudo(dataLimiteAjustada, null);
 
-    int indice = Collections.binarySearch(
-        timeSlotEstudos,
-        chave,
-        Comparator.comparing(TimeSlotEstudo::getInicioEstudo)
-    );
+        int indice = BinarySearchUtils.lastIndexLE(
+            timeSlotEstudos,
+            chave,
+            Comparator.comparing(TimeSlotEstudo::getInicioEstudo)
+        );
 
-    return indice >= 0 ? indice + 1 : -(indice + 1);
-}
+        return indice >= 0 ? indice + 1 : -(indice + 1);
+    }
 
 
     public void arredondarQuantidadeTimeSlots(List<AlocacaoAtividade> alocacoes, int totalTimeSlotsJanela)
