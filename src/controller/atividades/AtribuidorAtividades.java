@@ -5,6 +5,7 @@ import src.model.allocation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import org.tinylog.Logger;
 
 import src.utils.BinarySearchUtils;
 
@@ -54,6 +55,7 @@ public class AtribuidorAtividades
         {
             throw new IllegalStateException("Calculadora de peso não foi definida");
         }
+        Logger.info("Atribuindo atividades...");
 
         // Lógica para atribuir atividades às TimeSlotEstudo na agenda
         List<Atividade> atividades = this.juntarAtividadesDeDisciplinas(disciplinas);
@@ -80,6 +82,7 @@ public class AtribuidorAtividades
             int quantidadeTimeSlotsJanela = 0;
             for(int j = i; j < atividades.size(); j++)
             {
+                Logger.debug("I = {}, J = {}", i, j);
                 AlocacaoAtividade alocacao = alocacoes.get(j - i);
                 //Calcular porcentagem = pesoCalculado / somaPesoCalculado
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
@@ -107,6 +110,7 @@ public class AtribuidorAtividades
 
     private List<Atividade> juntarAtividadesDeDisciplinas(List<Disciplina> disciplinas)
     {
+        Logger.info("Listando atividades das disciplinas...");
         List<Atividade> atividades = new ArrayList<>();
         for(Disciplina disciplina : disciplinas)
         {

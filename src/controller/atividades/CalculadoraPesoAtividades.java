@@ -3,6 +3,7 @@ import src.model.entities.*;
 import src.model.atividades.*;
 import java.util.Iterator;
 import java.util.List;
+import org.tinylog.Logger;
 
 public class CalculadoraPesoAtividades {
     
@@ -20,7 +21,7 @@ public class CalculadoraPesoAtividades {
             //Iterar sobre os timeSlotEstudos, enquanto a data do timeSlotEstudo for menor que a data de entrega da atividade atual
                 //contadorTimeSlots++
             //O peso da atividade atual é calculado como constante_tipo * prioridade_peso da disciplina / contadorTimeSlots
-
+        Logger.info("Calculando peso das atividades");
         int contadorTimeSlots = 0;
         Iterator<TimeSlotEstudo> iterator = timeSlotEstudos.iterator();
         TimeSlotEstudo timeSlotEstudoAnalisado = iterator.next();
