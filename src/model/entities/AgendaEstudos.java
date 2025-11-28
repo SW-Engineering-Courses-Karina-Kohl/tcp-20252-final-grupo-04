@@ -57,6 +57,7 @@ public class AgendaEstudos
             Logger.error("Erro ao obter estudos da semana: primeiro dia nulo");
             throw new IllegalArgumentException("Primeiro dia não pode ser nulo");
         }
+        
         // Retorna a lista de TimeSlotEstudo para a semana especificada
         TimeSlotEstudo chaveInicio = new TimeSlotEstudo(primeiroDia.atStartOfDay(), null);
         int indiceInicio = BinarySearchUtils.lowerBound(estudos, chaveInicio, Comparator.comparing(TimeSlotEstudo::getInicioEstudo));
@@ -77,6 +78,11 @@ public class AgendaEstudos
 
     public void addTimeSlotEstudo(TimeSlotEstudo timeSlotEstudo)
     {
+        if(timeSlotEstudo == null)
+        {
+            Logger.error("Erro ao adicionar TimeSlotEstudo: timeSlotEstudo nulo");
+            throw new IllegalArgumentException("TimeSlotEstudo não pode ser nulo");
+        }
         this.estudos.add(timeSlotEstudo);
     }
 
