@@ -46,6 +46,12 @@ public class ConfiguracaoAgenda {
     }
 
     public void setDia(DayOfWeek dia, DiaSemana diaSemana) { 
+        if(diaSemana == null) {
+            throw new IllegalArgumentException("DiaSemana não pode ser nulo");
+        }
+        if(diaSemana.getDiaSemana() != dia) {
+            throw new IllegalArgumentException("O dia da semana do DiaSemana não corresponde ao dia fornecido");
+        }
         this.diasSemana[dia.getValue() - 1] = diaSemana;
     }
 
