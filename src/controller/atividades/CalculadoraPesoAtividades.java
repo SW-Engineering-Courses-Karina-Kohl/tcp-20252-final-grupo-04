@@ -29,6 +29,10 @@ public class CalculadoraPesoAtividades {
             while(timeSlotEstudoAnalisado.getData().isBefore(atividade.getDataLimite()))
             {
                 contadorTimeSlots++;
+                if(!iterator.hasNext())
+                {
+                    break;
+                }
                 timeSlotEstudoAnalisado = iterator.next();
             }
             double pesoCalculado = atividade.getPesoTipo() * atividade.getDisciplina().getPrioridade() / contadorTimeSlots;

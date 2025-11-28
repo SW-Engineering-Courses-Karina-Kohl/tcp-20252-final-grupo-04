@@ -49,7 +49,7 @@ public class GeradorAgendaTest {
 
         ConfiguracaoAgenda configuracao = new ConfiguracaoAgenda();
         configuracao.setDataInicioVigencia(data);
-        configuracao.setDataFimVigencia(data);
+        configuracao.setDataFimVigencia(data.plusDays(1));
 
         DiaSemana quinta = new DiaSemana(DayOfWeek.THURSDAY);
         quinta.adicionarTimeSlot(horario);
@@ -73,7 +73,7 @@ public class GeradorAgendaTest {
     // Geração com vários dias e 2 horários por dia, sem impedimentos
     public void testGerarAgendaVariosDiasSemImpedimentos() {
         LocalDate inicio = LocalDate.of(2026, 1, 5); // segunda
-        LocalDate fim = LocalDate.of(2026, 1, 7);    // quarta
+        LocalDate fim = LocalDate.of(2026, 1, 8);    // quinta
 
         ConfiguracaoAgenda configuracao = new ConfiguracaoAgenda();
         configuracao.setDataInicioVigencia(inicio);
@@ -119,7 +119,7 @@ public class GeradorAgendaTest {
 
         ConfiguracaoAgenda configuracao = new ConfiguracaoAgenda();
         configuracao.setDataInicioVigencia(data);
-        configuracao.setDataFimVigencia(data);
+        configuracao.setDataFimVigencia(data.plusDays(1));
 
         DiaSemana quinta = new DiaSemana(DayOfWeek.THURSDAY);
         quinta.adicionarTimeSlot(horario1);
