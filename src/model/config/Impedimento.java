@@ -3,6 +3,7 @@ package src.model.config;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import org.tinylog.Logger;
 
 public class Impedimento 
 {
@@ -27,6 +28,11 @@ public class Impedimento
 
     public boolean conflitaCom(LocalDateTime dataHora)
     {
+        if(dataHora == null)
+        {
+            Logger.error("Data e hora fornecida para verificação de conflito é nula.");
+            return false;
+        }
         return this.dataHora.equals(dataHora);
     }
 

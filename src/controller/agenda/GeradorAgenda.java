@@ -92,6 +92,7 @@ public class GeradorAgenda {
             
         }
         Logger.info("Agenda gerada");
+        agenda.setCronogramaCriado(true);
         return agenda;
         
     }
