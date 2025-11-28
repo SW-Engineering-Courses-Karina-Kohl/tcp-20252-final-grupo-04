@@ -15,8 +15,10 @@ public class Studify {
         JPanel painel = new JPanel();
         CardLayout cardLayout = new CardLayout();
         painel.setLayout(cardLayout);
-        TelaInicial telaInicial = new TelaInicial(painel, cardLayout);
-        painel.add(telaInicial.getPainelInicial(), "PainelInicial");
+        //TelaAgenda telaAgenda = new TelaAgenda();
+        //painel.add(telaAgenda.getPainelInicial(), "PainelAgenda");
+        //TelaInicial telaInicial = new TelaInicial(painel, cardLayout);
+        //painel.add(telaInicial.getPainelInicial(), "PainelInicial");
         //segunda tela
         TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana(painel, cardLayout);
         painel.add(telaRegistrarSemana.getPainelRegistrarSemana(), "PainelRegistrarSemana");
