@@ -11,6 +11,7 @@ import java.time.DayOfWeek;
 
 public class Studify {
     public static void main(String[] args) {
+        
         JFrame janela = new JFrame("Studify");
         janela.setSize(900, 500);
         JPanel painel = new JPanel();

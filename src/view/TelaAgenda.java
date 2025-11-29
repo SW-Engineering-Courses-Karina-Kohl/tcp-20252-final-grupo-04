@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.awt.CardLayout;
 
-import org.junit.platform.console.shadow.picocli.CommandLine.Model.ArgSpec;
 import org.tinylog.Logger;
 import javax.swing.*;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -33,8 +32,10 @@ public class TelaAgenda extends JPanel {
     final int HORARIOINDEX = 0;
     AgendaEstudos agendaEstudos;
     LocalDate dataSelecionada;
-
-    public TelaAgenda(AgendaEstudos agendaEstudos) {
+    Aluno aluno;
+    public TelaAgenda(Aluno aluno) {
+        this.aluno =  aluno;
+        agendaEstudos = this.aluno.getAgenda();
         dataSelecionada = LocalDate.now();
         this.agendaEstudos = agendaEstudos;
         painelInicial = new JPanel();
