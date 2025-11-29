@@ -16,6 +16,9 @@ public class ConfiguracaoAgenda {
         this.dataFimVigencia = dataFimVigencia;
         this.impedimentos = new ArrayList<>();
         this.diasSemana = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            this.diasSemana.add(null);
+        }
     }
 
     public ConfiguracaoAgenda() { 
@@ -23,6 +26,9 @@ public class ConfiguracaoAgenda {
         this.dataFimVigencia = null;
         this.impedimentos = new ArrayList<>();
         this.diasSemana = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            this.diasSemana.add(null);
+        }
     };
 
     // Getters e Setters
@@ -48,7 +54,7 @@ public class ConfiguracaoAgenda {
     }
 
     public void setDia(DayOfWeek dia, DiaSemana diaSemana) { 
-        this.diasSemana.add(dia.getValue() - 1, diaSemana);
+        this.diasSemana.set(dia.getValue() - 1, diaSemana);
     }
 
     public DiaSemana getDiaSemana(DayOfWeek dia) {       
@@ -65,4 +71,5 @@ public class ConfiguracaoAgenda {
         return data.isAfter(dataInicioVigencia) &&
                (data.isEqual(dataFimVigencia) || data.isBefore(dataFimVigencia));
     }
+
 }

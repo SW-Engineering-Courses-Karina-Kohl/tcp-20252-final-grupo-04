@@ -7,22 +7,18 @@ public  abstract class Atividade {
     String nome;
     LocalDate dataLimite;
     double pesoCalculado;
-    static final int  MINWEIGHT = 0;
+    static final int MAXPESO = 5;
+
     public Atividade( String nome, LocalDate dataLimite, Disciplina disciplina) {
         if (nome == "" || nome == null){ 
             throw new IllegalArgumentException("O nome de uma atividade não deve ser vazio!");    
         }
-        
         if (dataLimite == null){
             throw new IllegalArgumentException("Insira uma data.");
-        }
-        else if (dataLimite.isBefore(LocalDate.now())){
-            throw new IllegalArgumentException("A data inserida deve ser posterior à data atual.");
         }
         if (disciplina == null){
             throw new IllegalArgumentException("A atividade deve estar associada a uma disciplina.");
         }
-        
         this.nome = nome;
         this.dataLimite = dataLimite;
         this.disciplina = disciplina;
@@ -58,8 +54,8 @@ public  abstract class Atividade {
     }
     
     public  void setPesoCalculado(double pesoCalculado){
-        if(pesoCalculado < MINWEIGHT){
-            throw new IllegalArgumentException("O peso calculado deve ser maior ou igual a zero.");
+        if(pesoCalculado < 0 || pesoCalculado > MAXPESO){
+            throw new IllegalArgumentException("O peso calculado deve estar entre 0 e " + MAXPESO +".");
         }
         this.pesoCalculado = pesoCalculado;
     }

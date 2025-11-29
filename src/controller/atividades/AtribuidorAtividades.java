@@ -5,30 +5,67 @@ import src.model.allocation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.ArrayList;
+import org.tinylog.Logger;
+
+import src.utils.BinarySearchUtils;
 
 public class AtribuidorAtividades 
 {
-    private List<AlocacaoAtividade> alocacoes;
-    
+    private List<AlocacaoAtividade> alocacoes = new ArrayList<>();
+    private CalculadoraPesoAtividades calculadoraPesoAtividades;
+
+    public AtribuidorAtividades()
+    {
+        
+    }
+
+    public AtribuidorAtividades(CalculadoraPesoAtividades calculadora)
+    {
+        this.setCalculadoraPesoAtividades(calculadora);
+    }
+
+    /**
+     * As datas de todas as atividades devem estar dentro das datas da agenda, senão o comportamento é inesperado.
+     * @param agenda
+     * @param disciplinas
+     * @param calculadora
+     */
+    public void atribuir(AgendaEstudos agenda, List<Disciplina> disciplinas, CalculadoraPesoAtividades calculadora)
+    {
+        this.setCalculadoraPesoAtividades(calculadora);
+        this.atribuir(agenda, disciplinas);
+    }
+
+    /**
+     * As datas de todas as atividades devem estar dentro das datas da agenda, senão o comportamento é inesperado.
+     * @param agenda
+     * @param disciplinas
+    */
     public void atribuir(AgendaEstudos agenda, List<Disciplina> disciplinas)
     {
         if(agenda == null)
         {
+            Logger.error("Erro em atribuir: agenda nula");
             throw new IllegalArgumentException("Agenda não pode ser nula");
         }
         if(disciplinas == null || disciplinas.isEmpty())
         {
+            Logger.error("Erro em atribuir: lista de disciplinas nula ou vazia");
             throw new IllegalArgumentException("Lista de disciplinas não pode ser nula ou vazia");
         }
+        if(this.calculadoraPesoAtividades == null)
+        {
+            Logger.error("Erro em atribuir: calculadora de peso nula");
+            throw new IllegalStateException("Calculadora de peso não foi definida");
+        }
+        Logger.info("Atribuindo atividades...");
 
         // Lógica para atribuir atividades às TimeSlotEstudo na agenda
         List<Atividade> atividades = this.juntarAtividadesDeDisciplinas(disciplinas);
         atividades.sort((a1, a2) -> a1.getDataLimite().compareTo(a2.getDataLimite()));
 
         List<TimeSlotEstudo> timeSlotsDisponiveis = new ArrayList<>(agenda.getEstudos());
-        CalculadoraPesoAtividades calculadoraPeso = new CalculadoraPesoAtividades();
-        calculadoraPeso.calcularPeso(atividades, timeSlotsDisponiveis);
+        calculadoraPesoAtividades.calcularPeso(atividades, timeSlotsDisponiveis);
 
         
         double somaPesosCalculados = 0.0;
@@ -48,10 +85,14 @@ public class AtribuidorAtividades
             int quantidadeTimeSlotsJanela = 0;
             for(int j = i; j < atividades.size(); j++)
             {
-                AlocacaoAtividade alocacao = alocacoes.get(j);
+                Logger.debug("I = {}, J = {}", i, j);
+                AlocacaoAtividade alocacao = alocacoes.get(j - i);
+                Logger.debug(("AlocacaoAtividade: Atividade = {}, PesoCalculado = {}"), alocacao.getAtividade().getNome(), alocacao.getAtividade().getPesoCalculado());
+                
                 //Calcular porcentagem = pesoCalculado / somaPesoCalculado
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
-
+                Logger.debug("AlocacaoAtividade.getPorcentagem = {}", alocacao.getPorcentagemTimeSlotEstudos());
+                
                 //Calcular número de timeSlots a serem atribuídos para a atividade = porcentagem * quantidade de TimeSlotEstudo's da janela
                 quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataLimite(), timeSlotsDisponiveis);
                 alocacao.setQuantidadeTimeSlotEstudos(alocacao.getPorcentagemTimeSlotEstudos() * quantidadeTimeSlotsJanela);
@@ -75,6 +116,7 @@ public class AtribuidorAtividades
 
     private List<Atividade> juntarAtividadesDeDisciplinas(List<Disciplina> disciplinas)
     {
+        Logger.info("Listando atividades das disciplinas...");
         List<Atividade> atividades = new ArrayList<>();
         for(Disciplina disciplina : disciplinas)
         {
@@ -94,22 +136,31 @@ public class AtribuidorAtividades
         return this.alocacoes.get(index);
     }
 
+    public void setCalculadoraPesoAtividades(CalculadoraPesoAtividades calculadora) 
+    {
+        if(calculadora == null)
+        {
+            throw new IllegalArgumentException("Calculadora de peso não pode ser nula");
+        }
+        this.calculadoraPesoAtividades = calculadora;
+    }
+
     public int quantidadeTimeSlotEstudosAntesDe(LocalDate data, List<TimeSlotEstudo> timeSlotEstudos)
-{
-    // Pegar todos os timeslots até o final do dia anterior
-    LocalDateTime dataLimiteAjustada = data.minusDays(1).atTime(23, 59, 59);
+    {
+        // Pegar todos os timeslots até o final do dia anterior
+        LocalDateTime dataLimiteAjustada = data.minusDays(1).atTime(23, 59, 59);
 
-    // Cria um TimeSlotEstudo fictício só para servir como chave
-    TimeSlotEstudo chave = new TimeSlotEstudo(dataLimiteAjustada, null);
+        // Cria um TimeSlotEstudo fictício só para servir como chave
+        TimeSlotEstudo chave = new TimeSlotEstudo(dataLimiteAjustada, null);
 
-    int indice = Collections.binarySearch(
-        timeSlotEstudos,
-        chave,
-        Comparator.comparing(TimeSlotEstudo::getInicioEstudo)
-    );
+        int indice = BinarySearchUtils.lastIndexLE(
+            timeSlotEstudos,
+            chave,
+            Comparator.comparing(TimeSlotEstudo::getInicioEstudo)
+        );
 
-    return indice >= 0 ? indice + 1 : -(indice + 1);
-}
+        return indice >= 0 ? indice + 1 : -(indice + 1);
+    }
 
 
     public void arredondarQuantidadeTimeSlots(List<AlocacaoAtividade> alocacoes, int totalTimeSlotsJanela)

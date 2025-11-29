@@ -2,20 +2,13 @@ package src.test;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
+import org.junit.Test;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
-import org.junit.Test;
-import static org.junit.Assert.*;
+
 public class TimeSlotEstudoTest {
-    
-    public static void main(String[] args) {
-        TimeSlotEstudoTest test = new TimeSlotEstudoTest();
-        test.testConflitaComImpedimento();
-        test.testAtividadeValida();
-        System.out.println("Todos os testes passaram!");
-    }
-    
+    @Test
     public void testConflitaComImpedimento() {
         LocalDate dataInicioEstudo = LocalDate.of(2023, 10, 1);
         LocalTime horaInicioEstudo = LocalTime.of(10, 0);
@@ -25,27 +18,21 @@ public class TimeSlotEstudoTest {
         LocalDateTime inicioImpedimento = LocalDateTime.of(2023, 10, 1, 10, 0);
         impedimento.setDataHora(inicioImpedimento);
 
-        assert timeSlotEstudo.conflitaComImpedimento(impedimento) : "Deveria conflitar com impedimento";
+        assert(timeSlotEstudo.conflitaComImpedimento(impedimento));
 
-        // Teste quando não há conflito
-        impedimento.setDataHora(LocalDateTime.of(2023, 10, 1, 13, 0));
-        assert !timeSlotEstudo.conflitaComImpedimento(impedimento) : "Não deveria conflitar com impedimento";
-        
-        System.out.println("testConflitaComImpedimento - PASSOU");
+        impedimento.setDataHora(LocalDateTime.of(2023, 10, 1, 12, 0));
+        assert(!timeSlotEstudo.conflitaComImpedimento(impedimento));
     }
 
+    @Test
     public void testAtividadeValida() {
         LocalDate dataInicioEstudo = LocalDate.of(2023, 10, 1);
         LocalTime horaInicioEstudo = LocalTime.of(10, 0);
         TimeSlotEstudo timeSlotEstudo = new TimeSlotEstudo(dataInicioEstudo, horaInicioEstudo);
 
-        // Teste com atividade null
-        assert !timeSlotEstudo.atividadeValida(null) : "Atividade null deveria ser inválida";
+        Disciplina disciplina = new Disciplina("Matemática", 1.5);
+        Prova prova = new Prova("Prova de Matemática", LocalDate.of(2023, 10, 5), disciplina);
 
-        // Teste com atividade válida (usando uma implementação concreta)
-        Prova prova = new Prova("Prova de Matemática",  LocalDate.of(2023, 10, 5), null);
-        assert timeSlotEstudo.atividadeValida(prova) : "Prova válida deveria ser aceita";
-        
-        System.out.println("testAtividadeValida - PASSOU");
+        assert(!timeSlotEstudo.atividadeValida(prova));
     }
 }

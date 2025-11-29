@@ -4,10 +4,10 @@ import src.model.entities.Disciplina;
 public class Exercicio  extends Atividade {
     static int _totalExercicios;
     double pesoCalculado;
-    static final double _PESO_TIPO = 0;
+    static final double _PESO_TIPO = 1;
 
-    public Exercicio(String nome,  LocalDate dataLimite, Disciplina disciplina) {
-        super(nome,  dataLimite, disciplina);
+    public Exercicio(String nome, LocalDate dataLimite, Disciplina disciplina) {
+        super(nome, dataLimite, disciplina);
         _totalExercicios++;
     }
 

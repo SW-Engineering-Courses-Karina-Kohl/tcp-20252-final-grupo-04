@@ -2,6 +2,7 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
+import src.controller.comunicacao.ControladorRegistrarTimeSlot;
 import java.awt.CardLayout;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.time.DayOfWeek;
 
 public class TelaRegistrarTimeSlot {
     private JPanel painelRegistrarTimeSlot;
@@ -16,6 +18,8 @@ public class TelaRegistrarTimeSlot {
     private JButton botaoSalvarTimeSlots;
     private JLabel infoTimeSlots;
     private List<String> timeSlotsSelecionados;
+    private DayOfWeek diaSemana;
+    private ConfiguracaoAgenda configuracaoAgenda;
 
     public void setTelaRegistrarTimeSlot() {
         painelRegistrarTimeSlot = new JPanel();
@@ -68,6 +72,9 @@ public class TelaRegistrarTimeSlot {
                     timeSlotsSelecionados.remove(timeSlot.getText());
                 }
             }
+            ControladorRegistrarTimeSlot controlador = new ControladorRegistrarTimeSlot(timeSlotsSelecionados, this.configuracaoAgenda);
+            controlador.converteTimeSlots(this.diaSemana);
+            
             System.out.println("Time Slots Selecionados: " + timeSlotsSelecionados);
             cardLayout.show(painelPrincipal, "PainelRegistrarSemana");
         });
@@ -83,10 +90,12 @@ public class TelaRegistrarTimeSlot {
     public List<String> getTimeSlotsSelecionados() {
         return timeSlotsSelecionados;
     }
-    public TelaRegistrarTimeSlot(JPanel painelPrincipal, CardLayout cardLayout) {
+    public TelaRegistrarTimeSlot(JPanel painelPrincipal, CardLayout cardLayout, DayOfWeek diaSemana, ConfiguracaoAgenda configuracaoAgenda) {
         setTelaRegistrarTimeSlot();
         setTimeSlotsHoras();
         setBotaoSalvarTimeSlots();
+        this.diaSemana = diaSemana;
+        this.configuracaoAgenda = configuracaoAgenda;
         transicaoTelaRegistrarSemana(painelPrincipal, cardLayout);
         this.painelRegistrarTimeSlot.add(botaoSalvarTimeSlots);
         setInfoTimeSlots();
