@@ -15,21 +15,24 @@ public class ControladorRegistrarTimeSlot {
     private DiaSemana timeSlotDiaSemana;
     private ConfiguracaoAgenda configuracaoAgenda;
 
-    public ControladorRegistrarTimeSlot(List<String> timeSlots) {
+    public ControladorRegistrarTimeSlot(List<String> timeSlots, ConfiguracaoAgenda configuracaoAgenda) {
         this.timeSlots = timeSlots;
+        this.configuracaoAgenda = configuracaoAgenda;
     }
     public void converteTimeSlots(DayOfWeek diaSemana) {
+        this.timeSlotDiaSemana = new DiaSemana(diaSemana);
         for (String timeSlotString : this.timeSlots) {
-            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm")
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("H:mm")
                     .withResolverStyle(ResolverStyle.STRICT);
             LocalTime dataHora = LocalTime.parse(timeSlotString, formatador);
-            this.timeSlotDiaSemana = new DiaSemana(diaSemana);
             this.timeSlotDiaSemana.adicionarTimeSlot(dataHora);
         }
-
+        // DiaSemana adicionados em ConfiguracaoAgenda
+        if (this.configuracaoAgenda != null) {
+            this.configuracaoAgenda.setDia(diaSemana, this.timeSlotDiaSemana);
+        }
     }
     public DiaSemana getTimeSlotDiaSemana() {
         return this.timeSlotDiaSemana;
     }
 }
-//Precisa ser conectado com ConfiguracaoAgenda da TelaRegistrarSemana
