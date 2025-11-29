@@ -49,14 +49,14 @@ public class GeradorAgendaTest {
 
         ConfiguracaoAgenda configuracao = new ConfiguracaoAgenda();
         configuracao.setDataInicioVigencia(data);
-        configuracao.setDataFimVigencia(data);
+        configuracao.setDataFimVigencia(data.plusDays(1));
 
         DiaSemana quinta = new DiaSemana(DayOfWeek.THURSDAY);
         quinta.adicionarTimeSlot(horario);
         configuracao.setDia(DayOfWeek.THURSDAY, quinta);
 
         GeradorAgenda gerador = new GeradorAgenda();
-        gerador.setConfiguracaoAgenda(configuracao); // usando o atributo público
+        gerador.setConfiguracaoAgenda(configuracao); 
 
         AgendaEstudos agenda = gerador.gerar();
 
@@ -73,25 +73,22 @@ public class GeradorAgendaTest {
     // Geração com vários dias e 2 horários por dia, sem impedimentos
     public void testGerarAgendaVariosDiasSemImpedimentos() {
         LocalDate inicio = LocalDate.of(2026, 1, 5); // segunda
-        LocalDate fim = LocalDate.of(2026, 1, 7);    // quarta
+        LocalDate fim = LocalDate.of(2026, 1, 8);    // quinta
 
         ConfiguracaoAgenda configuracao = new ConfiguracaoAgenda();
         configuracao.setDataInicioVigencia(inicio);
         configuracao.setDataFimVigencia(fim);
 
-        // Segunda
         DiaSemana segunda = new DiaSemana(DayOfWeek.MONDAY);
         segunda.adicionarTimeSlot(LocalTime.of(8, 0));
         segunda.adicionarTimeSlot(LocalTime.of(14, 0));
         configuracao.setDia(DayOfWeek.MONDAY, segunda);
 
-        // Terça
         DiaSemana terca = new DiaSemana(DayOfWeek.TUESDAY);
         terca.adicionarTimeSlot(LocalTime.of(8, 0));
         terca.adicionarTimeSlot(LocalTime.of(14, 0));
         configuracao.setDia(DayOfWeek.TUESDAY, terca);
 
-        // Quarta
         DiaSemana quarta = new DiaSemana(DayOfWeek.WEDNESDAY);
         quarta.adicionarTimeSlot(LocalTime.of(8, 0));
         quarta.adicionarTimeSlot(LocalTime.of(14, 0));
@@ -122,7 +119,7 @@ public class GeradorAgendaTest {
 
         ConfiguracaoAgenda configuracao = new ConfiguracaoAgenda();
         configuracao.setDataInicioVigencia(data);
-        configuracao.setDataFimVigencia(data);
+        configuracao.setDataFimVigencia(data.plusDays(1));
 
         DiaSemana quinta = new DiaSemana(DayOfWeek.THURSDAY);
         quinta.adicionarTimeSlot(horario1);

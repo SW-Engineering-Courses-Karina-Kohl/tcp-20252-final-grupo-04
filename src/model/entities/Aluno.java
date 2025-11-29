@@ -1,4 +1,6 @@
 package src.model.entities;
+import src.controller.atividades.AtribuidorAtividades;
+import src.model.atividades.Atividade;
 import src.model.config.ConfiguracaoAgenda;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +9,7 @@ public class Aluno {
     private List<Disciplina> disciplinas;
     private AgendaEstudos agenda;
     private ConfiguracaoAgenda configuracaoAgenda;
+    private AtribuidorAtividades atribuidor;
 
     // Construtores
 
@@ -37,6 +40,39 @@ public class Aluno {
 
     public void adicionarDisciplina(Disciplina disciplina) {
         this.disciplinas.add(disciplina);
+    }
+
+    public void removerDisciplina(Disciplina disciplina) {
+        this.disciplinas.remove(disciplina);
+    }
+    
+    public void setAtribuidorAtividades(AtribuidorAtividades atribuidor) {
+        if(atribuidor == null) {
+            throw new IllegalArgumentException("Atribuidor não pode ser nulo");
+        }
+        this.atribuidor = atribuidor;
+    }
+
+    public void atribuirAtividadesAgenda() {
+        if(this.atribuidor == null) {
+            throw new IllegalStateException("Atribuidor de atividades não foi definido");
+        }
+        verificarDatasAtividadesEntreVigencia();
+        this.atribuidor.atribuir(this.agenda, this.disciplinas);
+    }
+
+    public void verificarDatasAtividadesEntreVigencia()
+    {
+        for(Disciplina disciplina : this.disciplinas) 
+        {
+            for(Atividade atividade : disciplina.getAtividades()) 
+            {
+                if(!configuracaoAgenda.isDataEntreVigencia(atividade.getDataLimite()))
+                {
+                    throw new IllegalArgumentException("Atividade " + atividade.getNome() + " da disciplina " + disciplina.getNome() + " possui data limite fora do período de vigência da agenda.");
+                }
+            }
+        }
     }
 
     public AgendaEstudos getAgenda() {
