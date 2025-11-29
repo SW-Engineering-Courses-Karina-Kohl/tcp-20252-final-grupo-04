@@ -1,4 +1,5 @@
 package src.model.entities;
+import src.controller.agenda.GeradorAgenda;
 import src.controller.atividades.AtribuidorAtividades;
 import src.model.atividades.Atividade;
 import src.model.config.ConfiguracaoAgenda;
@@ -9,7 +10,6 @@ public class Aluno {
     private List<Disciplina> disciplinas;
     private AgendaEstudos agenda;
     private ConfiguracaoAgenda configuracaoAgenda;
-    private AtribuidorAtividades atribuidor;
 
     // Construtores
 
