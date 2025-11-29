@@ -119,7 +119,6 @@ public class AlunoTest {
 
     @Test
     public void fluxoCompletoUsuarioReal() {
-        // Configura agenda com dias e horários reais
         LocalDate inicio = LocalDate.of(2025, 1, 6); // segunda
         LocalDate fim = inicio.plusDays(4); // sexta
         ConfiguracaoAgenda config = new ConfiguracaoAgenda(inicio, fim);
@@ -144,21 +143,19 @@ public class AlunoTest {
         GeradorAgenda gerador = new GeradorAgenda(config);
         AgendaEstudos agendaGerada = gerador.gerar();
 
-        // Cria disciplinas e atividades com prazos dentro da vigência
-        Disciplina tcp = new Disciplina("TCP", 1.5);
-        Disciplina sd = new Disciplina("SD", 1.0);
+        Disciplina disciplinaTCP = new Disciplina("TCP", 1.5);
+        Disciplina disciplinaSD = new Disciplina("SD", 1.0);
 
-        Prova provaTcp = new Prova("Prova TCP", inicio.plusDays(2), tcp); // quarta
-        Trabalho trabSd = new Trabalho("Trabalho SD", inicio.plusDays(4), sd); // sexta
+        Prova provaTcp = new Prova("Prova TCP", inicio.plusDays(2), disciplinaTCP); // quarta
+        Trabalho trabSd = new Trabalho("Trabalho SD", inicio.plusDays(4), disciplinaSD); // sexta
 
-        tcp.adicionarAtividade(provaTcp);
-        sd.adicionarAtividade(trabSd);
+        disciplinaTCP.adicionarAtividade(provaTcp);
+        disciplinaSD.adicionarAtividade(trabSd);
 
-        // Aluno configurado como um usuário real faria
         Aluno aluno = new Aluno(config);
         aluno.setAgendaEstudos(agendaGerada);
-        aluno.adicionarDisciplina(tcp);
-        aluno.adicionarDisciplina(sd);
+        aluno.adicionarDisciplina(disciplinaTCP);
+        aluno.adicionarDisciplina(disciplinaSD);
 
         AtribuidorAtividades atribuidor = new AtribuidorAtividades();
         atribuidor.setCalculadoraPesoAtividades(new CalculadoraPesoAtividades());

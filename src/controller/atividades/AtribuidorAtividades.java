@@ -5,6 +5,7 @@ import src.model.allocation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import org.tinylog.Logger;
 
 import src.utils.BinarySearchUtils;
 
@@ -44,16 +45,20 @@ public class AtribuidorAtividades
     {
         if(agenda == null)
         {
+            Logger.error("Erro em atribuir: agenda nula");
             throw new IllegalArgumentException("Agenda não pode ser nula");
         }
         if(disciplinas == null || disciplinas.isEmpty())
         {
+            Logger.error("Erro em atribuir: lista de disciplinas nula ou vazia");
             throw new IllegalArgumentException("Lista de disciplinas não pode ser nula ou vazia");
         }
         if(this.calculadoraPesoAtividades == null)
         {
+            Logger.error("Erro em atribuir: calculadora de peso nula");
             throw new IllegalStateException("Calculadora de peso não foi definida");
         }
+        Logger.info("Atribuindo atividades...");
 
         // Lógica para atribuir atividades às TimeSlotEstudo na agenda
         List<Atividade> atividades = this.juntarAtividadesDeDisciplinas(disciplinas);
@@ -80,10 +85,14 @@ public class AtribuidorAtividades
             int quantidadeTimeSlotsJanela = 0;
             for(int j = i; j < atividades.size(); j++)
             {
+                Logger.debug("I = {}, J = {}", i, j);
                 AlocacaoAtividade alocacao = alocacoes.get(j - i);
+                Logger.debug(("AlocacaoAtividade: Atividade = {}, PesoCalculado = {}"), alocacao.getAtividade().getNome(), alocacao.getAtividade().getPesoCalculado());
+                
                 //Calcular porcentagem = pesoCalculado / somaPesoCalculado
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
-
+                Logger.debug("AlocacaoAtividade.getPorcentagem = {}", alocacao.getPorcentagemTimeSlotEstudos());
+                
                 //Calcular número de timeSlots a serem atribuídos para a atividade = porcentagem * quantidade de TimeSlotEstudo's da janela
                 quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataLimite(), timeSlotsDisponiveis);
                 alocacao.setQuantidadeTimeSlotEstudos(alocacao.getPorcentagemTimeSlotEstudos() * quantidadeTimeSlotsJanela);
@@ -107,6 +116,7 @@ public class AtribuidorAtividades
 
     private List<Atividade> juntarAtividadesDeDisciplinas(List<Disciplina> disciplinas)
     {
+        Logger.info("Listando atividades das disciplinas...");
         List<Atividade> atividades = new ArrayList<>();
         for(Disciplina disciplina : disciplinas)
         {
