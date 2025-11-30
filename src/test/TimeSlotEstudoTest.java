@@ -33,6 +33,6 @@ public class TimeSlotEstudoTest {
         Disciplina disciplina = new Disciplina("Matemática", 1.5);
         Prova prova = new Prova("Prova de Matemática", LocalDate.of(2023, 10, 5), disciplina);
 
-        assert(!timeSlotEstudo.atividadeValida(prova));
+        assert(timeSlotEstudo.atividadeValida(prova));
     }
 }

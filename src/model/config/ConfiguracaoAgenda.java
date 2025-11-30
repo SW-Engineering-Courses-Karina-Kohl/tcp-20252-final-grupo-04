@@ -54,6 +54,9 @@ public class ConfiguracaoAgenda {
     }
 
     public void setDia(DayOfWeek dia, DiaSemana diaSemana) { 
+        if(diaSemana.getDiaSemana() != dia) {
+            throw new IllegalArgumentException("DiaSemana incompatível com o dia fornecido");
+        }
         this.diasSemana.set(dia.getValue() - 1, diaSemana);
     }
 
@@ -68,8 +71,8 @@ public class ConfiguracaoAgenda {
     }
 
     public boolean isDataEntreVigencia(LocalDate data) {
-        return data.isAfter(dataInicioVigencia) &&
-               (data.isEqual(dataFimVigencia) || data.isBefore(dataFimVigencia));
+        return data.isEqual(dataInicioVigencia) || data.isEqual(dataFimVigencia) ||
+               (data.isAfter(dataInicioVigencia) && data.isBefore(dataFimVigencia));
     }
 
 }
