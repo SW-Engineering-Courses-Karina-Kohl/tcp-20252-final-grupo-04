@@ -60,7 +60,7 @@ public class Aluno {
         {
             for(Atividade atividade : disciplina.getAtividades()) 
             {
-                if(!configuracaoAgenda.isDataEntreVigencia(atividade.getDataLimite()))
+                if(!configuracaoAgenda.isDataEntreVigencia(atividade.getDataLimite()) || atividade.getDataLimite().isEqual(configuracaoAgenda.getDataInicioVigencia()))
                 {
                     throw new IllegalArgumentException("Atividade " + atividade.getNome() + " da disciplina " + disciplina.getNome() + " possui data limite fora do período de vigência da agenda.");
                 }
