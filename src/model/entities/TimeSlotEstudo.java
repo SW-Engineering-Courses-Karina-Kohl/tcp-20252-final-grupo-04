@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.Duration;
 
 public class TimeSlotEstudo {
-    private static final Duration _DURACAO_PADRAO = Duration.ofHours(2);
+    private static final Duration _DURACAO_PADRAO = Duration.ofMinutes(30);
     private final LocalDateTime inicioEstudo;
     private Atividade atividade;
     private boolean disponivel;

@@ -22,19 +22,6 @@ import src.controller.atividades.CalculadoraPesoAtividades;
 
 public class AlunoTest {
 
-    private static class AtribuidorFake extends AtribuidorAtividades {
-        boolean chamado;
-        AgendaEstudos agendaRecebida;
-        List<Disciplina> disciplinasRecebidas;
-
-        @Override
-        public void atribuir(AgendaEstudos agenda, List<Disciplina> disciplinas) {
-            this.chamado = true;
-            this.agendaRecebida = agenda;
-            this.disciplinasRecebidas = disciplinas;
-        }
-    }
-
     @Test
     public void construtorComConfigInicializaCampos() {
         ConfiguracaoAgenda config = new ConfiguracaoAgenda(LocalDate.of(2025, 1, 1), LocalDate.of(2025, 12, 31));
