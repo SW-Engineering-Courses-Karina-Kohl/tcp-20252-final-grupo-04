@@ -136,21 +136,17 @@ public class TelaRegistrarSemana {
             dataFim = dataFimInput.getText();
             if(validaVigencia(dataInicio, dataFim)) {
                 cardLayout.show(painel, "PainelRegistrarAtividade");
-                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
+                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos, configuracaoAgenda);
                 controlador.processaRegistroSemana();
-                this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
-                comunicacao.setConfiguracaoAgenda(this.configuracaoAgenda);
                 Logger.info("Transição para TelaRegistrarAtividade realizada com sucesso.");}
         });
     }
     public boolean validaVigencia(String dataInicio, String dataFim) {
         boolean vigenciaValida = false;
             if(validaDataInput(dataInicio, "dd/MM/uuuu") && validaDataInput(dataFim, "dd/MM/uuuu")) {
-                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
-                controlador.processaRegistroSemana();
+                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos, configuracaoAgenda);
                 if(controlador.validaConfiguracaoAgenda()) {
                     vigenciaValida = true;
-                    this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
                     Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
                 } else {
                     Logger.error("Data de início deve ser anterior à data de fim.");

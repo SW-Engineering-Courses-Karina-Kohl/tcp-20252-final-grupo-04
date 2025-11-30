@@ -3,6 +3,7 @@ import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
 import src.controller.comunicacao.ControladorRegistrarAtividade;
+import src.controller.agenda.GeradorAgenda;
 import src.controller.comunicacao.ConDadosEntreTelas;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -95,12 +96,13 @@ public class TelaRegistrarAtividade {
                 this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas, comunicacao);
                 this.controladorRegistrarAtividade.converteDisciplinaAtividades();
                 controladorRegistrarAtividade.AdicionaAtividadesAluno();
-                comunicacao.setAluno(controladorRegistrarAtividade.getAluno());
+                criarAgendaEstudos();
                 comunicacao.transicaoAtividadeAgenda();
                 Logger.info("Atividades registradas com sucesso para o aluno.");
                 Logger.info(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia());
                 DayOfWeek diaSemana=   comunicacao.getConfiguracaoAgenda().getDataInicioVigencia().getDayOfWeek();
-                Logger.info(diaSemana.getDisplayName(TextStyle.FULL, Locale.getDefault()));                
+                Logger.info(diaSemana.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+                Logger.info("timeslots" + comunicacao.getAluno().getAgenda().getEstudos().size());                
                 cardLayout.show(painel, "PainelAgenda");
             } else {
                 Logger.warn("Nenhuma atividade ou disciplina foi registrada antes de concluir.");
@@ -140,6 +142,15 @@ public class TelaRegistrarAtividade {
             }
         });
     }
+
+    private void criarAgendaEstudos(){
+        Logger.info(comunicacao.getConfiguracaoAgenda().getDiaSemana(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia().getDayOfWeek()).getHorarios().size());
+        GeradorAgenda geradorAgenda =  new GeradorAgenda();
+        AgendaEstudos agendaEstudos = geradorAgenda.gerar(comunicacao.getConfiguracaoAgenda());
+        aluno.setAgendaEstudos(agendaEstudos);
+        comunicacao.setAluno(aluno);
+    }
+
     public JLabel getInfoDataAtividade() {
         return infoDataAtividade;
     }
