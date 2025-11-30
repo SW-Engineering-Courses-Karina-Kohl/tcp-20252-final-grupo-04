@@ -9,9 +9,11 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.awt.CardLayout;
-
+import javax.swing.table.DefaultTableModel;
 import org.tinylog.Logger;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import com.github.lgooddatepicker.components.DatePicker;
 import java.util.List;
 import java.awt.GridBagLayout;
@@ -33,9 +35,8 @@ public class TelaAgenda extends JPanel {
     private String[][] dadosLista;
     GridBagConstraints layoutConstraints;
     private  final String[]  COLUNAS = {"Horário", "Atividade"};
-
-
     Aluno aluno;
+
     public TelaAgenda() {
         painelInicial = new JPanel();
         layout = new GridBagLayout();
@@ -47,16 +48,10 @@ public class TelaAgenda extends JPanel {
         
         datePicker = new DatePicker();
         datePicker.addDateChangeListener(event -> {
-
-            if (scrollPane !=  null) {
-                painelInicial.remove(scrollPane);
-                painelInicial.remove(botaoInicial);    
-            }
             dataSelecionada = event.getNewDate();
             renderTabelaHorarios();
             painelInicial.revalidate();
             painelInicial.repaint();
-
         });
         painelInicial.add(datePicker, layoutConstraints);
 
@@ -90,6 +85,8 @@ public class TelaAgenda extends JPanel {
         if (estudosDia == null) estudosDia = new ArrayList<>();
         Logger.info("estudos do dia: " + estudosDia.size());
         dadosLista = fetchDadosAgenda(estudosDia);
+
+        if (tabelaHorarios == null) {
         tabelaHorarios = new JTable(dadosLista, COLUNAS);
         scrollPane = new JScrollPane(tabelaHorarios);
         layoutConstraints.gridx = 0;
@@ -97,7 +94,11 @@ public class TelaAgenda extends JPanel {
         layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
         layoutConstraints.weightx = 1;
         layoutConstraints.weighty = 1;
-        painelInicial.add(scrollPane, layoutConstraints);
+        painelInicial.add(scrollPane, layoutConstraints);    
+        }
+        else{
+            tabelaHorarios.setModel(new DefaultTableModel(dadosLista, COLUNAS));
+        }
     }
 
 private String[][] fetchDadosAgenda(List<TimeSlotEstudo> estudos) {
