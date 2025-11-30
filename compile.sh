@@ -15,7 +15,7 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "Para executar:"
     echo "  java -cp \"build:lib/*\" src.Studify"
-    echo "  java -cp \"build:lib/*\" src.test.TimeSlotEstudoTest"
+    echo "  ./run-tests.sh"
 else
     echo "Erro na compilacao!"
 fi

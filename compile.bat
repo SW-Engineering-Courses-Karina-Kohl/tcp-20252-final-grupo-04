@@ -15,7 +15,7 @@ if %errorlevel% equ 0 (
     echo.
     echo Para executar:
     echo   java -cp "build;lib/*" src.Studify
-    echo   echo "Testes requerem configuracao JUnit adequada"
+    echo   .\run-tests.bat
 ) else (
     echo Erro na compilacao!
 )
