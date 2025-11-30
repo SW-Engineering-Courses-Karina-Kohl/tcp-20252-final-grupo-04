@@ -2,9 +2,7 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JButton;
+
 import java.awt.Font;
 import java.lang.reflect.Array;
 import java.sql.Date;
@@ -18,8 +16,6 @@ import com.github.lgooddatepicker.components.DatePicker;
 import java.util.List;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
-import javax.swing.JTable;
 
 public class TelaAgenda extends JPanel {
     private JPanel painelInicial;
@@ -33,9 +29,15 @@ public class TelaAgenda extends JPanel {
     private AgendaEstudos agendaEstudos;
     private LocalDate dataSelecionada;
     private List<TimeSlotEstudo> estudosDia;
+    private JScrollPane scrollPane;
+    private JTable tabelaHorarios;
+    private String[][] dadosLista;
+    private  final String[]  COLUNAS = {"Horário", "Atividade"};
+
 
     Aluno aluno;
     public TelaAgenda() {
+        
         painelInicial = new JPanel();
         layout = new GridBagLayout();
         layoutConstraints = new GridBagConstraints();
@@ -44,6 +46,15 @@ public class TelaAgenda extends JPanel {
         painelInicial.setLayout(layout);
         tituloAplicacao = new JLabel("Agenda de Atividades");
         datePicker = new DatePicker();
+        datePicker.addDateChangeListener(event -> {
+            if (scrollPane != null) {
+                painelInicial.remove(scrollPane);
+            }
+            dataSelecionada =  datePicker.getDate();
+            renderTabelaHorarios();
+            painelInicial.revalidate();
+            painelInicial.repaint();
+        });
         painelInicial.add(datePicker, layoutConstraints);
 
     }
@@ -71,33 +82,44 @@ public class TelaAgenda extends JPanel {
 
 
     private void renderTabelaHorarios() {
-        String[] colunas = {"Horário", "Atividade"};
-        if (agendaEstudos.getEstudosDia(dataSelecionada) != null) {
-            estudosDia = agendaEstudos.getEstudosDia(datePicker.getDate());    
-        }
-        
-        String[][] dadosLista = fetchDadosAgenda(estudosDia);
-        JTable tabelaHorarios = new JTable(dadosLista, colunas);
-        JScrollPane scrollPane = new JScrollPane(tabelaHorarios);
-        layoutConstraints.gridx = 0;
-        layoutConstraints.gridy = 2;
-        painelInicial.add(scrollPane, layoutConstraints);
+    estudosDia = agendaEstudos.getEstudosDia(dataSelecionada);
+    if (estudosDia == null) estudosDia = new ArrayList<>();
+    Logger.info("estudos do dia: " + estudosDia.size());
+    dadosLista = fetchDadosAgenda(estudosDia);
+
+    tabelaHorarios = new JTable(dadosLista, COLUNAS);
+    scrollPane = new JScrollPane(tabelaHorarios);
+
+    layoutConstraints.gridx = 0;
+    layoutConstraints.gridy = 2;
+
+    painelInicial.add(scrollPane, layoutConstraints);
     }
 
-    private String[][] fetchDadosAgenda(List<TimeSlotEstudo> estudos) {
+private String[][] fetchDadosAgenda(List<TimeSlotEstudo> estudos) {
 
-        final int NUMCOLUNAS = 2;
-        int numLinhas = 48;
-        String[][] dados = new String[numLinhas][NUMCOLUNAS];
-        for (int i = 0; i < numLinhas; i++) {
-            dados[i][HORARIOINDEX] = "00:00";
-            dados[i][NOMEATIVIDADEINDEX] = "Livre";
-        }
-        for (TimeSlotEstudo estudo: estudos){
-            dados[estudos.indexOf(estudo)][HORARIOINDEX] = estudo.getInicioEstudo().toString();
-            dados[estudos.indexOf(estudo)][NOMEATIVIDADEINDEX] = estudo.getAtividade().getNome();
-        }
-        return dados;
+    int numLinhas = 48;
+    String[][] dados = new String[numLinhas][2];
+
+    // Preenche padrão
+    for (int i = 0; i < numLinhas; i++) {
+    int hora = i / 2;             // 0,0,1,1,2,2...
+    int minuto = (i % 2) * 30;    // 0,30,0,30...
+    String horario = String.format("%02d:%02d", hora, minuto);
+    dados[i][HORARIOINDEX] = horario;
+    dados[i][NOMEATIVIDADEINDEX] = "Livre";
+}
+
+    for (TimeSlotEstudo estudo : estudos) {
+
+        int hora   = estudo.getInicioEstudo().getHour();
+        int minuto = estudo.getInicioEstudo().getMinute();
+        int linha = hora * 2 + (minuto == 30 ? 1 : 0);
+        dados[linha][HORARIOINDEX] = estudo.getInicioEstudo().toString();
+        dados[linha][NOMEATIVIDADEINDEX] = estudo.getAtividade().getNome();
     }
+
+    return dados;
+}
 
 }
