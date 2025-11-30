@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.Duration;
 
 public class TimeSlotEstudo {
-    private static final Duration _DURACAO_PADRAO = Duration.ofHours(2);
+    private static final Duration _DURACAO_PADRAO = Duration.ofMinutes(30);
     private final LocalDateTime inicioEstudo;
     private Atividade atividade;
     private boolean disponivel;
@@ -53,16 +53,14 @@ public class TimeSlotEstudo {
     }
 
     public boolean atividadeValida(Atividade atividade) {
-        // Implementar validação específica
-        return atividade != null;
+        if(atividade == null) {
+            return false;
+        }else {
+            return (atividade.getDataLimite().isAfter(this.inicioEstudo.toLocalDate()));
+        }
     }
 
     public boolean conflitaComImpedimento(Impedimento impedimento) {
-        LocalDateTime fimEstudo = this.inicioEstudo.plus(_DURACAO_PADRAO);
-        LocalDateTime inicioImpedimento = impedimento.getDataHora();
-        
-        // Verifica se o impedimento está dentro do período de estudo
-        return inicioImpedimento.isAfter(this.inicioEstudo.minusMinutes(1)) && 
-               inicioImpedimento.isBefore(fimEstudo.plusMinutes(1));
+        return this.inicioEstudo.equals(impedimento.getDataHora());
     }
 }

@@ -1,10 +1,9 @@
 package src.model.config;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import org.tinylog.Logger;
 
 public class Impedimento 
 {
@@ -29,14 +28,12 @@ public class Impedimento
 
     public boolean conflitaCom(LocalDateTime dataHora)
     {
-        if(dataHora == this.dataHora)
+        if(dataHora == null)
         {
-            return true;
-        }
-        else
-        {
+            Logger.error("Data e hora fornecida para verificação de conflito é nula.");
             return false;
         }
+        return this.dataHora.equals(dataHora);
     }
 
     public LocalDate getData()

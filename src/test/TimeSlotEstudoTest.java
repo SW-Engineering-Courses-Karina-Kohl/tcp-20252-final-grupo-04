@@ -41,7 +41,7 @@ public class TimeSlotEstudoTest {
 
         // Teste com atividade válida
         Disciplina disciplina = new Disciplina("Matemática", 1.5);
-        Prova prova = new Prova("Prova de Matemática", 1, LocalDateTime.of(2023, 10, 5, 9, 0));
+        Prova prova = new Prova("Prova de Matemática", LocalDate.of(2023, 10, 5), disciplina);
         assertTrue("Atividade com data limite posterior deveria ser válida", 
                   timeSlotEstudo.atividadeValida(prova));
     }

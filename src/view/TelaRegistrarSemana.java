@@ -2,7 +2,8 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
-
+import src.controller.comunicacao.ConDadosEntreTelas;
+import src.controller.comunicacao.ControladorRegistrarSemana;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.time.format.DateTimeParseException;
+import src.controller.comunicacao.ControladorRegistrarSemana;
 
 public class TelaRegistrarSemana {
     private JPanel painelRegistrarSemana;
@@ -23,6 +25,7 @@ public class TelaRegistrarSemana {
     private JTextArea dataInicioInput;
     private JLabel infoDataFim;
     private JTextArea dataFimInput;
+    private TelaRegistrarTimeSlot[] telaRegistrarTimeSlot;
     private JLabel infoImpedimentos;
     private JTextArea impedimentosInput;
     private JButton[] botoesDiaSemana;
@@ -31,7 +34,8 @@ public class TelaRegistrarSemana {
     private String dataInicio;
     private String dataFim;
     private List<String> impedimentos;
-   
+    private ConfiguracaoAgenda configuracaoAgenda;
+    private ConDadosEntreTelas comunicacao;
     public JButton getBotaoProximaTela() {
         return proximaTela;
     }
@@ -128,12 +132,18 @@ public class TelaRegistrarSemana {
 
     public void setBotoesDiaSemana(JPanel painel, CardLayout cardLayout) {
         String[] diasSemana = {"Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"};
+        java.time.DayOfWeek[] diasSemanaEnum = {java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.TUESDAY, java.time.DayOfWeek.WEDNESDAY, 
+                                                java.time.DayOfWeek.THURSDAY, java.time.DayOfWeek.FRIDAY, java.time.DayOfWeek.SATURDAY, 
+                                                java.time.DayOfWeek.SUNDAY};
         botoesDiaSemana = new JButton[diasSemana.length];
         for (int i = 0; i < diasSemana.length; i++) {
             botoesDiaSemana[i] = new JButton(diasSemana[i]);
             int botoesIndex = i;
+            java.time.DayOfWeek dayOfWeek = diasSemanaEnum[i];
             botoesDiaSemana[i].addActionListener(e -> {
-                cardLayout.show(painel, "Registrar" + botoesIndex + "PainelTimeSlot");
+                if (this.telaRegistrarTimeSlot != null && botoesIndex < this.telaRegistrarTimeSlot.length) {
+                    cardLayout.show(painel, "TelaRegistrarTimeSlot" + botoesIndex);
+                }
             });
             botoesDiaSemana[i].setSize(150, 50);
             botoesDiaSemana[i].setLocation(50 + (i % 4) * 200, 250 + (i / 4) * 70);
@@ -141,17 +151,31 @@ public class TelaRegistrarSemana {
             this.painelRegistrarSemana.add(botoesDiaSemana[i]);
         }
     }
-    public void transicaoTelaAgenda(JPanel painel, CardLayout cardLayout) {
+    public void transicaoTelaRegistrarAtividade(JPanel painel, CardLayout cardLayout) {
         proximaTela.addActionListener(e -> {
             dataInicio = dataInicioInput.getText();
             dataFim = dataFimInput.getText();
+            if(validaVigencia(dataInicio, dataFim)) {
+                cardLayout.show(painel, "PainelRegistrarAtividade");
+                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos, configuracaoAgenda);
+                controlador.processaRegistroSemana();
+                Logger.info("Transição para TelaRegistrarAtividade realizada com sucesso.");}
+        });
+    }
+    public boolean validaVigencia(String dataInicio, String dataFim) {
+        boolean vigenciaValida = false;
             if(validaDataInput(dataInicio, "dd/MM/uuuu") && validaDataInput(dataFim, "dd/MM/uuuu")) {
-                Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
-                cardLayout.show(painel, "PainelAgenda");
+                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos, configuracaoAgenda);
+                if(controlador.validaConfiguracaoAgenda()) {
+                    vigenciaValida = true;
+                    Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
+                } else {
+                    Logger.error("Data de início deve ser anterior à data de fim.");
+                }
             } else {
                 Logger.error("Formato de data inválido para vigência.");
             }
-        });
+            return vigenciaValida;
     }
     public boolean validaDataInput(String data, String formato) {
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern(formato).withResolverStyle(ResolverStyle.STRICT);
@@ -162,16 +186,29 @@ public class TelaRegistrarSemana {
             return false;
         }
     }
+    public boolean validaImpedimentoInput(String impedimento) {
+        boolean impedimentoValido = false;
+        if(validaDataInput(impedimento, "dd/MM/uuuu HH:mm")) {
+            if (impedimentos.contains(impedimento)) {
+                Logger.warn("Impedimento já existe: " + impedimento);
+            } else if(!impedimento.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:(00|30)")) {
+                Logger.warn("Apenas 30 ou 00 como minutos.");
+            } else {
+            Logger.info("Impedimento válido registrado: " + impedimento);
+            impedimentoValido = true;
+            }
+        } else {
+            Logger.error("Formato de impedimento inválido: " + impedimento);
+        }
+        return impedimentoValido;
+    }
     public void coletaImpedimentos() {
         this.impedimentos = new ArrayList<>();
         adicionaImpedimentos.addActionListener(e -> {
-            if(validaDataInput(impedimentosInput.getText(), "dd/MM/uuuu HH:mm")) {
-                Logger.info("Impedimento válido registrado: " + impedimentosInput.getText());
+            if(validaImpedimentoInput(impedimentosInput.getText().trim())) {
                 impedimentos.add(impedimentosInput.getText());
                 impedimentosInput.setText("");
-            } else {
-                Logger.error("Formato de impedimento inválido: " + impedimentosInput.getText());
-            } 
+            }
         });
     }
     
@@ -185,6 +222,14 @@ public class TelaRegistrarSemana {
 
     public List<String> getImpedimentos() {
         return impedimentos;
+    }
+    
+    public void setTelaRegistrarTimeSlot(TelaRegistrarTimeSlot[] telaRegistrarTimeSlot) {
+        this.telaRegistrarTimeSlot = telaRegistrarTimeSlot;
+    }
+
+    public void setConfiguracaoAgenda(ConfiguracaoAgenda configuracaoAgenda) {
+        this.configuracaoAgenda = configuracaoAgenda;
     }
 
     public void inicializaTelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
@@ -204,9 +249,19 @@ public class TelaRegistrarSemana {
         setImpedimentosInput();
         this.painelRegistrarSemana.add(this.impedimentosInput);
         setBotoesDiaSemana(painel, cardLayout);
-        transicaoTelaAgenda(painel, cardLayout);
+        transicaoTelaRegistrarAtividade(painel, cardLayout);
         setBotaoAdicionaImpedimentos();
         coletaImpedimentos();
         this.painelRegistrarSemana.add(this.adicionaImpedimentos);
+    }
+    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout, ConDadosEntreTelas comunicacao) {
+        this.configuracaoAgenda = comunicacao.getConfiguracaoAgenda();
+        this.comunicacao = comunicacao;
+        inicializaTelaRegistrarSemana(painel, cardLayout);
+    }
+    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
+        inicializaTelaRegistrarSemana(painel, cardLayout);
+    }
+    public TelaRegistrarSemana() {
     }
 }

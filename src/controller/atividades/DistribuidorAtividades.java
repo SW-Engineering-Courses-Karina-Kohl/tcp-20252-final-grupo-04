@@ -1,9 +1,10 @@
 package src.controller.atividades;
 import src.model.entities.*;
-import src.model.atividades.*;
 import src.model.allocation.*;
 
 import java.util.*;
+
+import org.tinylog.Logger;
 
 public class DistribuidorAtividades 
 {
@@ -11,6 +12,12 @@ public class DistribuidorAtividades
     {
         // Implementar lógica de distribuição dos TimeSlotEstudo para as atividades conforme a quantidade arredondada
         // Enquanto houver timeSlotsDisponiveis e alocacoes com quantidade > 0
+        if(alocacoes == null || alocacoes.isEmpty())
+        {
+            Logger.error("Erro ao distribuir atividades: Alocacoes esta vazio");
+            throw new IllegalArgumentException("Alocacoes esta vazio");
+        }
+
         Iterator<TimeSlotEstudo> iteratorTimeSlots = timeSlotsDisponiveis.iterator();
         int i = 0;
         while(iteratorTimeSlots.hasNext())

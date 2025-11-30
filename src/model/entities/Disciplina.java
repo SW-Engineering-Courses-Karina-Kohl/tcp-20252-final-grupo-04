@@ -15,6 +15,7 @@ public class Disciplina {
         this.prioridade = prioridade;
         this.atividades = new java.util.ArrayList<>();
         totalDisciplinas++;
+        this.atividades = new java.util.ArrayList<>();
     }
 
     public static int getTotalDisciplinas() {

@@ -1,5 +1,6 @@
 package src;
 import src.model.entities.*;
+import src.controller.comunicacao.ConDadosEntreTelas;
 import src.model.atividades.*;
 import src.model.config.*;
 import src.view.*;
@@ -15,6 +16,7 @@ import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
+import java.time.DayOfWeek;
 
 public class Studify {
     public static void main(String[] args) {
@@ -36,6 +38,11 @@ public class Studify {
         
         // Garantir execução na thread do Swing
         javax.swing.SwingUtilities.invokeLater(() -> {
+            ConDadosEntreTelas comunicacao = new ConDadosEntreTelas();
+            Aluno aluno = new Aluno();
+            comunicacao.setAluno(aluno);
+            comunicacao.setConfiguracaoAgenda(new ConfiguracaoAgenda());
+            
             JFrame janela = new JFrame("Studify");
             janela.setSize(900, 500);
             janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,29 +50,33 @@ public class Studify {
             
             JPanel painel = new JPanel();
             CardLayout cardLayout = new CardLayout();
+            comunicacao.setPainelPrincipal(painel);
+            comunicacao.setLayoutPrincipal(cardLayout);
             painel.setLayout(cardLayout);
-        TelaInicial telaInicial = new TelaInicial();
-        telaInicial.inicializaTelaInicial();
-        telaInicial.transicaoParaTelaRegistrarSemana(painel, cardLayout);
-        painel.add(telaInicial.getPainelInicial(), "PainelInicial");
-        //segunda tela
-        TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana();
-        telaRegistrarSemana.inicializaTelaRegistrarSemana(painel, cardLayout);
-        painel.add(telaRegistrarSemana.getPainelRegistrarSemana(), "PainelRegistrarSemana");
-        //temporário enquanto não faz a tela de calendário e dos time slots
-        JPanel painelAgenda = new JPanel();
-        painelAgenda.setSize(900, 500);
-        for (int i = 0; i < 7; i++) {
-            JPanel[] paineisDiasSemana = new JPanel[7];
-            paineisDiasSemana[i] = new JPanel();
-            paineisDiasSemana[i].setSize(900, 500);
-            paineisDiasSemana[i].setLayout(null);
-            painel.add(paineisDiasSemana[i], "Registrar" + i + "PainelTimeSlot");
-        }
-        painel.add(painelAgenda, "PainelAgenda");
-        janela.add(painel);
-        janela.setVisible(true);
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            TelaAgenda painelAgenda = new TelaAgenda();     
+            TelaInicial telaInicial = new TelaInicial(painel, cardLayout);
+            TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana(painel, cardLayout, comunicacao);
+            TelaRegistrarAtividade telaRegistrarAtividade = new TelaRegistrarAtividade(painel, cardLayout, aluno, painelAgenda, comunicacao);
+            TelaRegistrarTimeSlot[] telaRegistrarTimeSlot = new TelaRegistrarTimeSlot[7];
+            
+            comunicacao.setTelaRegistrarSemana(telaRegistrarSemana);
+            comunicacao.setTelaRegistrarAtividade(telaRegistrarAtividade);
+            comunicacao.setTelaAgenda(painelAgenda);        
+
+            painel.add(telaInicial.getPainelInicial(), "PainelInicial");
+            painel.add(telaRegistrarSemana.getPainelRegistrarSemana(), "PainelRegistrarSemana");        
+            for (int i = 0; i < 7; i++) {
+                telaRegistrarTimeSlot[i] = new TelaRegistrarTimeSlot(painel, cardLayout, DayOfWeek.of(i + 1), comunicacao);
+                painel.add(telaRegistrarTimeSlot[i].getPainelRegistrarTimeSlot(), "TelaRegistrarTimeSlot" + i);
+            }
+            telaRegistrarSemana.setTelaRegistrarTimeSlot(telaRegistrarTimeSlot);
+            painel.add(telaRegistrarAtividade.getPainelRegistrarAtividade(), "PainelRegistrarAtividade");
+            //temporário enquanto não faz a classe da tela de agenda
+            painel.add(painelAgenda.getPainelInicial(), "PainelAgenda");    
+            janela.add(painel);
+            janela.setVisible(true);
+            janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
     }
 }

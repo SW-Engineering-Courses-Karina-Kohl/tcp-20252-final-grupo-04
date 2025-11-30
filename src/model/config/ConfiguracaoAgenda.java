@@ -1,22 +1,24 @@
 package src.model.config;
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
 public class ConfiguracaoAgenda {
     private List<DiaSemana> diasSemana;
-    private LocalDateTime dataInicioVigencia;
-    private LocalDateTime dataFimVigencia;
+    private LocalDate dataInicioVigencia;
+    private LocalDate dataFimVigencia;
     private List<Impedimento> impedimentos;
 
     // Construtores
     public ConfiguracaoAgenda(LocalDate dataInicioVigencia, LocalDate dataFimVigencia) {
-        this.dataInicioVigencia = dataInicioVigencia.atStartOfDay();
-        this.dataFimVigencia = dataFimVigencia.atTime(23, 59);
+        this.dataInicioVigencia = dataInicioVigencia;
+        this.dataFimVigencia = dataFimVigencia;
         this.impedimentos = new ArrayList<>();
         this.diasSemana = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            this.diasSemana.add(null);
+        }
     }
 
     public ConfiguracaoAgenda() { 
@@ -24,20 +26,23 @@ public class ConfiguracaoAgenda {
         this.dataFimVigencia = null;
         this.impedimentos = new ArrayList<>();
         this.diasSemana = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            this.diasSemana.add(null);
+        }
     };
 
     // Getters e Setters
-    public LocalDateTime getDataInicioVigencia() {
+    public LocalDate getDataInicioVigencia() {
         return this.dataInicioVigencia;
     }
     public void setDataInicioVigencia(LocalDate dataInicioVigencia) {
-        this.dataInicioVigencia = dataInicioVigencia.atStartOfDay();
+        this.dataInicioVigencia = dataInicioVigencia;
     }
-    public LocalDateTime getDataFimVigencia() {
+    public LocalDate getDataFimVigencia() {
         return this.dataFimVigencia;
     }
     public void setDataFimVigencia(LocalDate dataFimVigencia) {
-        this.dataFimVigencia = dataFimVigencia.atTime(23, 59);
+        this.dataFimVigencia = dataFimVigencia;
     }
 
     public List<Impedimento> getImpedimentos() {
@@ -49,7 +54,10 @@ public class ConfiguracaoAgenda {
     }
 
     public void setDia(DayOfWeek dia, DiaSemana diaSemana) { 
-        this.diasSemana.add(dia.getValue() - 1, diaSemana);
+        if(diaSemana.getDiaSemana() != dia) {
+            throw new IllegalArgumentException("DiaSemana incompatível com o dia fornecido");
+        }
+        this.diasSemana.set(dia.getValue() - 1, diaSemana);
     }
 
     public DiaSemana getDiaSemana(DayOfWeek dia) {       
@@ -63,9 +71,8 @@ public class ConfiguracaoAgenda {
     }
 
     public boolean isDataEntreVigencia(LocalDate data) {
-        LocalDateTime dataInicio = data.atStartOfDay();
-        return dataInicio.isAfter(dataInicioVigencia) &&
-               (dataInicio.isEqual(dataFimVigencia) || dataInicio.isBefore(dataFimVigencia));
+        return data.isEqual(dataInicioVigencia) || data.isEqual(dataFimVigencia) ||
+               (data.isAfter(dataInicioVigencia) && data.isBefore(dataFimVigencia));
     }
 
 }

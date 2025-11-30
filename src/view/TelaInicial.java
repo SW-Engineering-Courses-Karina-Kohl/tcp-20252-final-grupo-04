@@ -63,4 +63,8 @@ public class TelaInicial {
         this.painelInicial.add(this.tituloAplicacao);
         this.painelInicial.add(this.botaoInicial);
     }
+    public TelaInicial(JPanel painel, CardLayout cardLayout) {
+        inicializaTelaInicial();
+        transicaoParaTelaRegistrarSemana(painel, cardLayout);
+    }
 }
