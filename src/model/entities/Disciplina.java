@@ -9,10 +9,11 @@ public class Disciplina {
     private List<Atividade> atividades;
     private static int totalDisciplinas;
 
-    Disciplina(String nome, double prioridade)
+    public Disciplina(String nome, double prioridade)
     {
         this.nome = nome;
         this.prioridade = prioridade;
+        this.atividades = new java.util.ArrayList<>();
         totalDisciplinas++;
     }
 
