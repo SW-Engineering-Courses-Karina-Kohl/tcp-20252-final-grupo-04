@@ -144,7 +144,7 @@ public class TelaRegistrarAtividade {
     }
 
     private void criarAgendaEstudos(){
-        Logger.info(comunicacao.getConfiguracaoAgenda().getDiaSemana(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia().getDayOfWeek()).getHorarios().size());
+       // Logger.info(comunicacao.getConfiguracaoAgenda().getDiaSemana(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia().getDayOfWeek()).getHorarios().size());
         GeradorAgenda geradorAgenda =  new GeradorAgenda();
         AgendaEstudos agendaEstudos = geradorAgenda.gerar(comunicacao.getConfiguracaoAgenda());
         aluno.setAgendaEstudos(agendaEstudos);
