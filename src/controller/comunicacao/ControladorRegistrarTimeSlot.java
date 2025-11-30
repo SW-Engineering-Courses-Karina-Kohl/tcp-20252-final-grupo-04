@@ -32,6 +32,10 @@ public class ControladorRegistrarTimeSlot {
             this.configuracaoAgenda.setDia(diaSemana, this.timeSlotDiaSemana);
         }
     }
+
+    public ConfiguracaoAgenda getConfiguracaoAgenda() {
+        return this.configuracaoAgenda;
+    }
     public DiaSemana getTimeSlotDiaSemana() {
         return this.timeSlotDiaSemana;
     }

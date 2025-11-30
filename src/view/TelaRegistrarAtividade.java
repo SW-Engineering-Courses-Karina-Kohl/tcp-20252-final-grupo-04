@@ -3,13 +3,22 @@ import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
 import src.controller.comunicacao.ControladorRegistrarAtividade;
+import src.controller.agenda.GeradorAgenda;
+import src.controller.atividades.AtribuidorAtividades;
+import src.controller.atividades.CalculadoraPesoAtividades;
+import src.controller.comunicacao.ConDadosEntreTelas;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import java.util.List;
+import java.util.Locale;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import org.tinylog.Logger;
@@ -38,7 +47,9 @@ public class TelaRegistrarAtividade {
     private JTextArea disciplinaPrioridadeInput;
     private List<String> todasDisciplinas;
     private ControladorRegistrarAtividade controladorRegistrarAtividade;
-
+    private Aluno aluno;
+    private TelaAgenda painelAgenda;
+    private ConDadosEntreTelas comunicacao;
     public List<String> getAtividadesNomes() {
         return atividadesNomes;
     }
@@ -86,8 +97,16 @@ public class TelaRegistrarAtividade {
         concluirRegistroAtividade.addActionListener(e -> {
             if(this.atividadesNomes != null && !this.atividadesNomes.isEmpty() && 
                this.todasDisciplinas != null && !this.todasDisciplinas.isEmpty()) {
-                this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas);
+                this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas, comunicacao);
                 this.controladorRegistrarAtividade.converteDisciplinaAtividades();
+                controladorRegistrarAtividade.AdicionaAtividadesAluno();
+                criarAgendaEstudos();
+                comunicacao.transicaoAtividadeAgenda();
+                Logger.info("Atividades registradas com sucesso para o aluno.");
+                Logger.info(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia());
+                DayOfWeek diaSemana=   comunicacao.getConfiguracaoAgenda().getDataInicioVigencia().getDayOfWeek();
+                Logger.info(diaSemana.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+                Logger.info("timeslots" + comunicacao.getAluno().getAgenda().getEstudos().size());                
                 cardLayout.show(painel, "PainelAgenda");
             } else {
                 Logger.warn("Nenhuma atividade ou disciplina foi registrada antes de concluir.");
@@ -111,7 +130,9 @@ public class TelaRegistrarAtividade {
         TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana();
         this.adicionarAtividade.addActionListener(e -> {
             String dataAtividade = dataAtividadeInput.getText();
-            if(telaRegistrarSemana.validaDataInput(dataAtividade, "dd/MM/uuuu")) {
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+            LocalDate dataLimite = LocalDate.parse(dataAtividade, formatador);
+            if(telaRegistrarSemana.validaDataInput(dataAtividade, "dd/MM/uuuu") && comunicacao.getConfiguracaoAgenda().isDataEntreVigencia(dataLimite) && !dataLimite.isEqual(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia())) {
                 atividadesDatas.add(dataAtividade);
                 dataAtividadeInput.setText("");
                 String nomeAtividade = nomeAtividadeInput.getText();
@@ -123,10 +144,21 @@ public class TelaRegistrarAtividade {
                 this.disciplinasAtividade.add(disciplinaAtividade);
                 Logger.info(tipoAtividadeAtual + " da disciplina " + disciplinaAtividade + " adicionada: " + nomeAtividade + " na data " + dataAtividade);
             } else {
-                Logger.error("Formato de data inválido para atividade: " + dataAtividade);
+                Logger.error("Formato de data inválido para atividade ou data inválida: " + dataAtividade);
             }
         });
     }
+
+    private void criarAgendaEstudos(){
+       // Logger.info(comunicacao.getConfiguracaoAgenda().getDiaSemana(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia().getDayOfWeek()).getHorarios().size());
+        GeradorAgenda geradorAgenda =  new GeradorAgenda();
+        AgendaEstudos agendaEstudos = geradorAgenda.gerar(comunicacao.getConfiguracaoAgenda());
+        comunicacao.configuraAgendaAluno();
+        aluno.setAgendaEstudos(agendaEstudos);
+        aluno.atribuirAtividadesAgenda(new AtribuidorAtividades(new CalculadoraPesoAtividades()));
+        comunicacao.setAluno(aluno);
+    }
+
     public JLabel getInfoDataAtividade() {
         return infoDataAtividade;
     }
@@ -257,7 +289,13 @@ public class TelaRegistrarAtividade {
             }
         });
     }
-    public TelaRegistrarAtividade(JPanel painel, CardLayout cardLayout) {
+    public Aluno getAluno() {
+        return this.aluno;
+    }
+    
+    public TelaRegistrarAtividade(JPanel painel, CardLayout cardLayout,Aluno aluno, TelaAgenda painelAgenda, ConDadosEntreTelas comunicacao) {
+        this.comunicacao = comunicacao;
+        this.aluno = aluno;
         setPainelRegistrarAtividade();
         setBotaoRetornarTela();
         this.painelRegistrarAtividade.add(retornarTela);

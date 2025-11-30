@@ -21,9 +21,10 @@ public class ControladorRegistrarAtividade {
     private List<Disciplina> disciplinasRegistradas;
     private List<Atividade> atividadesRegistradas;
     private Map<String, Disciplina> disciplinaMap;
-
+    private ConDadosEntreTelas comunicacao;
+    private Aluno aluno;
     public ControladorRegistrarAtividade(List<String> atividadeNomes, List<String> atividadeDatas,
-            List<String> tipoAtividades, List<String> disciplinasAtividades, List<String> prioridadesDisciplinas, List<String> todasDisciplinas) {
+            List<String> tipoAtividades, List<String> disciplinasAtividades, List<String> prioridadesDisciplinas, List<String> todasDisciplinas, ConDadosEntreTelas comunicacao) {
         this.atividadeNomes = atividadeNomes;
         this.atividadeDatas = atividadeDatas;
         this.tipoAtividades = tipoAtividades;
@@ -32,6 +33,8 @@ public class ControladorRegistrarAtividade {
         this.todasDisciplinas = todasDisciplinas;
         this.atividadesRegistradas = new ArrayList<>();
         this.disciplinasRegistradas = new ArrayList<>();
+        this.comunicacao = comunicacao;
+        this.aluno = comunicacao.getAluno();
     }
     public void processaRegistroAtividades() {
         if (atividadeNomes.isEmpty() || atividadeNomes.size() != atividadeDatas.size() ||
@@ -48,6 +51,10 @@ public class ControladorRegistrarAtividade {
             String disciplina = disciplinasAtividades.get(i);
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/uuuu");
             LocalDate dataLimite = LocalDate.parse(data, formatador);
+            if(dataLimite.isEqual(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia()))
+            {
+                throw new IllegalArgumentException("Data limite da atividade não pode ser igual à data de início de vigência da agenda.");
+            }
             Disciplina disciplinaObjeto = this.disciplinaMap.get(disciplina);
 
             switch (tipo) {
@@ -81,5 +88,17 @@ public class ControladorRegistrarAtividade {
     public void converteDisciplinaAtividades() {
         processaRegistroDisciplinas();
         processaRegistroAtividades();
+    }
+
+    public Aluno getAluno() {
+        return this.aluno;
+    }
+
+    //função que pega todas as atividades registradas e armazena em um Aluno{
+    public void AdicionaAtividadesAluno() {
+        for (Disciplina disciplina : disciplinaMap.values()) {
+            aluno.adicionarDisciplina(disciplina);
+        }
+        comunicacao.setAluno(aluno);
     }
 }

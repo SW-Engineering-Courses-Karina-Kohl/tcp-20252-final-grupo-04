@@ -2,6 +2,7 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
+import src.controller.comunicacao.ConDadosEntreTelas;
 import src.controller.comunicacao.ControladorRegistrarSemana;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,7 +35,7 @@ public class TelaRegistrarSemana {
     private String dataFim;
     private List<String> impedimentos;
     private ConfiguracaoAgenda configuracaoAgenda;
-   
+    private ConDadosEntreTelas comunicacao;
     public JButton getBotaoProximaTela() {
         return proximaTela;
     }
@@ -135,20 +136,17 @@ public class TelaRegistrarSemana {
             dataFim = dataFimInput.getText();
             if(validaVigencia(dataInicio, dataFim)) {
                 cardLayout.show(painel, "PainelRegistrarAtividade");
-                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
+                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos, configuracaoAgenda);
                 controlador.processaRegistroSemana();
-                this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
-            }
+                Logger.info("Transição para TelaRegistrarAtividade realizada com sucesso.");}
         });
     }
     public boolean validaVigencia(String dataInicio, String dataFim) {
         boolean vigenciaValida = false;
             if(validaDataInput(dataInicio, "dd/MM/uuuu") && validaDataInput(dataFim, "dd/MM/uuuu")) {
-                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
-                controlador.processaRegistroSemana();
+                ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos, configuracaoAgenda);
                 if(controlador.validaConfiguracaoAgenda()) {
                     vigenciaValida = true;
-                    this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
                     Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
                 } else {
                     Logger.error("Data de início deve ser anterior à data de fim.");
@@ -204,6 +202,11 @@ public class TelaRegistrarSemana {
     public void setTelaRegistrarTimeSlot(TelaRegistrarTimeSlot[] telaRegistrarTimeSlot) {
         this.telaRegistrarTimeSlot = telaRegistrarTimeSlot;
     }
+
+    public void setConfiguracaoAgenda(ConfiguracaoAgenda configuracaoAgenda) {
+        this.configuracaoAgenda = configuracaoAgenda;
+    }
+
     public void inicializaTelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
         setPainelRegistrarSemana();
         setBotaoProximaTela();
@@ -226,8 +229,9 @@ public class TelaRegistrarSemana {
         coletaImpedimentos();
         this.painelRegistrarSemana.add(this.adicionaImpedimentos);
     }
-    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout, ConfiguracaoAgenda configuracaoAgenda) {
-        this.configuracaoAgenda = configuracaoAgenda;
+    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout, ConDadosEntreTelas comunicacao) {
+        this.configuracaoAgenda = comunicacao.getConfiguracaoAgenda();
+        this.comunicacao = comunicacao;
         inicializaTelaRegistrarSemana(painel, cardLayout);
     }
     public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {

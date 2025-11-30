@@ -9,7 +9,7 @@ import org.tinylog.Logger;
 
 public class AgendaEstudos 
 {
-    private List<TimeSlotEstudo> estudos;
+    private ArrayList<TimeSlotEstudo> estudos;
     private boolean cronogramaCriado;
 
     public AgendaEstudos()

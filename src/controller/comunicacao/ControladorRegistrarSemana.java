@@ -19,12 +19,14 @@ public class ControladorRegistrarSemana {
     private LocalDate dataFim;
     private List<Impedimento> listaImpedimentos;
     private ConfiguracaoAgenda configuracaoAgenda;
+    
 
-    public ControladorRegistrarSemana(String dataInicioVigencia, String dataFimVigencia, List<String> impedimentos) {
+    public ControladorRegistrarSemana(String dataInicioVigencia, String dataFimVigencia, List<String> impedimentos, ConfiguracaoAgenda configuracaoAgenda) {
         this.dataInicioVigencia = dataInicioVigencia;
         this.dataFimVigencia = dataFimVigencia;
         this.impedimentos = impedimentos;
-    }
+        this.configuracaoAgenda =  configuracaoAgenda;
+    }   
     public void converteDatasVigencia() {
          DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/uuuu")
                 .withResolverStyle(ResolverStyle.STRICT);
@@ -42,21 +44,25 @@ public class ControladorRegistrarSemana {
         }
     }
     public void criaConfiguracaoAgenda() {
-        this.configuracaoAgenda = new ConfiguracaoAgenda(this.dataInicio, this.dataFim);
         for (Impedimento impedimento : this.listaImpedimentos) {
             this.configuracaoAgenda.adicionarImpedimento(impedimento);
         }
     }
-    public ConfiguracaoAgenda getConfiguracaoAgenda() {
-        return this.configuracaoAgenda;
-    }
+
+
     public void processaRegistroSemana() {
         converteDatasVigencia();
         converteImpedimentos();
         criaConfiguracaoAgenda();
+        configuracaoAgenda.setDataInicioVigencia(dataInicio);
+        configuracaoAgenda.setDataFimVigencia(dataFim);
     }
+
+
+    
     //apenas para ver funcionando, por alguma razao o metodo equivalente em ConfiguracaoAgenda não está funcionando
     public boolean validaConfiguracaoAgenda() {
+        converteDatasVigencia();
         if (dataInicio.isBefore(dataFim)) {
             return true;
         } else {

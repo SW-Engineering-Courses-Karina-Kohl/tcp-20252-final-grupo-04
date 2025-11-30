@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Studify",
+            "request": "launch",
+            "mainClass": "src.Studify",
+            "projectName": "tcp-20252-final-grupo-04_4d00bb66"
+        },
+        {
+            "type": "java",
+            "name": "Studify",
+            "request": "launch",
+            "mainClass": "src.Studify",
+            "projectName": "tcp-20252-final-grupo-04_a91433b9"
+        },
+        {
+            "name": "Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/output",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build",
+            "miDebuggerPath": "/usr/bin/gdb"
+        }
+    ]
+}

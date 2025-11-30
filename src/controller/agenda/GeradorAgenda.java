@@ -88,6 +88,7 @@ public class GeradorAgenda {
                     impedimentoAtual = iteradorImpedimentos.hasNext() ? iteradorImpedimentos.next() : null;
                 }else
                 {
+                    Logger.debug("Adicionando TimeSlotEstudo para " + LocalDateTime.of(dataIteracao, horarioAtual));
                     // Criar o TimeSlotEstudo e adicionar na agenda
                     agenda.addTimeSlotEstudo(new TimeSlotEstudo(LocalDateTime.of(dataIteracao, horarioAtual), null));
                 }
