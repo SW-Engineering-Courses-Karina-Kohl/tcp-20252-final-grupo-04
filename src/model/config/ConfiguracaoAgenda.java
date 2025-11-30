@@ -5,12 +5,7 @@ import java.util.List;
 import java.time.LocalDate;
 
 public class ConfiguracaoAgenda {
-<<<<<<< HEAD
-    public static final int DIAS_SEMANA = 7;
-    private DiaSemana[] diasSemana = new DiaSemana[DIAS_SEMANA];
-=======
     private List<DiaSemana> diasSemana;
->>>>>>> main
     private LocalDate dataInicioVigencia;
     private LocalDate dataFimVigencia;
     private List<Impedimento> impedimentos;
