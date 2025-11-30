@@ -112,11 +112,16 @@ private String[][] fetchDadosAgenda(List<TimeSlotEstudo> estudos) {
 
     for (TimeSlotEstudo estudo : estudos) {
 
-        int hora   = estudo.getInicioEstudo().getHour();
-        int minuto = estudo.getInicioEstudo().getMinute();
-        int linha = hora * 2 + (minuto == 30 ? 1 : 0);
-        dados[linha][HORARIOINDEX] = estudo.getInicioEstudo().toString();
-        dados[linha][NOMEATIVIDADEINDEX] = estudo.getAtividade().getNome();
+        if(estudo.getAtividade() != null)
+        {
+            int hora = estudo.getInicioEstudo().getHour();
+            int minuto = estudo.getInicioEstudo().getMinute();
+            int linha = hora * 2 + (minuto == 30 ? 1 : 0);
+            dados[linha][HORARIOINDEX] = estudo.getInicioEstudo().toString();
+            dados[linha][NOMEATIVIDADEINDEX] = estudo.getAtividade().getNome();
+
+        }
+        
     }
 
     return dados;
