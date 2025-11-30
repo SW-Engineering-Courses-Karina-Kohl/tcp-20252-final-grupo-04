@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Iterator;
 import org.tinylog.Logger;
+import java.util.List;
 
 public class GeradorAgenda {
     private ConfiguracaoAgenda configuracao;
@@ -52,7 +53,10 @@ public class GeradorAgenda {
         LocalDate dataIteracao = configuracao.getDataInicioVigencia();
 
         // Manter um "ponteiro" para o array de impedimentos uma vez que ele está ordenado por data e hora
-        Iterator<Impedimento> iteradorImpedimentos = configuracao.getImpedimentos().iterator();
+        List<Impedimento> impedimentos = configuracao.getImpedimentos();
+        //Ordenar impedimentos por data e hora
+        impedimentos.sort((i1, i2) -> i1.getDataHora().compareTo(i2.getDataHora()));
+        Iterator<Impedimento> iteradorImpedimentos = impedimentos.iterator();
         Impedimento impedimentoAtual = null;
 
         if(iteradorImpedimentos.hasNext())
@@ -78,7 +82,8 @@ public class GeradorAgenda {
                 LocalTime horarioAtual = iteradorHorariosDia.next();
 
                 // Verificar se existe algum impedimento marcado para o dia e hora atual
-                if(impedimentoAtual != null && impedimentoAtual.conflitaCom(LocalDateTime.of(dataIteracao, horarioAtual)))
+                if(impedimentoAtual != null && (impedimentoAtual.conflitaCom(LocalDateTime.of(dataIteracao, horarioAtual)) || 
+                impedimentoAtual.getDataHora().isBefore(LocalDateTime.of(dataIteracao, horarioAtual))))
                 {
                     impedimentoAtual = iteradorImpedimentos.hasNext() ? iteradorImpedimentos.next() : null;
                 }else
