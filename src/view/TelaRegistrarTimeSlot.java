@@ -2,6 +2,7 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
+import src.controller.comunicacao.ConDadosEntreTelas;
 import src.controller.comunicacao.ControladorRegistrarTimeSlot;
 import java.awt.CardLayout;
 import java.util.List;
@@ -20,6 +21,7 @@ public class TelaRegistrarTimeSlot {
     private List<String> timeSlotsSelecionados;
     private DayOfWeek diaSemana;
     private ConfiguracaoAgenda configuracaoAgenda;
+    private ConDadosEntreTelas comunicacao;
 
     public void setTelaRegistrarTimeSlot() {
         painelRegistrarTimeSlot = new JPanel();
@@ -60,7 +62,7 @@ public class TelaRegistrarTimeSlot {
         botaoSalvarTimeSlots.setSize(200, 50);
         botaoSalvarTimeSlots.setLocation(680, 410);
     }
-    public void transicaoTelaRegistrarSemana(JPanel painelPrincipal, CardLayout cardLayout) {
+    public void transicaoTelaRegistrarSemana(JPanel painelPrincipal, CardLayout cardLayout ) {
         this.timeSlotsSelecionados = new ArrayList<>();
         botaoSalvarTimeSlots.addActionListener(e -> {
             for (JCheckBox timeSlot : timeSlotsHoras) {
@@ -74,8 +76,10 @@ public class TelaRegistrarTimeSlot {
             }
             ControladorRegistrarTimeSlot controlador = new ControladorRegistrarTimeSlot(timeSlotsSelecionados, this.configuracaoAgenda);
             controlador.converteTimeSlots(this.diaSemana);
+            this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
+            this.comunicacao.transicaoTimeSlotSemana();
             
-            System.out.println("Time Slots Selecionados: " + timeSlotsSelecionados);
+            System.out.println("Time Slots Selecionados: " + timeSlotsSelecionados + "tamanho: " + this.configuracaoAgenda.getDiaSemana(diaSemana).getHorarios().size());
             cardLayout.show(painelPrincipal, "PainelRegistrarSemana");
         });
     }
@@ -90,12 +94,13 @@ public class TelaRegistrarTimeSlot {
     public List<String> getTimeSlotsSelecionados() {
         return timeSlotsSelecionados;
     }
-    public TelaRegistrarTimeSlot(JPanel painelPrincipal, CardLayout cardLayout, DayOfWeek diaSemana, ConfiguracaoAgenda configuracaoAgenda) {
+    public TelaRegistrarTimeSlot(JPanel painelPrincipal, CardLayout cardLayout, DayOfWeek diaSemana, ConDadosEntreTelas comunicacao) {
         setTelaRegistrarTimeSlot();
         setTimeSlotsHoras();
         setBotaoSalvarTimeSlots();
         this.diaSemana = diaSemana;
-        this.configuracaoAgenda = configuracaoAgenda;
+        this.comunicacao = comunicacao;
+        this.configuracaoAgenda = comunicacao.getConfiguracaoAgenda();
         transicaoTelaRegistrarSemana(painelPrincipal, cardLayout);
         this.painelRegistrarTimeSlot.add(botaoSalvarTimeSlots);
         setInfoTimeSlots();

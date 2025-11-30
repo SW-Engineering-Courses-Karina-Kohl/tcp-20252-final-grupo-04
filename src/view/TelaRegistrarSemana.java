@@ -2,6 +2,7 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
+import src.controller.comunicacao.ConDadosEntreTelas;
 import src.controller.comunicacao.ControladorRegistrarSemana;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,8 +35,7 @@ public class TelaRegistrarSemana {
     private String dataFim;
     private List<String> impedimentos;
     private ConfiguracaoAgenda configuracaoAgenda;
-    private Aluno aluno;  
-   
+    private ConDadosEntreTelas comunicacao;
     public JButton getBotaoProximaTela() {
         return proximaTela;
     }
@@ -139,8 +139,8 @@ public class TelaRegistrarSemana {
                 ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
                 controlador.processaRegistroSemana();
                 this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
-                this.aluno.setConfiguracaoAgenda(this.configuracaoAgenda);
-            }
+                comunicacao.setConfiguracaoAgenda(this.configuracaoAgenda);
+                Logger.info("Transição para TelaRegistrarAtividade realizada com sucesso.");}
         });
     }
     public boolean validaVigencia(String dataInicio, String dataFim) {
@@ -207,9 +207,10 @@ public class TelaRegistrarSemana {
         this.telaRegistrarTimeSlot = telaRegistrarTimeSlot;
     }
 
-    public Aluno getAluno() {
-        return this.aluno;
+    public void setConfiguracaoAgenda(ConfiguracaoAgenda configuracaoAgenda) {
+        this.configuracaoAgenda = configuracaoAgenda;
     }
+
     public void inicializaTelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
         setPainelRegistrarSemana();
         setBotaoProximaTela();
@@ -232,9 +233,9 @@ public class TelaRegistrarSemana {
         coletaImpedimentos();
         this.painelRegistrarSemana.add(this.adicionaImpedimentos);
     }
-    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout, ConfiguracaoAgenda configuracaoAgenda, Aluno aluno) {
-        this.configuracaoAgenda = configuracaoAgenda;
-        this.aluno = aluno;
+    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout, ConDadosEntreTelas comunicacao) {
+        this.configuracaoAgenda = comunicacao.getConfiguracaoAgenda();
+        this.comunicacao = comunicacao;
         inicializaTelaRegistrarSemana(painel, cardLayout);
     }
     public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {

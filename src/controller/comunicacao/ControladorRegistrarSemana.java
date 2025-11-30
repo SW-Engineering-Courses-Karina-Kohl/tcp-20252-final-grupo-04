@@ -19,6 +19,7 @@ public class ControladorRegistrarSemana {
     private LocalDate dataFim;
     private List<Impedimento> listaImpedimentos;
     private ConfiguracaoAgenda configuracaoAgenda;
+    
 
     public ControladorRegistrarSemana(String dataInicioVigencia, String dataFimVigencia, List<String> impedimentos) {
         this.dataInicioVigencia = dataInicioVigencia;

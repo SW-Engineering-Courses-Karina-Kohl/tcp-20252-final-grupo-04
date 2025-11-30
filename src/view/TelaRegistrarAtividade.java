@@ -3,13 +3,17 @@ import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
 import src.controller.comunicacao.ControladorRegistrarAtividade;
+import src.controller.comunicacao.ConDadosEntreTelas;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.time.DayOfWeek;
+import java.time.format.TextStyle;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import java.util.List;
+import java.util.Locale;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import org.tinylog.Logger;
@@ -40,6 +44,7 @@ public class TelaRegistrarAtividade {
     private ControladorRegistrarAtividade controladorRegistrarAtividade;
     private Aluno aluno;
     private TelaAgenda painelAgenda;
+    private ConDadosEntreTelas comunicacao;
     public List<String> getAtividadesNomes() {
         return atividadesNomes;
     }
@@ -87,11 +92,15 @@ public class TelaRegistrarAtividade {
         concluirRegistroAtividade.addActionListener(e -> {
             if(this.atividadesNomes != null && !this.atividadesNomes.isEmpty() && 
                this.todasDisciplinas != null && !this.todasDisciplinas.isEmpty()) {
-                this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas, aluno);
+                this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas, comunicacao);
                 this.controladorRegistrarAtividade.converteDisciplinaAtividades();
-                this.aluno =  this.controladorRegistrarAtividade.AdicionaAtividadesAluno();
-                painelAgenda.setAluno(this.aluno);
+                controladorRegistrarAtividade.AdicionaAtividadesAluno();
+                comunicacao.setAluno(controladorRegistrarAtividade.getAluno());
+                comunicacao.transicaoAtividadeAgenda();
                 Logger.info("Atividades registradas com sucesso para o aluno.");
+                Logger.info(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia());
+                DayOfWeek diaSemana=   comunicacao.getConfiguracaoAgenda().getDataInicioVigencia().getDayOfWeek();
+                Logger.info(diaSemana.getDisplayName(TextStyle.FULL, Locale.getDefault()));                
                 cardLayout.show(painel, "PainelAgenda");
             } else {
                 Logger.warn("Nenhuma atividade ou disciplina foi registrada antes de concluir.");
@@ -265,8 +274,8 @@ public class TelaRegistrarAtividade {
         return this.aluno;
     }
     
-    public TelaRegistrarAtividade(JPanel painel, CardLayout cardLayout,Aluno aluno, TelaAgenda painelAgenda) {
-        this.painelAgenda = painelAgenda;
+    public TelaRegistrarAtividade(JPanel painel, CardLayout cardLayout,Aluno aluno, TelaAgenda painelAgenda, ConDadosEntreTelas comunicacao) {
+        this.comunicacao = comunicacao;
         this.aluno = aluno;
         setPainelRegistrarAtividade();
         setBotaoRetornarTela();
