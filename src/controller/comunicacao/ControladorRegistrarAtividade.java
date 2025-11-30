@@ -21,9 +21,10 @@ public class ControladorRegistrarAtividade {
     private List<Disciplina> disciplinasRegistradas;
     private List<Atividade> atividadesRegistradas;
     private Map<String, Disciplina> disciplinaMap;
+    Aluno aluno;
 
     public ControladorRegistrarAtividade(List<String> atividadeNomes, List<String> atividadeDatas,
-            List<String> tipoAtividades, List<String> disciplinasAtividades, List<String> prioridadesDisciplinas, List<String> todasDisciplinas) {
+            List<String> tipoAtividades, List<String> disciplinasAtividades, List<String> prioridadesDisciplinas, List<String> todasDisciplinas, Aluno aluno) {
         this.atividadeNomes = atividadeNomes;
         this.atividadeDatas = atividadeDatas;
         this.tipoAtividades = tipoAtividades;
@@ -32,6 +33,7 @@ public class ControladorRegistrarAtividade {
         this.todasDisciplinas = todasDisciplinas;
         this.atividadesRegistradas = new ArrayList<>();
         this.disciplinasRegistradas = new ArrayList<>();
+        this.aluno = aluno;
     }
     public void processaRegistroAtividades() {
         if (atividadeNomes.isEmpty() || atividadeNomes.size() != atividadeDatas.size() ||
@@ -81,5 +83,13 @@ public class ControladorRegistrarAtividade {
     public void converteDisciplinaAtividades() {
         processaRegistroDisciplinas();
         processaRegistroAtividades();
+    }
+
+    //função que pega todas as atividades registradas e armazena em um Aluno{
+    public Aluno AdicionaAtividadesAluno() {
+        for (Disciplina disciplina : disciplinaMap.values()) {
+            aluno.adicionarDisciplina(disciplina);
+        }
+        return aluno;
     }
 }

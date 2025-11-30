@@ -45,14 +45,14 @@ public class TelaAgenda extends JPanel {
         layoutConstraints.gridy = 1;
         painelInicial.setLayout(layout);
         datePicker = new DatePicker();
-        datePicker.addDateChangeListener(e -> {
-            setDataSelecionada();
-        });
+        datePicker.setDate(dataSelecionada);
         painelInicial.add(datePicker, layoutConstraints);
         tituloAplicacao = new JLabel("Agenda de Atividades");
         renderTabelaHorarios();
+        System.out.println("Agenda criada para o aluno: " + this.aluno.getDisciplinas().size() + " disciplinas cadastradas.");
         
     }
+
 
     public JPanel getPainelInicial() {
         return painelInicial;

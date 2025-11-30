@@ -38,7 +38,7 @@ public class TelaRegistrarAtividade {
     private JTextArea disciplinaPrioridadeInput;
     private List<String> todasDisciplinas;
     private ControladorRegistrarAtividade controladorRegistrarAtividade;
-
+    private Aluno aluno;
     public List<String> getAtividadesNomes() {
         return atividadesNomes;
     }
@@ -86,8 +86,10 @@ public class TelaRegistrarAtividade {
         concluirRegistroAtividade.addActionListener(e -> {
             if(this.atividadesNomes != null && !this.atividadesNomes.isEmpty() && 
                this.todasDisciplinas != null && !this.todasDisciplinas.isEmpty()) {
-                this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas);
+                this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas, aluno);
                 this.controladorRegistrarAtividade.converteDisciplinaAtividades();
+                this.aluno =  this.controladorRegistrarAtividade.AdicionaAtividadesAluno();
+                Logger.info("Atividades registradas com sucesso para o aluno.");
                 cardLayout.show(painel, "PainelAgenda");
             } else {
                 Logger.warn("Nenhuma atividade ou disciplina foi registrada antes de concluir.");
@@ -257,7 +259,12 @@ public class TelaRegistrarAtividade {
             }
         });
     }
-    public TelaRegistrarAtividade(JPanel painel, CardLayout cardLayout) {
+    public Aluno getAluno() {
+        return this.aluno;
+    }
+    
+    public TelaRegistrarAtividade(JPanel painel, CardLayout cardLayout, Aluno aluno) {
+        this.aluno = aluno;
         setPainelRegistrarAtividade();
         setBotaoRetornarTela();
         this.painelRegistrarAtividade.add(retornarTela);

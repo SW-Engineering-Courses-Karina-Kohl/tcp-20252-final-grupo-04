@@ -34,6 +34,7 @@ public class TelaRegistrarSemana {
     private String dataFim;
     private List<String> impedimentos;
     private ConfiguracaoAgenda configuracaoAgenda;
+    private Aluno aluno;  
    
     public JButton getBotaoProximaTela() {
         return proximaTela;
@@ -138,6 +139,7 @@ public class TelaRegistrarSemana {
                 ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
                 controlador.processaRegistroSemana();
                 this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
+                this.aluno.setConfiguracaoAgenda(this.configuracaoAgenda);
             }
         });
     }
@@ -204,6 +206,10 @@ public class TelaRegistrarSemana {
     public void setTelaRegistrarTimeSlot(TelaRegistrarTimeSlot[] telaRegistrarTimeSlot) {
         this.telaRegistrarTimeSlot = telaRegistrarTimeSlot;
     }
+
+    public Aluno getAluno() {
+        return this.aluno;
+    }
     public void inicializaTelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
         setPainelRegistrarSemana();
         setBotaoProximaTela();
@@ -226,8 +232,9 @@ public class TelaRegistrarSemana {
         coletaImpedimentos();
         this.painelRegistrarSemana.add(this.adicionaImpedimentos);
     }
-    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout, ConfiguracaoAgenda configuracaoAgenda) {
+    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout, ConfiguracaoAgenda configuracaoAgenda, Aluno aluno) {
         this.configuracaoAgenda = configuracaoAgenda;
+        this.aluno = aluno;
         inicializaTelaRegistrarSemana(painel, cardLayout);
     }
     public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
