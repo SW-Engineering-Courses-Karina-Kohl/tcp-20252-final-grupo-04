@@ -21,7 +21,17 @@ public class TelaInicial {
         this.botaoInicial = new JButton("Gerar Agenda");
         this.botaoInicial.setSize(300, 150);
         this.botaoInicial.setLocation(300, 250);
-        this.botaoInicial.setFont(new Font("Arial", Font.PLAIN, 28));
+        this.botaoInicial.setFont(new Font("Arial", Font.BOLD, 28));
+        this.botaoInicial.setFocusPainted(false);
+        
+        // Acessa a cor laranja do tema Arc Orange
+        javax.swing.UIDefaults defaults = javax.swing.UIManager.getDefaults();
+        java.awt.Color themeColor = defaults.getColor("Component.focusedBorderColor");
+        
+        this.botaoInicial.setBackground(themeColor);
+        this.botaoInicial.setForeground(java.awt.Color.WHITE);
+        this.botaoInicial.setOpaque(true);
+        this.botaoInicial.setBorderPainted(false);
     }
     public JLabel getTituloAplicacao() {
         return tituloAplicacao;

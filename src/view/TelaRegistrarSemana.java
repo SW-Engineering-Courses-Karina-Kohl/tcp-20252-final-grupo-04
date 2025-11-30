@@ -39,7 +39,17 @@ public class TelaRegistrarSemana {
         this.proximaTela = new JButton("Próxima Tela");
         this.proximaTela.setSize(200, 50);
         this.proximaTela.setLocation(670, 390);
-        this.proximaTela.setFont(new Font("Arial", Font.PLAIN, 20));
+        this.proximaTela.setFont(new Font("Arial", Font.BOLD, 14));
+        this.proximaTela.setFocusPainted(false);
+        
+        // Acessa a cor laranja do tema Arc Orange
+        javax.swing.UIDefaults defaults = javax.swing.UIManager.getDefaults();
+        java.awt.Color themeColor = defaults.getColor("Component.focusedBorderColor");
+        
+        this.proximaTela.setBackground(themeColor);
+        this.proximaTela.setForeground(java.awt.Color.WHITE);
+        this.proximaTela.setOpaque(true);
+        this.proximaTela.setBorderPainted(false);
     }
     public JButton getBotaoAdicionaImpedimentos() {
         return adicionaImpedimentos;
@@ -47,8 +57,9 @@ public class TelaRegistrarSemana {
     public void setBotaoAdicionaImpedimentos() {
         this.adicionaImpedimentos = new JButton("Adicionar Impedimento");
         this.adicionaImpedimentos.setSize(200, 50);
-        this.adicionaImpedimentos.setLocation(600, 140);
-        this.adicionaImpedimentos.setFont(new Font("Arial", Font.PLAIN, 16));
+        this.adicionaImpedimentos.setLocation(600, 150);
+        this.adicionaImpedimentos.setFont(new Font("Arial", Font.BOLD, 12));
+        this.adicionaImpedimentos.setFocusPainted(false);
     }
     public JPanel getPainelRegistrarSemana() {
         return painelRegistrarSemana;
@@ -74,38 +85,47 @@ public class TelaRegistrarSemana {
         this.dataInicioInput.setSize(200, 30);
         this.dataInicioInput.setLocation(320, 50);
     }
+
     public JLabel getInfoDataFim() {
         return infoDataFim;
     }
+
     public void setInfoDataFim() {
         this.infoDataFim = new JLabel("Data Fim Vigência (DD/MM/AAAA):");
         this.infoDataFim.setSize(300, 30);
         this.infoDataFim.setLocation(50, 100);
     }
+
     public JTextArea getDataFimInput() {
         return dataFimInput;
     }
+
     public void setDataFimInput() {
         this.dataFimInput = new JTextArea();
         this.dataFimInput.setSize(200, 30);
         this.dataFimInput.setLocation(320, 100);
     }
+
     public JLabel getInfoImpedimentos() {
         return infoImpedimentos;
     }
+
     public void setInfoImpedimentos() {
         this.infoImpedimentos = new JLabel("Impedimentos (DD/MM/AAAA HH:MM):");
         this.infoImpedimentos.setSize(300, 30);
         this.infoImpedimentos.setLocation(50, 150);
     }
+
     public JTextArea getImpedimentosInput() {
         return impedimentosInput;
     }
+
     public void setImpedimentosInput() {
         this.impedimentosInput = new JTextArea();
         this.impedimentosInput.setSize(200, 30);
         this.impedimentosInput.setLocation(320, 150);
     }
+
     public void setBotoesDiaSemana(JPanel painel, CardLayout cardLayout) {
         String[] diasSemana = {"Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"};
         botoesDiaSemana = new JButton[diasSemana.length];
@@ -117,6 +137,7 @@ public class TelaRegistrarSemana {
             });
             botoesDiaSemana[i].setSize(150, 50);
             botoesDiaSemana[i].setLocation(50 + (i % 4) * 200, 250 + (i / 4) * 70);
+            botoesDiaSemana[i].setFocusPainted(true);
             this.painelRegistrarSemana.add(botoesDiaSemana[i]);
         }
     }
@@ -153,15 +174,19 @@ public class TelaRegistrarSemana {
             } 
         });
     }
+    
     public String getDataInicio() {
         return dataInicio;
     }
+
     public String getDataFim() {
         return dataFim;
     }
+
     public List<String> getImpedimentos() {
         return impedimentos;
     }
+
     public void inicializaTelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
         setPainelRegistrarSemana();
         setBotaoProximaTela();

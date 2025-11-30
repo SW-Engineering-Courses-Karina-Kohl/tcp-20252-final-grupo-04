@@ -4,17 +4,46 @@ import src.model.atividades.*;
 import src.model.config.*;
 import src.view.*;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+// Temas IntelliJ disponíveis:
+import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
+// import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
+// import com.formdev.flatlaf.intellijthemes.FlatGradiantoDarkFuchsiaIJTheme;
+// import com.formdev.flatlaf.intellijthemes.FlatMaterialDesignDarkIJTheme;
+// import com.formdev.flatlaf.intellijthemes.FlatMonocaiIJTheme;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
 
 public class Studify {
     public static void main(String[] args) {
-        JFrame janela = new JFrame("Studify");
-        janela.setSize(900, 500);
-        JPanel painel = new JPanel();
-        CardLayout cardLayout = new CardLayout();
-        painel.setLayout(cardLayout);
+        // Configurar tema - descomente um dos temas abaixo:
+        try {
+            // TEMA ATUAL: Arc Orange (laranja moderno)
+            FlatArcOrangeIJTheme.setup();
+            
+            // OUTROS TEMAS DISPONÍVEIS (comente Arc Orange e descomente um destes):
+            // FlatLightLaf.setup();                    // FlatLaf Light padrão
+            // FlatDarkPurpleIJTheme.setup();          // Roxo escuro
+            // FlatGradiantoDarkFuchsiaIJTheme.setup(); // Rosa/roxo gradiente
+            // FlatMaterialDesignDarkIJTheme.setup();   // Material Design escuro
+            // FlatMonocaiIJTheme.setup();             // Monokai clássico
+            
+        } catch (Exception e) {
+            FlatLightLaf.setup(); // fallback
+        }
+        
+        // Garantir execução na thread do Swing
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            JFrame janela = new JFrame("Studify");
+            janela.setSize(900, 500);
+            janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            janela.setLocationRelativeTo(null); // Centralizar na tela
+            
+            JPanel painel = new JPanel();
+            CardLayout cardLayout = new CardLayout();
+            painel.setLayout(cardLayout);
         TelaInicial telaInicial = new TelaInicial();
         telaInicial.inicializaTelaInicial();
         telaInicial.transicaoParaTelaRegistrarSemana(painel, cardLayout);
@@ -37,5 +66,6 @@ public class Studify {
         janela.add(painel);
         janela.setVisible(true);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        });
     }
 }
