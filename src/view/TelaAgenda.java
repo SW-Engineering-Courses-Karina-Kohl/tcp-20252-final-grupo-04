@@ -50,7 +50,7 @@ public class TelaAgenda extends JPanel {
 
             if (scrollPane !=  null) {
                 painelInicial.remove(scrollPane);
-                painelInicial.remove(tabelaHorarios);    
+                painelInicial.remove(botaoInicial);    
             }
             dataSelecionada = event.getNewDate();
             renderTabelaHorarios();
