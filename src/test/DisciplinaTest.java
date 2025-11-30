@@ -1,8 +1,8 @@
 package src.test;
+import src.model.atividades.*;
 import src.model.entities.*;
 import org.junit.Test;
 import java.time.LocalDate;
-
 public class DisciplinaTest {
     @Test
     public void testCriarDisciplina() {
