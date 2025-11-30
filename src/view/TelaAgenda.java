@@ -33,11 +33,10 @@ public class TelaAgenda extends JPanel {
     AgendaEstudos agendaEstudos;
     LocalDate dataSelecionada;
     Aluno aluno;
-    public TelaAgenda(Aluno aluno) {
-        this.aluno =  aluno;
-        agendaEstudos = this.aluno.getAgenda();
+    public TelaAgenda() {
+        this.aluno = new Aluno();
+        //agendaEstudos = this.aluno.getAgenda();
         dataSelecionada = LocalDate.now();
-        this.agendaEstudos = agendaEstudos;
         painelInicial = new JPanel();
         layout = new GridBagLayout();
         layoutConstraints = new GridBagConstraints();
@@ -48,10 +47,19 @@ public class TelaAgenda extends JPanel {
         datePicker.setDate(dataSelecionada);
         painelInicial.add(datePicker, layoutConstraints);
         tituloAplicacao = new JLabel("Agenda de Atividades");
-        renderTabelaHorarios();
-        System.out.println("Agenda criada para o aluno: " + this.aluno.getDisciplinas().size() + " disciplinas cadastradas.");
+        //renderTabelaHorarios();
         
     }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+        System.out.println("Agenda criada para o aluno: " + this.aluno.getDisciplinas().size() + " disciplinas cadastradas.");
+        this.agendaEstudos = this.aluno.getAgenda();
+        Logger.info("Agenda  na TelaAgenda com " + this.agendaEstudos.getEstudos().size() + " timeslots.");
+        renderTabelaHorarios();
+
+    }
+
 
 
     public JPanel getPainelInicial() {

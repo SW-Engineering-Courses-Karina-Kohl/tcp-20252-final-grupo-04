@@ -22,13 +22,13 @@ public class Studify {
         
         TelaInicial telaInicial = new TelaInicial(painel, cardLayout);
         painel.add(telaInicial.getPainelInicial(), "PainelInicial");
-        
+        TelaAgenda painelAgenda = new TelaAgenda();
         //segunda tela
         TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana(painel, cardLayout, configuracaoAgenda, aluno);
         painel.add(telaRegistrarSemana.getPainelRegistrarSemana(), "PainelRegistrarSemana");
         
         aluno =  telaRegistrarSemana.getAluno();
-        TelaRegistrarAtividade telaRegistrarAtividade = new TelaRegistrarAtividade(painel, cardLayout, aluno);
+        TelaRegistrarAtividade telaRegistrarAtividade = new TelaRegistrarAtividade(painel, cardLayout, aluno, painelAgenda);
         
         TelaRegistrarTimeSlot[] telaRegistrarTimeSlot = new TelaRegistrarTimeSlot[7];
         for (int i = 0; i < 7; i++) {
@@ -39,9 +39,8 @@ public class Studify {
         telaRegistrarSemana.setTelaRegistrarTimeSlot(telaRegistrarTimeSlot);
         
         painel.add(telaRegistrarAtividade.getPainelRegistrarAtividade(), "PainelRegistrarAtividade");
-        aluno = telaRegistrarAtividade.getAluno();
         //temporário enquanto não faz a classe da tela de agenda
-        TelaAgenda painelAgenda = new TelaAgenda(aluno);
+
         painel.add(painelAgenda.getPainelInicial(), "PainelAgenda");
         
         janela.add(painel);

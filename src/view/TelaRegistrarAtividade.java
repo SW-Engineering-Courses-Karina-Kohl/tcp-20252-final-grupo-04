@@ -39,6 +39,7 @@ public class TelaRegistrarAtividade {
     private List<String> todasDisciplinas;
     private ControladorRegistrarAtividade controladorRegistrarAtividade;
     private Aluno aluno;
+    private TelaAgenda painelAgenda;
     public List<String> getAtividadesNomes() {
         return atividadesNomes;
     }
@@ -89,6 +90,7 @@ public class TelaRegistrarAtividade {
                 this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas, aluno);
                 this.controladorRegistrarAtividade.converteDisciplinaAtividades();
                 this.aluno =  this.controladorRegistrarAtividade.AdicionaAtividadesAluno();
+                painelAgenda.setAluno(this.aluno);
                 Logger.info("Atividades registradas com sucesso para o aluno.");
                 cardLayout.show(painel, "PainelAgenda");
             } else {
@@ -263,7 +265,8 @@ public class TelaRegistrarAtividade {
         return this.aluno;
     }
     
-    public TelaRegistrarAtividade(JPanel painel, CardLayout cardLayout, Aluno aluno) {
+    public TelaRegistrarAtividade(JPanel painel, CardLayout cardLayout,Aluno aluno, TelaAgenda painelAgenda) {
+        this.painelAgenda = painelAgenda;
         this.aluno = aluno;
         setPainelRegistrarAtividade();
         setBotaoRetornarTela();
