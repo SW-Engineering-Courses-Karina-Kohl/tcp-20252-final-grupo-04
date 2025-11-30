@@ -48,7 +48,7 @@ public class Aluno {
 
     public void atribuirAtividadesAgenda(AtribuidorAtividades atribuidor) {
         if(atribuidor == null) {
-            throw new IllegalStateException("Atribuidor de atividades não foi definido");
+            throw new IllegalArgumentException("Atribuidor de atividades não pode ser nulo.");
         }
         verificarDatasAtividadesEntreVigencia();
         atribuidor.atribuir(this.agenda, this.disciplinas);

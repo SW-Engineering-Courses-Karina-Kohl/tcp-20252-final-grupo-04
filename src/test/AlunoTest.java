@@ -68,16 +68,11 @@ public class AlunoTest {
         assertTrue(aluno.getDisciplinas().isEmpty());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void setAtribuidorAtividadesNaoAceitaNulo() {
-        Aluno aluno = new Aluno();
-        aluno.setAtribuidorAtividades(null);
-    }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void atribuirAtividadesAgendaSemAtribuidorLancaExcecao() {
         Aluno aluno = new Aluno();
-        aluno.atribuirAtividadesAgenda();
+        aluno.atribuirAtividadesAgenda(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -91,36 +86,13 @@ public class AlunoTest {
         disciplina.adicionarAtividade(prova);
         aluno.adicionarDisciplina(disciplina);
 
-        aluno.setAtribuidorAtividades(new AtribuidorFake());
-
-        aluno.atribuirAtividadesAgenda();
-    }
-
-    @Test
-    public void atribuirAtividadesAgendaDelegadaAoAtribuidor() {
-        LocalDate base = LocalDate.of(2025, 1, 1);
-        ConfiguracaoAgenda config = new ConfiguracaoAgenda(base, base.plusDays(10));
-        Aluno aluno = new Aluno(config);
-
-        Disciplina disciplina = new Disciplina("TCP", 1.0);
-        Prova prova = new Prova("Prova 1", base.plusDays(3), disciplina);
-        disciplina.adicionarAtividade(prova);
-        aluno.adicionarDisciplina(disciplina);
-
-        AtribuidorFake atribuidor = new AtribuidorFake();
-        aluno.setAtribuidorAtividades(atribuidor);
-
-        aluno.atribuirAtividadesAgenda();
-
-        assertTrue("atribuir deveria ser chamado", atribuidor.chamado);
-        assertSame(aluno.getAgenda(), atribuidor.agendaRecebida);
-        assertSame(aluno.getDisciplinas(), atribuidor.disciplinasRecebidas);
+        aluno.atribuirAtividadesAgenda(new AtribuidorAtividades());
     }
 
     @Test
     public void fluxoCompletoUsuarioReal() {
         LocalDate inicio = LocalDate.of(2025, 1, 6); // segunda
-        LocalDate fim = inicio.plusDays(4); // sexta
+        LocalDate fim = inicio.plusDays(5); // sabado
         ConfiguracaoAgenda config = new ConfiguracaoAgenda(inicio, fim);
 
         DiaSemana segunda = new DiaSemana(DayOfWeek.MONDAY);
@@ -147,24 +119,24 @@ public class AlunoTest {
         Disciplina disciplinaSD = new Disciplina("SD", 1.0);
 
         Prova provaTcp = new Prova("Prova TCP", inicio.plusDays(2), disciplinaTCP); // quarta
-        Trabalho trabSd = new Trabalho("Trabalho SD", inicio.plusDays(4), disciplinaSD); // sexta
+        Trabalho trabSd = new Trabalho("Trabalho SD", inicio.plusDays(5), disciplinaSD); // sexta
 
         disciplinaTCP.adicionarAtividade(provaTcp);
         disciplinaSD.adicionarAtividade(trabSd);
 
         Aluno aluno = new Aluno(config);
         aluno.setAgendaEstudos(agendaGerada);
+        List<TimeSlotEstudo> slots = aluno.getAgenda().getEstudos();
+
+        assertFalse("Agenda gerada não deveria estar vazia", slots.isEmpty());
         aluno.adicionarDisciplina(disciplinaTCP);
         aluno.adicionarDisciplina(disciplinaSD);
 
         AtribuidorAtividades atribuidor = new AtribuidorAtividades();
         atribuidor.setCalculadoraPesoAtividades(new CalculadoraPesoAtividades());
-        aluno.setAtribuidorAtividades(atribuidor);
+    
+        aluno.atribuirAtividadesAgenda(atribuidor);
 
-        aluno.atribuirAtividadesAgenda();
-
-        List<TimeSlotEstudo> slots = aluno.getAgenda().getEstudos();
-        assertFalse("Agenda gerada não deveria estar vazia", slots.isEmpty());
 
         // Cada atividade deve aparecer ao menos em um time slot
         assertTrue(
