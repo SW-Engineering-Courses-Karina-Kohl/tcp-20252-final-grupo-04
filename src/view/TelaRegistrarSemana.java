@@ -2,6 +2,7 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
+import src.controller.comunicacao.ControladorRegistrarSemana;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,6 +24,7 @@ public class TelaRegistrarSemana {
     private JTextArea dataInicioInput;
     private JLabel infoDataFim;
     private JTextArea dataFimInput;
+    private TelaRegistrarTimeSlot[] telaRegistrarTimeSlot;
     private JLabel infoImpedimentos;
     private JTextArea impedimentosInput;
     private JButton[] botoesDiaSemana;
@@ -31,6 +33,7 @@ public class TelaRegistrarSemana {
     private String dataInicio;
     private String dataFim;
     private List<String> impedimentos;
+    private ConfiguracaoAgenda configuracaoAgenda;
    
     public JButton getBotaoProximaTela() {
         return proximaTela;
@@ -108,12 +111,18 @@ public class TelaRegistrarSemana {
     }
     public void setBotoesDiaSemana(JPanel painel, CardLayout cardLayout) {
         String[] diasSemana = {"Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"};
+        java.time.DayOfWeek[] diasSemanaEnum = {java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.TUESDAY, java.time.DayOfWeek.WEDNESDAY, 
+                                                java.time.DayOfWeek.THURSDAY, java.time.DayOfWeek.FRIDAY, java.time.DayOfWeek.SATURDAY, 
+                                                java.time.DayOfWeek.SUNDAY};
         botoesDiaSemana = new JButton[diasSemana.length];
         for (int i = 0; i < diasSemana.length; i++) {
             botoesDiaSemana[i] = new JButton(diasSemana[i]);
             int botoesIndex = i;
+            java.time.DayOfWeek dayOfWeek = diasSemanaEnum[i];
             botoesDiaSemana[i].addActionListener(e -> {
-                cardLayout.show(painel, "TelaRegistrarTimeSlot" + botoesIndex);
+                if (this.telaRegistrarTimeSlot != null && botoesIndex < this.telaRegistrarTimeSlot.length) {
+                    cardLayout.show(painel, "TelaRegistrarTimeSlot" + botoesIndex);
+                }
             });
             botoesDiaSemana[i].setSize(150, 50);
             botoesDiaSemana[i].setLocation(50 + (i % 4) * 200, 250 + (i / 4) * 70);
@@ -128,6 +137,7 @@ public class TelaRegistrarSemana {
                 cardLayout.show(painel, "PainelRegistrarAtividade");
                 ControladorRegistrarSemana controlador = new ControladorRegistrarSemana(dataInicio, dataFim, impedimentos);
                 controlador.processaRegistroSemana();
+                this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
             }
         });
     }
@@ -138,6 +148,7 @@ public class TelaRegistrarSemana {
                 controlador.processaRegistroSemana();
                 if(controlador.validaConfiguracaoAgenda()) {
                     vigenciaValida = true;
+                    this.configuracaoAgenda = controlador.getConfiguracaoAgenda();
                     Logger.info("Datas de vigência válidas: Início - " + dataInicio + ", Fim - " + dataFim);
                 } else {
                     Logger.error("Data de início deve ser anterior à data de fim.");
@@ -190,6 +201,9 @@ public class TelaRegistrarSemana {
     public List<String> getImpedimentos() {
         return impedimentos;
     }
+    public void setTelaRegistrarTimeSlot(TelaRegistrarTimeSlot[] telaRegistrarTimeSlot) {
+        this.telaRegistrarTimeSlot = telaRegistrarTimeSlot;
+    }
     public void inicializaTelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
         setPainelRegistrarSemana();
         setBotaoProximaTela();
@@ -211,6 +225,10 @@ public class TelaRegistrarSemana {
         setBotaoAdicionaImpedimentos();
         coletaImpedimentos();
         this.painelRegistrarSemana.add(this.adicionaImpedimentos);
+    }
+    public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout, ConfiguracaoAgenda configuracaoAgenda) {
+        this.configuracaoAgenda = configuracaoAgenda;
+        inicializaTelaRegistrarSemana(painel, cardLayout);
     }
     public TelaRegistrarSemana(JPanel painel, CardLayout cardLayout) {
         inicializaTelaRegistrarSemana(painel, cardLayout);

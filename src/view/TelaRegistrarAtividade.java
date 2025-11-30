@@ -2,6 +2,7 @@ package src.view;
 import src.model.entities.*;
 import src.model.atividades.*;
 import src.model.config.*;
+import src.controller.comunicacao.ControladorRegistrarAtividade;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.CardLayout;
@@ -36,6 +37,7 @@ public class TelaRegistrarAtividade {
     private List<String> prioridadesDisciplinas;
     private JTextArea disciplinaPrioridadeInput;
     private List<String> todasDisciplinas;
+    private ControladorRegistrarAtividade controladorRegistrarAtividade;
 
     public List<String> getAtividadesNomes() {
         return atividadesNomes;
@@ -82,7 +84,14 @@ public class TelaRegistrarAtividade {
     }
     public void transicaoBotaoConcluirRegistroAtividade(JPanel painel, CardLayout cardLayout) {
         concluirRegistroAtividade.addActionListener(e -> {
-            cardLayout.show(painel, "PainelAgenda");
+            if(this.atividadesNomes != null && !this.atividadesNomes.isEmpty() && 
+               this.todasDisciplinas != null && !this.todasDisciplinas.isEmpty()) {
+                this.controladorRegistrarAtividade = new ControladorRegistrarAtividade(atividadesNomes, atividadesDatas, tipoAtividade, disciplinasAtividade, prioridadesDisciplinas, todasDisciplinas);
+                this.controladorRegistrarAtividade.converteDisciplinaAtividades();
+                cardLayout.show(painel, "PainelAgenda");
+            } else {
+                Logger.warn("Nenhuma atividade ou disciplina foi registrada antes de concluir.");
+            }
         });
     }
     public JButton getAdicionarAtividade() {
@@ -102,7 +111,7 @@ public class TelaRegistrarAtividade {
         TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana();
         this.adicionarAtividade.addActionListener(e -> {
             String dataAtividade = dataAtividadeInput.getText();
-            if(telaRegistrarSemana.validaDataInput(dataAtividade, "dd/MM/uuuu HH:mm")) {
+            if(telaRegistrarSemana.validaDataInput(dataAtividade, "dd/MM/uuuu")) {
                 atividadesDatas.add(dataAtividade);
                 dataAtividadeInput.setText("");
                 String nomeAtividade = nomeAtividadeInput.getText();
@@ -114,7 +123,7 @@ public class TelaRegistrarAtividade {
                 this.disciplinasAtividade.add(disciplinaAtividade);
                 Logger.info(tipoAtividadeAtual + " da disciplina " + disciplinaAtividade + " adicionada: " + nomeAtividade + " na data " + dataAtividade);
             } else {
-                Logger.error("Formato de data e hora inválido para atividade: " + dataAtividade);
+                Logger.error("Formato de data inválido para atividade: " + dataAtividade);
             }
         });
     }
@@ -122,7 +131,7 @@ public class TelaRegistrarAtividade {
         return infoDataAtividade;
     }
     public void setInfoDataAtividade() {
-        this.infoDataAtividade = new JLabel("Data e Hora da Atividade DD/MM/AAAA HH:MM :");
+        this.infoDataAtividade = new JLabel("Data da Atividade (DD/MM/AAAA):");
         this.infoDataAtividade.setSize(300, 30);
         this.infoDataAtividade.setLocation(300, 50);
     }
@@ -255,7 +264,6 @@ public class TelaRegistrarAtividade {
         transicaoBotaoRetornarTela(painel, cardLayout);
         setBotaoConcluirRegistroAtividade();
         this.painelRegistrarAtividade.add(concluirRegistroAtividade);
-        transicaoBotaoConcluirRegistroAtividade(painel, cardLayout);
         setBotaoAdicionarAtividade();
         this.painelRegistrarAtividade.add(adicionarAtividade);
         coletaAtividade();
@@ -284,5 +292,6 @@ public class TelaRegistrarAtividade {
         setAdicionarDisciplina();
         this.painelRegistrarAtividade.add(adicionarDisciplina);
         coletaDisciplina();
+        transicaoBotaoConcluirRegistroAtividade(painel, cardLayout);
     }
 }

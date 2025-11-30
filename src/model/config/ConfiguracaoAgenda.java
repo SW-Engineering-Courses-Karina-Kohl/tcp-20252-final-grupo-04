@@ -5,8 +5,12 @@ import java.util.List;
 import java.time.LocalDate;
 
 public class ConfiguracaoAgenda {
+<<<<<<< HEAD
     public static final int DIAS_SEMANA = 7;
     private DiaSemana[] diasSemana = new DiaSemana[DIAS_SEMANA];
+=======
+    private List<DiaSemana> diasSemana;
+>>>>>>> main
     private LocalDate dataInicioVigencia;
     private LocalDate dataFimVigencia;
     private List<Impedimento> impedimentos;
@@ -16,12 +20,20 @@ public class ConfiguracaoAgenda {
         this.dataInicioVigencia = dataInicioVigencia;
         this.dataFimVigencia = dataFimVigencia;
         this.impedimentos = new ArrayList<>();
+        this.diasSemana = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            this.diasSemana.add(null);
+        }
     }
 
     public ConfiguracaoAgenda() { 
         this.dataInicioVigencia = null;
         this.dataFimVigencia = null;
         this.impedimentos = new ArrayList<>();
+        this.diasSemana = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            this.diasSemana.add(null);
+        }
     };
 
     // Getters e Setters
@@ -47,17 +59,11 @@ public class ConfiguracaoAgenda {
     }
 
     public void setDia(DayOfWeek dia, DiaSemana diaSemana) { 
-        if(diaSemana == null) {
-            throw new IllegalArgumentException("DiaSemana não pode ser nulo");
-        }
-        if(diaSemana.getDiaSemana() != dia) {
-            throw new IllegalArgumentException("O dia da semana do DiaSemana não corresponde ao dia fornecido");
-        }
-        this.diasSemana[dia.getValue() - 1] = diaSemana;
+        this.diasSemana.set(dia.getValue() - 1, diaSemana);
     }
 
     public DiaSemana getDiaSemana(DayOfWeek dia) {       
-        return diasSemana[dia.getValue() - 1];     
+        return diasSemana.get(dia.getValue() - 1);     
     }
  
     //Outros métodos
@@ -67,7 +73,8 @@ public class ConfiguracaoAgenda {
     }
 
     public boolean isDataEntreVigencia(LocalDate data) {
-        return  dataInicioVigencia.equals(data) || data.equals(dataFimVigencia) || 
-        (data.isAfter(dataInicioVigencia) && data.isBefore(dataFimVigencia));
+        return data.isAfter(dataInicioVigencia) &&
+               (data.isEqual(dataFimVigencia) || data.isBefore(dataFimVigencia));
     }
+
 }
