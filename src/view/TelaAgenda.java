@@ -22,7 +22,6 @@ public class TelaAgenda extends JPanel {
     private JLabel tituloAplicacao;
     private JButton botaoInicial;
     private GridBagLayout layout;
-    private GridBagConstraints layoutConstraints;
     private DatePicker datePicker;
     final int NOMEATIVIDADEINDEX = 1;
     final int HORARIOINDEX = 0;
@@ -32,12 +31,12 @@ public class TelaAgenda extends JPanel {
     private JScrollPane scrollPane;
     private JTable tabelaHorarios;
     private String[][] dadosLista;
+    GridBagConstraints layoutConstraints;
     private  final String[]  COLUNAS = {"Horário", "Atividade"};
 
 
     Aluno aluno;
     public TelaAgenda() {
-        
         painelInicial = new JPanel();
         layout = new GridBagLayout();
         layoutConstraints = new GridBagConstraints();
@@ -45,15 +44,19 @@ public class TelaAgenda extends JPanel {
         layoutConstraints.gridy = 1;
         painelInicial.setLayout(layout);
         tituloAplicacao = new JLabel("Agenda de Atividades");
+        
         datePicker = new DatePicker();
         datePicker.addDateChangeListener(event -> {
-            if (scrollPane != null) {
+
+            if (scrollPane !=  null) {
                 painelInicial.remove(scrollPane);
+                painelInicial.remove(tabelaHorarios);    
             }
-            dataSelecionada =  datePicker.getDate();
+            dataSelecionada = event.getNewDate();
             renderTabelaHorarios();
             painelInicial.revalidate();
             painelInicial.repaint();
+
         });
         painelInicial.add(datePicker, layoutConstraints);
 
@@ -82,18 +85,19 @@ public class TelaAgenda extends JPanel {
 
 
     private void renderTabelaHorarios() {
-    estudosDia = agendaEstudos.getEstudosDia(dataSelecionada);
-    if (estudosDia == null) estudosDia = new ArrayList<>();
-    Logger.info("estudos do dia: " + estudosDia.size());
-    dadosLista = fetchDadosAgenda(estudosDia);
-
-    tabelaHorarios = new JTable(dadosLista, COLUNAS);
-    scrollPane = new JScrollPane(tabelaHorarios);
-
-    layoutConstraints.gridx = 0;
-    layoutConstraints.gridy = 2;
-
-    painelInicial.add(scrollPane, layoutConstraints);
+        
+        estudosDia = agendaEstudos.getEstudosDia(dataSelecionada);
+        if (estudosDia == null) estudosDia = new ArrayList<>();
+        Logger.info("estudos do dia: " + estudosDia.size());
+        dadosLista = fetchDadosAgenda(estudosDia);
+        tabelaHorarios = new JTable(dadosLista, COLUNAS);
+        scrollPane = new JScrollPane(tabelaHorarios);
+        layoutConstraints.gridx = 0;
+        layoutConstraints.gridy = 2;
+        layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+        layoutConstraints.weightx = 1;
+        layoutConstraints.weighty = 1;
+        painelInicial.add(scrollPane, layoutConstraints);
     }
 
 private String[][] fetchDadosAgenda(List<TimeSlotEstudo> estudos) {
@@ -103,9 +107,9 @@ private String[][] fetchDadosAgenda(List<TimeSlotEstudo> estudos) {
 
     // Preenche padrão
     for (int i = 0; i < numLinhas; i++) {
-    int hora = i / 2;             // 0,0,1,1,2,2...
-    int minuto = (i % 2) * 30;    // 0,30,0,30...
-    String horario = String.format("%02d:%02d", hora, minuto);
+        int hora = i / 2;             // 0,0,1,1,2,2...
+        int minuto = (i % 2) * 30;    // 0,30,0,30...
+        String horario = String.format("%02d:%02d", hora, minuto);
     dados[i][HORARIOINDEX] = horario;
     dados[i][NOMEATIVIDADEINDEX] = "Livre";
 }
