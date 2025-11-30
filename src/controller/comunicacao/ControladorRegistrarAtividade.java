@@ -51,6 +51,10 @@ public class ControladorRegistrarAtividade {
             String disciplina = disciplinasAtividades.get(i);
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/uuuu");
             LocalDate dataLimite = LocalDate.parse(data, formatador);
+            if(dataLimite.isEqual(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia()))
+            {
+                throw new IllegalArgumentException("Data limite da atividade não pode ser igual à data de início de vigência da agenda.");
+            }
             Disciplina disciplinaObjeto = this.disciplinaMap.get(disciplina);
 
             switch (tipo) {

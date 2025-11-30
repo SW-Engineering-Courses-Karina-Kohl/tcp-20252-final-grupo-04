@@ -10,6 +10,8 @@ import src.controller.comunicacao.ConDadosEntreTelas;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
@@ -128,7 +130,9 @@ public class TelaRegistrarAtividade {
         TelaRegistrarSemana telaRegistrarSemana = new TelaRegistrarSemana();
         this.adicionarAtividade.addActionListener(e -> {
             String dataAtividade = dataAtividadeInput.getText();
-            if(telaRegistrarSemana.validaDataInput(dataAtividade, "dd/MM/uuuu")) {
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+            LocalDate dataLimite = LocalDate.parse(dataAtividade, formatador);
+            if(telaRegistrarSemana.validaDataInput(dataAtividade, "dd/MM/uuuu") && comunicacao.getConfiguracaoAgenda().isDataEntreVigencia(dataLimite) && !dataLimite.isEqual(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia())) {
                 atividadesDatas.add(dataAtividade);
                 dataAtividadeInput.setText("");
                 String nomeAtividade = nomeAtividadeInput.getText();
@@ -140,7 +144,7 @@ public class TelaRegistrarAtividade {
                 this.disciplinasAtividade.add(disciplinaAtividade);
                 Logger.info(tipoAtividadeAtual + " da disciplina " + disciplinaAtividade + " adicionada: " + nomeAtividade + " na data " + dataAtividade);
             } else {
-                Logger.error("Formato de data inválido para atividade: " + dataAtividade);
+                Logger.error("Formato de data inválido para atividade ou data inválida: " + dataAtividade);
             }
         });
     }
