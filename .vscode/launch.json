@@ -6,6 +6,13 @@
             "name": "Studify",
             "request": "launch",
             "mainClass": "src.Studify",
+            "projectName": "tcp-20252-final-grupo-04_4d00bb66"
+        },
+        {
+            "type": "java",
+            "name": "Studify",
+            "request": "launch",
+            "mainClass": "src.Studify",
             "projectName": "tcp-20252-final-grupo-04_a91433b9"
         },
         {

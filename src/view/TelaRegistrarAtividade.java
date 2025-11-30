@@ -5,6 +5,7 @@ import src.model.config.*;
 import src.controller.comunicacao.ControladorRegistrarAtividade;
 import src.controller.agenda.GeradorAgenda;
 import src.controller.atividades.AtribuidorAtividades;
+import src.controller.atividades.CalculadoraPesoAtividades;
 import src.controller.comunicacao.ConDadosEntreTelas;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -148,8 +149,9 @@ public class TelaRegistrarAtividade {
        // Logger.info(comunicacao.getConfiguracaoAgenda().getDiaSemana(comunicacao.getConfiguracaoAgenda().getDataInicioVigencia().getDayOfWeek()).getHorarios().size());
         GeradorAgenda geradorAgenda =  new GeradorAgenda();
         AgendaEstudos agendaEstudos = geradorAgenda.gerar(comunicacao.getConfiguracaoAgenda());
+        comunicacao.configuraAgendaAluno();
         aluno.setAgendaEstudos(agendaEstudos);
-        aluno.atribuirAtividadesAgenda(new AtribuidorAtividades());
+        aluno.atribuirAtividadesAgenda(new AtribuidorAtividades(new CalculadoraPesoAtividades()));
         comunicacao.setAluno(aluno);
     }
 

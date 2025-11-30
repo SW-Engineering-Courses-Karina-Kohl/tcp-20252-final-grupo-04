@@ -64,6 +64,7 @@ public class ConDadosEntreTelas {
 
     public  void transicaoAtividadeAgenda() {
         this.telaAgenda.setAluno(this.aluno);
+        this.telaAgenda.initPainel(this.aluno);
     }
 
 

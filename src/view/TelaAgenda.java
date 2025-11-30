@@ -30,49 +30,53 @@ public class TelaAgenda extends JPanel {
     private DatePicker datePicker;
     final int NOMEATIVIDADEINDEX = 1;
     final int HORARIOINDEX = 0;
-    AgendaEstudos agendaEstudos;
-    LocalDate dataSelecionada;
+    private AgendaEstudos agendaEstudos;
+    private LocalDate dataSelecionada;
+    private List<TimeSlotEstudo> estudosDia;
+
     Aluno aluno;
     public TelaAgenda() {
-        this.aluno = new Aluno();
-        //agendaEstudos = this.aluno.getAgenda();
-        dataSelecionada = LocalDate.now();
         painelInicial = new JPanel();
         layout = new GridBagLayout();
         layoutConstraints = new GridBagConstraints();
         layoutConstraints.gridx = 0;
         layoutConstraints.gridy = 1;
         painelInicial.setLayout(layout);
-        datePicker = new DatePicker();
-        datePicker.setDate(dataSelecionada);
-        painelInicial.add(datePicker, layoutConstraints);
         tituloAplicacao = new JLabel("Agenda de Atividades");
-        //renderTabelaHorarios();
-        
+        datePicker = new DatePicker();
+        painelInicial.add(datePicker, layoutConstraints);
+
     }
 
     public void setAluno(Aluno aluno) {
         this.aluno = aluno;
+    }
+
+    public void initPainel(Aluno aluno){
         System.out.println("Agenda criada para o aluno: " + this.aluno.getDisciplinas().size() + " disciplinas cadastradas.");
         this.agendaEstudos = this.aluno.getAgenda();
-        Logger.info("Agenda  na TelaAgenda com " + this.agendaEstudos.getEstudos().size() + " timeslots.");
+        setDataSelecionada(aluno.getConfiguracaoAgenda().getDataInicioVigencia());
+        datePicker.setDate(dataSelecionada);
         renderTabelaHorarios();
 
     }
 
-
+    public void setDataSelecionada(LocalDate data){
+        this.dataSelecionada =  data;
+    }
 
     public JPanel getPainelInicial() {
         return painelInicial;
     }
-    private void setDataSelecionada() {
-        this.dataSelecionada = datePicker.getDate();
-    }
+
 
     private void renderTabelaHorarios() {
         String[] colunas = {"Horário", "Atividade"};
-        List<TimeSlotEstudo> estudos = agendaEstudos.getEstudosDia(datePicker.getDate());
-        String[][] dadosLista = fetchDadosAgenda(estudos);
+        if (agendaEstudos.getEstudosDia(dataSelecionada) != null) {
+            estudosDia = agendaEstudos.getEstudosDia(datePicker.getDate());    
+        }
+        
+        String[][] dadosLista = fetchDadosAgenda(estudosDia);
         JTable tabelaHorarios = new JTable(dadosLista, colunas);
         JScrollPane scrollPane = new JScrollPane(tabelaHorarios);
         layoutConstraints.gridx = 0;
@@ -81,9 +85,14 @@ public class TelaAgenda extends JPanel {
     }
 
     private String[][] fetchDadosAgenda(List<TimeSlotEstudo> estudos) {
+
         final int NUMCOLUNAS = 2;
-        final int NUMLINHAS = estudos.size();
-        String[][] dados = new String[NUMLINHAS][NUMCOLUNAS];
+        int numLinhas = 48;
+        String[][] dados = new String[numLinhas][NUMCOLUNAS];
+        for (int i = 0; i < numLinhas; i++) {
+            dados[i][HORARIOINDEX] = "00:00";
+            dados[i][NOMEATIVIDADEINDEX] = "Livre";
+        }
         for (TimeSlotEstudo estudo: estudos){
             dados[estudos.indexOf(estudo)][HORARIOINDEX] = estudo.getInicioEstudo().toString();
             dados[estudos.indexOf(estudo)][NOMEATIVIDADEINDEX] = estudo.getAtividade().getNome();
