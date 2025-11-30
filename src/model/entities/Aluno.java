@@ -1,4 +1,5 @@
 package src.model.entities;
+import src.controller.agenda.GeradorAgenda;
 import src.controller.atividades.AtribuidorAtividades;
 import src.model.atividades.Atividade;
 import src.model.config.ConfiguracaoAgenda;
@@ -9,7 +10,6 @@ public class Aluno {
     private List<Disciplina> disciplinas;
     private AgendaEstudos agenda;
     private ConfiguracaoAgenda configuracaoAgenda;
-    private AtribuidorAtividades atribuidor;
 
     // Construtores
 
@@ -45,20 +45,13 @@ public class Aluno {
     public void removerDisciplina(Disciplina disciplina) {
         this.disciplinas.remove(disciplina);
     }
-    
-    public void setAtribuidorAtividades(AtribuidorAtividades atribuidor) {
-        if(atribuidor == null) {
-            throw new IllegalArgumentException("Atribuidor não pode ser nulo");
-        }
-        this.atribuidor = atribuidor;
-    }
 
-    public void atribuirAtividadesAgenda() {
-        if(this.atribuidor == null) {
-            throw new IllegalStateException("Atribuidor de atividades não foi definido");
+    public void atribuirAtividadesAgenda(AtribuidorAtividades atribuidor) {
+        if(atribuidor == null) {
+            throw new IllegalArgumentException("Atribuidor de atividades não pode ser nulo.");
         }
         verificarDatasAtividadesEntreVigencia();
-        this.atribuidor.atribuir(this.agenda, this.disciplinas);
+        atribuidor.atribuir(this.agenda, this.disciplinas);
     }
 
     public void verificarDatasAtividadesEntreVigencia()

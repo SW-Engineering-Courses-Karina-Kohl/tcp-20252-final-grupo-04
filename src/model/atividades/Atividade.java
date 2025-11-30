@@ -52,6 +52,7 @@ public  abstract class Atividade {
     public void setDataLimite(LocalDate dataLimite) {
         this.dataLimite = dataLimite;
     }
+    
     public  void setPesoCalculado(double pesoCalculado){
         if(pesoCalculado < 0 || pesoCalculado > MAXPESO){
             throw new IllegalArgumentException("O peso calculado deve estar entre 0 e " + MAXPESO +".");

@@ -4,8 +4,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import src.controller.agenda.GeradorAgenda;
 import src.controller.atividades.AtribuidorAtividades;
 import src.controller.atividades.CalculadoraPesoAtividades;
+import src.model.config.ConfiguracaoAgenda;
+import src.model.config.DiaSemana;
+import src.model.config.Impedimento;
 import src.model.entities.AgendaEstudos;
 import src.model.entities.Disciplina;
 import src.model.entities.TimeSlotEstudo;
@@ -208,5 +212,57 @@ public class AtribuidorAtividadesTest {
 
         assertTrue("Algum timeslot deveria ter o exercício atribuído", encontrouExercicio);
         assertTrue("Algum timeslot deveria ter o trabalho atribuído", encontrouTrabalho);
+    }
+
+    @Test
+    public void testAtribuir_ComImpedimentosQueBloqueiamEAindaPermitemCriacaoDeSlots() {
+        LocalDate inicio = LocalDate.of(2026, 1, 1);
+        ConfiguracaoAgenda configuracao = new ConfiguracaoAgenda(inicio, inicio.plusDays(4));
+
+        DiaSemana primeiroDia = new DiaSemana(inicio.getDayOfWeek());
+        primeiroDia.adicionarTimeSlot(LocalTime.of(8, 0));
+        configuracao.setDia(inicio.getDayOfWeek(), primeiroDia);
+
+        LocalDate segundoDia = inicio.plusDays(1);
+        DiaSemana segundoDiaSemana = new DiaSemana(segundoDia.getDayOfWeek());
+        segundoDiaSemana.adicionarTimeSlot(LocalTime.of(8, 0));
+        configuracao.setDia(segundoDia.getDayOfWeek(), segundoDiaSemana);
+
+        LocalDate terceiroDia = inicio.plusDays(2);
+        DiaSemana terceiroDiaSemana = new DiaSemana(terceiroDia.getDayOfWeek());
+        terceiroDiaSemana.adicionarTimeSlot(LocalTime.of(8, 0));
+        configuracao.setDia(terceiroDia.getDayOfWeek(), terceiroDiaSemana);
+        
+        LocalDate quartoDia = inicio.plusDays(3);
+        DiaSemana quartoDiaSemana = new DiaSemana(quartoDia.getDayOfWeek());
+        quartoDiaSemana.adicionarTimeSlot(LocalTime.of(8, 0));
+        configuracao.setDia(quartoDia.getDayOfWeek(), quartoDiaSemana);
+
+        
+        // Impedimento fora da configuracao
+        configuracao.adicionarImpedimento(new Impedimento(LocalDateTime.of(inicio.plusDays(10), LocalTime.of(22, 0))));
+        // Impedimento efetivo que coincide com um TimeSlot configurado
+        configuracao.adicionarImpedimento(new Impedimento(LocalDateTime.of(terceiroDia, LocalTime.of(8, 0))));
+        // Impedimento efetivo que coincide com um TimeSlot configurado
+        configuracao.adicionarImpedimento(new Impedimento(LocalDateTime.of(segundoDia, LocalTime.of(8, 0))));
+
+        GeradorAgenda gerador = new GeradorAgenda(configuracao);
+        AgendaEstudos agenda = gerador.gerar();
+
+        List<TimeSlotEstudo> estudos = agenda.getEstudos();
+        assertEquals("Apenas um TimeSlot deve ser removido pelo impedimento configurado", 2, estudos.size());
+        assertFalse("Nao deve existir TimeSlot no dia bloqueado", estudos.stream().anyMatch(ts -> ts.getData().equals(segundoDia)));
+        assertFalse("Nao deve existir TimeSlot no dia bloqueado", estudos.stream().anyMatch(ts -> ts.getData().equals(terceiroDia)));
+
+        Disciplina disciplina = new Disciplina("TCP", 1.0);
+        Trabalho trabalho = new Trabalho("Trabalho final", terceiroDia.plusDays(1), disciplina);
+        disciplina.adicionarAtividade(trabalho);
+
+        AtribuidorAtividades atribuidor = new AtribuidorAtividades(new CalculadoraPesoAtividades());
+        atribuidor.atribuir(agenda, Collections.singletonList(disciplina));
+
+        // O TimeSlots gerado deve receber a atividade, ignorando o impedimento fora da configuracao
+        assertEquals(trabalho, estudos.get(0).getAtividade());
+        assertNull(estudos.get(1).getAtividade());
     }
 }

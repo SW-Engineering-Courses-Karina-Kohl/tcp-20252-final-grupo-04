@@ -79,23 +79,25 @@ public class AtribuidorAtividades
         {
             // Haverá atividades.size() - i atividades a serem atribuídas: i até atividades.size() - 1
             // Calcular a porcentagem de timeSlot's que cada atividade a ser atribuído deve receber
-            // Somar pesoCalculado das atividades de i até atividades.size() - 1: para evitar repetição desnecessária somaPesosCalculados pode ser decrementada a cada iteração
-            somaPesosCalculados -= atividades.get(i).getPesoCalculado();    
+            // Somar pesoCalculado das atividades de i até atividades.size() - 1: para evitar repetição desnecessária somaPesosCalculados pode ser decrementada a cada iteração  
             //Para cada atividade de i até atividades.size() - 1
-            int quantidadeTimeSlotsJanela = 0;
+            
+            int quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(atividades.get(i).getDataLimite(), timeSlotsDisponiveis);
             for(int j = i; j < atividades.size(); j++)
             {
                 Logger.debug("I = {}, J = {}", i, j);
                 AlocacaoAtividade alocacao = alocacoes.get(j - i);
+                Logger.debug("Atividade a ser atribuída: {}", alocacao.getAtividade().getNome());
                 Logger.debug(("AlocacaoAtividade: Atividade = {}, PesoCalculado = {}"), alocacao.getAtividade().getNome(), alocacao.getAtividade().getPesoCalculado());
                 
                 //Calcular porcentagem = pesoCalculado / somaPesoCalculado
                 alocacao.setPorcentagemTimeSlotEstudos(alocacao.getAtividade().getPesoCalculado() / somaPesosCalculados);
                 Logger.debug("AlocacaoAtividade.getPorcentagem = {}", alocacao.getPorcentagemTimeSlotEstudos());
+                Logger.debug("SomaPesosCalculados = {}", somaPesosCalculados);
                 
                 //Calcular número de timeSlots a serem atribuídos para a atividade = porcentagem * quantidade de TimeSlotEstudo's da janela
-                quantidadeTimeSlotsJanela = this.quantidadeTimeSlotEstudosAntesDe(alocacao.getAtividade().getDataLimite(), timeSlotsDisponiveis);
                 alocacao.setQuantidadeTimeSlotEstudos(alocacao.getPorcentagemTimeSlotEstudos() * quantidadeTimeSlotsJanela);
+                Logger.debug("AlocacaoAtividade.getQuantidadeTimeSlotEstudos = {}", alocacao.getQuantidadeTimeSlotEstudos());
             }
             //Arredondar quantidade de timeSlots para cada atividade
             arredondarQuantidadeTimeSlots(alocacoes, quantidadeTimeSlotsJanela);
@@ -110,6 +112,7 @@ public class AtribuidorAtividades
             //Remover da lista de timeSlotsDisponiveis os timeSlots que já foram atribuídos
             timeSlotsDisponiveis = new ArrayList<TimeSlotEstudo>(timeSlotsDisponiveis.subList(quantidadeTimeSlotsJanela, timeSlotsDisponiveis.size()));
 
+             somaPesosCalculados -= atividades.get(i).getPesoCalculado();  
         }
         // 
     }
