@@ -4,6 +4,7 @@ import src.model.atividades.*;
 import src.model.config.*;
 import src.controller.comunicacao.ControladorRegistrarAtividade;
 import src.controller.agenda.GeradorAgenda;
+import src.controller.atividades.AtribuidorAtividades;
 import src.controller.comunicacao.ConDadosEntreTelas;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -148,6 +149,7 @@ public class TelaRegistrarAtividade {
         GeradorAgenda geradorAgenda =  new GeradorAgenda();
         AgendaEstudos agendaEstudos = geradorAgenda.gerar(comunicacao.getConfiguracaoAgenda());
         aluno.setAgendaEstudos(agendaEstudos);
+        aluno.atribuirAtividadesAgenda(new AtribuidorAtividades());
         comunicacao.setAluno(aluno);
     }
 
