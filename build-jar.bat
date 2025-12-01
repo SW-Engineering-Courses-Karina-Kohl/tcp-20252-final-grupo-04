@@ -27,27 +27,44 @@ for %%f in (..\lib\*.jar) do (
 cd ..
 
 echo 3. Copiando arquivos compilados...
-xcopy /s /e build\* temp\
+xcopy /s /e /Y build\* temp\
 
-echo 4. Criando manifest...
+echo 4. Copiando recursos...
+if exist resources xcopy /s /e /Y resources\* temp\
+if exist com xcopy /s /e /Y com\* temp\com\
+
+echo 5. Criando manifest...
 if not exist temp\META-INF mkdir temp\META-INF
 echo Main-Class: src.Studify > temp\META-INF\MANIFEST.MF
 echo Class-Path: . >> temp\META-INF\MANIFEST.MF
 
-echo 5. Criando JAR executavel...
+echo 6. Criando JAR executavel...
 cd temp
 "%JAVA_HOME%\bin\jar.exe" -cfm ..\dist\studify.jar META-INF\MANIFEST.MF *
 cd ..
 
-echo 6. Limpando arquivos temporarios...
+echo 7. Criando script de execucao...
+echo @echo off > dist\executar-studify.bat
+echo echo Iniciando Studify com Java 25... >> dist\executar-studify.bat
+echo echo. >> dist\executar-studify.bat
+echo "C:\Program Files\Java\jdk-25\bin\java.exe" -jar "%%~dp0studify.jar" >> dist\executar-studify.bat
+echo if errorlevel 1 ^( >> dist\executar-studify.bat
+echo     echo. >> dist\executar-studify.bat
+echo     echo ERRO: Nao foi possivel executar o Studify. >> dist\executar-studify.bat
+echo     echo Verifique se o Java 25 esta instalado em: C:\Program Files\Java\jdk-25\ >> dist\executar-studify.bat
+echo     echo. >> dist\executar-studify.bat
+echo     pause >> dist\executar-studify.bat
+echo ^) >> dist\executar-studify.bat
+
+echo 8. Limpando arquivos temporarios...
 rmdir /s /q temp
 
 echo.
 echo JAR criado com sucesso: dist\studify.jar
+echo Script de execucao criado: dist\executar-studify.bat
 echo.
-echo Para executar:
-echo   java -jar dist\studify.jar
-echo   ou
-echo   "%JAVA_HOME%\bin\java.exe" -jar dist\studify.jar
+echo Para executar fora da pasta do projeto:
+echo   1. Copie studify.jar e executar-studify.bat para qualquer pasta
+echo   2. Execute executar-studify.bat
 echo.
 pause
