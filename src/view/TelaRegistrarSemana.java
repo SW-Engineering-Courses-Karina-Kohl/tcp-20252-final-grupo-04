@@ -88,6 +88,14 @@ public class TelaRegistrarSemana {
         this.dataInicioInput = new JTextArea();
         this.dataInicioInput.setSize(200, 30);
         this.dataInicioInput.setLocation(320, 50);
+        
+        // Melhorando a visibilidade do campo
+        this.dataInicioInput.setBackground(new java.awt.Color(255, 255, 255));
+        this.dataInicioInput.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(120, 120, 120), 1),
+            javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        this.dataInicioInput.setFont(new Font("Arial", Font.PLAIN, 12));
     }
 
     public JLabel getInfoDataFim() {
@@ -108,6 +116,14 @@ public class TelaRegistrarSemana {
         this.dataFimInput = new JTextArea();
         this.dataFimInput.setSize(200, 30);
         this.dataFimInput.setLocation(320, 100);
+        
+        // Melhorando a visibilidade do campo
+        this.dataFimInput.setBackground(new java.awt.Color(255, 255, 255));
+        this.dataFimInput.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(120, 120, 120), 1),
+            javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        this.dataFimInput.setFont(new Font("Arial", Font.PLAIN, 12));
     }
 
     public JLabel getInfoImpedimentos() {
@@ -128,6 +144,14 @@ public class TelaRegistrarSemana {
         this.impedimentosInput = new JTextArea();
         this.impedimentosInput.setSize(200, 30);
         this.impedimentosInput.setLocation(320, 150);
+        
+        // Melhorando a visibilidade do campo
+        this.impedimentosInput.setBackground(new java.awt.Color(255, 255, 255));
+        this.impedimentosInput.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(120, 120, 120), 1),
+            javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        this.impedimentosInput.setFont(new Font("Arial", Font.PLAIN, 12));
     }
 
     public void setBotoesDiaSemana(JPanel painel, CardLayout cardLayout) {

@@ -61,6 +61,17 @@ public class TelaRegistrarTimeSlot {
         botaoSalvarTimeSlots = new JButton("Salvar Time Slots");
         botaoSalvarTimeSlots.setSize(200, 50);
         botaoSalvarTimeSlots.setLocation(680, 410);
+        botaoSalvarTimeSlots.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        botaoSalvarTimeSlots.setFocusPainted(false);
+        
+        // Acessa a cor laranja do tema Arc Orange
+        javax.swing.UIDefaults defaults = javax.swing.UIManager.getDefaults();
+        java.awt.Color themeColor = defaults.getColor("Component.focusedBorderColor");
+        
+        botaoSalvarTimeSlots.setBackground(themeColor);
+        botaoSalvarTimeSlots.setForeground(java.awt.Color.WHITE);
+        botaoSalvarTimeSlots.setOpaque(true);
+        botaoSalvarTimeSlots.setBorderPainted(false);
     }
     public void transicaoTelaRegistrarSemana(JPanel painelPrincipal, CardLayout cardLayout ) {
         this.timeSlotsSelecionados = new ArrayList<>();

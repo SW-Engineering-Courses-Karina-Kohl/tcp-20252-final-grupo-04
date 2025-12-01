@@ -91,7 +91,17 @@ public class TelaRegistrarAtividade {
         this.concluirRegistroAtividade = new JButton("Concluir Registro");
         this.concluirRegistroAtividade.setSize(250, 50);
         this.concluirRegistroAtividade.setLocation(600, 390);
-        this.concluirRegistroAtividade.setFont(new Font("Arial", Font.PLAIN, 20));
+        this.concluirRegistroAtividade.setFont(new Font("Arial", Font.BOLD, 14));
+        this.concluirRegistroAtividade.setFocusPainted(false);
+        
+        // Acessa a cor laranja do tema Arc Orange
+        javax.swing.UIDefaults defaults = javax.swing.UIManager.getDefaults();
+        java.awt.Color themeColor = defaults.getColor("Component.focusedBorderColor");
+        
+        this.concluirRegistroAtividade.setBackground(themeColor);
+        this.concluirRegistroAtividade.setForeground(java.awt.Color.WHITE);
+        this.concluirRegistroAtividade.setOpaque(true);
+        this.concluirRegistroAtividade.setBorderPainted(false);
     }
     public void transicaoBotaoConcluirRegistroAtividade(JPanel painel, CardLayout cardLayout) {
         concluirRegistroAtividade.addActionListener(e -> {
@@ -174,6 +184,14 @@ public class TelaRegistrarAtividade {
         this.dataAtividadeInput = new JTextArea();
         this.dataAtividadeInput.setSize(200, 30);
         this.dataAtividadeInput.setLocation(600, 50);
+        
+        // Melhorando a visibilidade do campo
+        this.dataAtividadeInput.setBackground(new java.awt.Color(255, 255, 255));
+        this.dataAtividadeInput.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(120, 120, 120), 1),
+            javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        this.dataAtividadeInput.setFont(new Font("Arial", Font.PLAIN, 12));
     }
     public JLabel getInfoNomeAtividade() {
         return infoNomeAtividade;
@@ -190,6 +208,14 @@ public class TelaRegistrarAtividade {
         this.nomeAtividadeInput = new JTextArea();
         this.nomeAtividadeInput.setSize(200, 30);
         this.nomeAtividadeInput.setLocation(550, 150);
+        
+        // Melhorando a visibilidade do campo
+        this.nomeAtividadeInput.setBackground(new java.awt.Color(255, 255, 255));
+        this.nomeAtividadeInput.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(120, 120, 120), 1),
+            javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        this.nomeAtividadeInput.setFont(new Font("Arial", Font.PLAIN, 12));
     }
     public JLabel getInfoTipoAtividade() {
         return infoTipoAtividade;
@@ -239,6 +265,14 @@ public class TelaRegistrarAtividade {
         this.disciplinaNomeInput = new JTextArea();
         this.disciplinaNomeInput.setSize(200, 30);
         this.disciplinaNomeInput.setLocation(50, 80);
+        
+        // Melhorando a visibilidade do campo
+        this.disciplinaNomeInput.setBackground(new java.awt.Color(255, 255, 255));
+        this.disciplinaNomeInput.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(120, 120, 120), 1),
+            javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        this.disciplinaNomeInput.setFont(new Font("Arial", Font.PLAIN, 12));
     }
     public JTextArea getDisciplinaPrioridadeInput() {
         return disciplinaPrioridadeInput;
@@ -247,6 +281,14 @@ public class TelaRegistrarAtividade {
         this.disciplinaPrioridadeInput = new JTextArea();
         this.disciplinaPrioridadeInput.setSize(200, 30);
         this.disciplinaPrioridadeInput.setLocation(50, 130);
+        
+        // Melhorando a visibilidade do campo
+        this.disciplinaPrioridadeInput.setBackground(new java.awt.Color(255, 255, 255));
+        this.disciplinaPrioridadeInput.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(120, 120, 120), 1),
+            javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        this.disciplinaPrioridadeInput.setFont(new Font("Arial", Font.PLAIN, 12));
     }
     public JButton getAdicionarDisciplina() {
         return adicionarDisciplina;
