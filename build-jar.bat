@@ -30,6 +30,7 @@ echo 3. Copiando arquivos compilados...
 xcopy /s /e build\* temp\
 
 echo 4. Criando manifest...
+if not exist temp\META-INF mkdir temp\META-INF
 echo Main-Class: src.Studify > temp\META-INF\MANIFEST.MF
 echo Class-Path: . >> temp\META-INF\MANIFEST.MF
 

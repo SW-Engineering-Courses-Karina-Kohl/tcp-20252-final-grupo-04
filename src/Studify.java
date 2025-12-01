@@ -5,7 +5,6 @@ import src.model.atividades.*;
 import src.model.config.*;
 import src.view.*;
 
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 // Temas IntelliJ disponíveis:
 import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
